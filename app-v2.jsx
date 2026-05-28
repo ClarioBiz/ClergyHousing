@@ -263,11 +263,10 @@ function App() {
     setDrawer(false);
   }, []);
 
-  // Sync view tweak (dev tool only — never send unauthenticated users to app)
+  // Sync view tweak (dev tool only — never kick an authenticated user back to landing)
   React.useEffect(() => {
-    if (t.view !== 'app' || Auth.isLoggedIn()) {
-      setView(t.view);
-    }
+    if (Auth.isLoggedIn()) return;     // logged-in users stay in the app regardless of tweak
+    if (t.view !== 'app') setView(t.view); // unauthenticated users follow the tweak, but can't reach 'app'
   }, [t.view]);
   // Force paywall if trial ended
   React.useEffect(() => {

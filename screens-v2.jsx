@@ -946,6 +946,7 @@ function ReceiptPreviewModal({ s3Key, fileName, onClose }) {
   const [viewUrl, setViewUrl] = React.useState(null);
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState(null);
+  const [imgFailed, setImgFailed] = React.useState(false); // fallback if <img> can't render
 
   React.useEffect(() => {
     API.getReceiptUrl(s3Key)
@@ -961,9 +962,13 @@ function ReceiptPreviewModal({ s3Key, fileName, onClose }) {
   }, [onClose]);
 
   const displayName = fileName || s3Key?.split('/').pop() || 'Receipt';
-  const ext = displayName.toLowerCase().split('.').pop();
-  const isImage = ['jpg','jpeg','png','gif','webp','bmp','heic'].includes(ext);
-  const isPdf   = ext === 'pdf';
+  // Strip timestamp prefix (e.g. "1748301234567-photo.jpg" → "photo.jpg") for a cleaner display name
+  const cleanName = displayName.replace(/^\d{10,}-/, '');
+  const ext = cleanName.toLowerCase().split('.').pop();
+  const isImage = ['jpg','jpeg','png','gif','webp','bmp','heic','avif'].includes(ext);
+
+  // Use <iframe> for: PDFs, any unknown type, or if the <img> tag failed to render
+  const useIframe = !isImage || imgFailed;
 
   return (
     <div className="modal-backdrop" onClick={onClose}>
@@ -971,7 +976,7 @@ function ReceiptPreviewModal({ s3Key, fileName, onClose }) {
         <div className="modal-hd">
           <div>
             <h2 style={{ fontSize: 18 }}>Receipt Preview</h2>
-            <div className="sub">{displayName}</div>
+            <div className="sub">{cleanName}</div>
           </div>
           <button className="btn btn-icon" onClick={onClose} aria-label="Close" style={{ marginTop: 2 }}>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
@@ -991,28 +996,26 @@ function ReceiptPreviewModal({ s3Key, fileName, onClose }) {
               <span style={{ color: 'var(--ink-3)' }}>{error}</span>
             </div>
           )}
-          {viewUrl && isImage && (
-            <img src={viewUrl} alt={displayName} className="receipt-preview-img" />
+          {/* Images: try <img> first; if it can't load, fall through to <iframe> */}
+          {viewUrl && isImage && !imgFailed && (
+            <img
+              src={viewUrl}
+              alt={cleanName}
+              className="receipt-preview-img"
+              onError={() => setImgFailed(true)}
+            />
           )}
-          {viewUrl && isPdf && (
-            <iframe src={viewUrl} title={displayName} className="receipt-preview-iframe" />
-          )}
-          {viewUrl && !isImage && !isPdf && (
-            <div className="receipt-preview-state">
-              <Icon.Receipt width={40} height={40} />
-              <span style={{ color: 'var(--ink-3)' }}>Preview not available for this file type.</span>
-              <a href={viewUrl} target="_blank" rel="noopener noreferrer" className="btn btn-primary">
-                Open file
-              </a>
-            </div>
+          {/* PDFs, unknown types, or image fallback: let the browser handle it natively */}
+          {viewUrl && useIframe && (
+            <iframe src={viewUrl} title={cleanName} className="receipt-preview-iframe" />
           )}
         </div>
 
         {viewUrl && (
           <div className="modal-foot">
-            <a href={viewUrl} download={displayName} target="_blank" rel="noopener noreferrer" className="btn btn-ghost">
+            <a href={viewUrl} target="_blank" rel="noopener noreferrer" className="btn btn-ghost">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" style={{ marginRight: 6 }}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-              Download
+              Open / Download
             </a>
             <div className="actions">
               <button className="btn btn-primary" onClick={onClose}>Close</button>
