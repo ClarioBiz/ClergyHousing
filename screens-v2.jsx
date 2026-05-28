@@ -211,7 +211,7 @@ function ByCategory({ expenses }) {
 // ─────────────────────────────────────────────────────────────────────────
 // Expense Log
 // ─────────────────────────────────────────────────────────────────────────
-function ExpenseLog2({ expenses, onAdd, onEdit, onDelete, onBulkDelete }) {
+function ExpenseLog2({ expenses, onAdd, onEdit, onDelete, onBulkDelete, onPreviewReceipt }) {
   const [catFilter, setCatFilter] = React.useState('all');
   const [from, setFrom] = React.useState('');
   const [to, setTo] = React.useState('');
@@ -347,7 +347,15 @@ function ExpenseLog2({ expenses, onAdd, onEdit, onDelete, onBulkDelete }) {
                       </span>
                     </td>
                     <td style={{ textAlign: 'center' }}>
-                      {e.receipt ? (
+                      {e.receipt?.s3Key ? (
+                        <button
+                          className="btn-receipt-preview"
+                          title="Click to view receipt"
+                          onClick={() => onPreviewReceipt && onPreviewReceipt(e.receipt.s3Key, e.receipt.name)}
+                        >
+                          <Icon.Receipt width={18} height={18} />
+                        </button>
+                      ) : e.receipt ? (
                         <span title="Receipt attached" style={{ color: 'var(--forest-3)', display: 'inline-flex', width: 18, height: 18 }}>
                           <Icon.Receipt width={18} height={18} />
                         </span>
@@ -931,4 +939,89 @@ function SettingsPage2({ settings, onSave, onSignOut }) {
   );
 }
 
-Object.assign(window, { Dashboard2, ExpenseLog2, ExpenseForm2, TaxReport2, SettingsPage2 });
+// ─────────────────────────────────────────────────────────────────────────
+// Receipt Preview Modal
+// ─────────────────────────────────────────────────────────────────────────
+function ReceiptPreviewModal({ s3Key, fileName, onClose }) {
+  const [viewUrl, setViewUrl] = React.useState(null);
+  const [loading, setLoading] = React.useState(true);
+  const [error, setError] = React.useState(null);
+
+  React.useEffect(() => {
+    API.getReceiptUrl(s3Key)
+      .then(r => { setViewUrl(r.viewUrl); setLoading(false); })
+      .catch(() => { setError('Could not load receipt. Please try again.'); setLoading(false); });
+  }, [s3Key]);
+
+  // Close on Escape
+  React.useEffect(() => {
+    const handler = (e) => { if (e.key === 'Escape') onClose(); };
+    document.addEventListener('keydown', handler);
+    return () => document.removeEventListener('keydown', handler);
+  }, [onClose]);
+
+  const displayName = fileName || s3Key?.split('/').pop() || 'Receipt';
+  const ext = displayName.toLowerCase().split('.').pop();
+  const isImage = ['jpg','jpeg','png','gif','webp','bmp','heic'].includes(ext);
+  const isPdf   = ext === 'pdf';
+
+  return (
+    <div className="modal-backdrop" onClick={onClose}>
+      <div className="modal modal-receipt-preview" onClick={e => e.stopPropagation()}>
+        <div className="modal-hd">
+          <div>
+            <h2 style={{ fontSize: 18 }}>Receipt Preview</h2>
+            <div className="sub">{displayName}</div>
+          </div>
+          <button className="btn btn-icon" onClick={onClose} aria-label="Close" style={{ marginTop: 2 }}>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+          </button>
+        </div>
+
+        <div className="receipt-preview-body">
+          {loading && (
+            <div className="receipt-preview-state">
+              <div className="receipt-preview-spinner" />
+              <span>Loading receipt…</span>
+            </div>
+          )}
+          {error && (
+            <div className="receipt-preview-state">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--plum)" strokeWidth="1.5" strokeLinecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+              <span style={{ color: 'var(--ink-3)' }}>{error}</span>
+            </div>
+          )}
+          {viewUrl && isImage && (
+            <img src={viewUrl} alt={displayName} className="receipt-preview-img" />
+          )}
+          {viewUrl && isPdf && (
+            <iframe src={viewUrl} title={displayName} className="receipt-preview-iframe" />
+          )}
+          {viewUrl && !isImage && !isPdf && (
+            <div className="receipt-preview-state">
+              <Icon.Receipt width={40} height={40} />
+              <span style={{ color: 'var(--ink-3)' }}>Preview not available for this file type.</span>
+              <a href={viewUrl} target="_blank" rel="noopener noreferrer" className="btn btn-primary">
+                Open file
+              </a>
+            </div>
+          )}
+        </div>
+
+        {viewUrl && (
+          <div className="modal-foot">
+            <a href={viewUrl} download={displayName} target="_blank" rel="noopener noreferrer" className="btn btn-ghost">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" style={{ marginRight: 6 }}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Download
+            </a>
+            <div className="actions">
+              <button className="btn btn-primary" onClick={onClose}>Close</button>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+Object.assign(window, { Dashboard2, ExpenseLog2, ExpenseForm2, TaxReport2, SettingsPage2, ReceiptPreviewModal });

@@ -205,6 +205,16 @@ async function deleteDocument(db, userId, docId) {
   return { deleted: true };
 }
 
+// POST /documents/view-url — get a presigned S3 URL to view/download a file
+async function getViewUrl(userId, s3Key) {
+  if (!s3Key) throw new Error('s3Key is required');
+  // Security: key must belong to this user
+  if (!s3Key.startsWith(`users/${userId}/`)) throw new Error('Access denied');
+  const cmd = new GetObjectCommand({ Bucket: BUCKET, Key: s3Key });
+  const url = await getSignedUrl(S3, cmd, { expiresIn: 300 });
+  return { viewUrl: url };
+}
+
 // POST /documents — record a file after it has been uploaded to S3
 async function createDocument(db, userId, body) {
   const { fileName, s3Key, sizeBytes, category } = body;
@@ -318,6 +328,7 @@ exports.handler = async (event) => {
 
     if (method === 'GET'    && path === '/documents')              return resp(200, await getDocuments(db, userId));
     if (method === 'POST'   && path === '/documents/upload-url')  return resp(200, await getUploadUrl(userId, body.fileName, body.contentType));
+    if (method === 'POST'   && path === '/documents/view-url')    return resp(200, await getViewUrl(userId, body.s3Key));
     if (method === 'POST'   && path === '/documents')             return resp(201, await createDocument(db, userId, body));
     if (method === 'DELETE' && path.startsWith('/documents/'))    return resp(200, await deleteDocument(db, userId, params.id || path.split('/')[2]));
 

@@ -155,7 +155,11 @@ function App() {
   const initialView = Auth.isLoggedIn() ? 'app' : (t.view === 'app' ? 'landing' : t.view);
   const [view, setView] = React.useState(initialView);
   const [authMode, setAuthMode] = React.useState('signup');
-  const [route, setRoute] = React.useState('dashboard');
+  const [route, setRoute] = React.useState(() => {
+    const saved = localStorage.getItem('ch_route');
+    const valid = ['dashboard','log','banks','report','documents','billing','settings'];
+    return (saved && valid.includes(saved)) ? saved : 'dashboard';
+  });
   const [loading, setLoading] = React.useState(false);
 
   const [expenses, setExpenses] = React.useState([]);
@@ -169,6 +173,7 @@ function App() {
   const [documents, setDocuments] = React.useState([]);
 
   const [modal, setModal] = React.useState(null);
+  const [previewReceipt, setPreviewReceipt] = React.useState(null); // { s3Key, fileName }
   const [toast, setToast] = React.useState(null);
   const [pendingTxns, setPendingTxns] = React.useState([]);
   const [drawer, setDrawer] = React.useState(false);
@@ -204,7 +209,7 @@ function App() {
           description: e.description,
           amount:      parseFloat(e.amount),
           source:      e.source,
-          receipt:     e.receipt_s3_key ? { name: e.receipt_s3_key.split('/').pop() } : null,
+          receipt:     e.receipt_s3_key ? { name: e.receipt_s3_key.split('/').pop(), s3Key: e.receipt_s3_key } : null,
         })));
       }
       if (sub) {
@@ -251,9 +256,10 @@ function App() {
     if (view === 'app') loadData();
   }, [view]);
 
-  // Close drawer when route changes
+  // Close drawer when route changes, and persist selection to survive refresh
   const go = React.useCallback((r) => {
     setRoute(r);
+    localStorage.setItem('ch_route', r);
     setDrawer(false);
   }, []);
 
@@ -387,6 +393,7 @@ function App() {
   // ── Render by view ────────────────────────────────────────────────────
   const handleSignOut = () => {
     Auth.signOut();
+    localStorage.removeItem('ch_route');
     setExpenses([]);
     setView('landing');
   };
@@ -462,7 +469,8 @@ function App() {
                        onAdd={() => setModal({ mode: 'add' })}
                        onEdit={(e) => setModal({ mode: 'edit', expense: e })}
                        onDelete={handleDeleteExpense}
-                       onBulkDelete={handleBulkDelete} />
+                       onBulkDelete={handleBulkDelete}
+                       onPreviewReceipt={(s3Key, fileName) => setPreviewReceipt({ s3Key, fileName })} />
         )}
         {route === 'banks' && (
           <BankAccounts banks={[]} pendingTxns={pendingTxns} onAddExpenses={handleAddBankExpenses} />
@@ -498,6 +506,14 @@ function App() {
           onSave={handleSaveExpense}
           onCancel={() => setModal(null)}
           onDelete={handleDeleteExpense}
+        />
+      )}
+
+      {previewReceipt && (
+        <ReceiptPreviewModal
+          s3Key={previewReceipt.s3Key}
+          fileName={previewReceipt.fileName}
+          onClose={() => setPreviewReceipt(null)}
         />
       )}
 

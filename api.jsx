@@ -184,6 +184,7 @@ const API = {
   getDocuments:      ()       => apiFetch('/documents'),
   getUploadUrl:      (fileName, contentType) =>
     apiFetch('/documents/upload-url', { method: 'POST', body: { fileName, contentType } }),
+  getReceiptUrl:     (s3Key)  => apiFetch('/documents/view-url', { method: 'POST', body: { s3Key } }),
   createDocument:    (body)   => apiFetch('/documents', { method: 'POST', body }),
   deleteDocument:    (id)     => apiFetch(`/documents/${id}`, { method: 'DELETE' }),
 
