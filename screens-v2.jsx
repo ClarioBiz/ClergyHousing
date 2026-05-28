@@ -3,7 +3,7 @@
 // ─────────────────────────────────────────────────────────────────────────
 // Dashboard
 // ─────────────────────────────────────────────────────────────────────────
-function Dashboard2({ settings, expenses, subscription, onAdd, onGo }) {
+function Dashboard2({ settings, expenses, subscription, pendingTxns = [], onAdd, onGo }) {
   const totalSpent = expenses.reduce((s, e) => s + e.amount, 0);
   const designated = settings.designated;
   const remaining = designated - totalSpent;
@@ -22,8 +22,12 @@ function Dashboard2({ settings, expenses, subscription, onAdd, onGo }) {
     <div className="page" data-screen-label="Dashboard">
       <div className="page-head">
         <div>
-          <div className="page-title">Grace and peace, {settings.firstName}.</div>
-          <div className="page-sub">A quiet ledger of your housing allowance for tax year {settings.taxYear}.</div>
+          <div className="page-title">
+            {settings.firstName
+              ? `${(()=>{const h=new Date().getHours();return h<12?'Good morning':h<17?'Good afternoon':'Good evening'})()}, ${settings.firstName}.`
+              : 'Housing Allowance Dashboard'}
+          </div>
+          <div className="page-sub">Tracking your housing allowance expenses for tax year {settings.taxYear}.</div>
         </div>
         <button className="btn btn-primary" onClick={onAdd}>
           <Icon.Plus /> Add expense
@@ -115,7 +119,11 @@ function Dashboard2({ settings, expenses, subscription, onAdd, onGo }) {
           <div className="qa-icon"><Icon.Bank /></div>
           <div className="qa-body">
             <div className="qa-title">Connect bank</div>
-            <div className="qa-sub">Import via Plaid — 6 await review</div>
+            <div className="qa-sub">
+              {pendingTxns.length > 0
+                ? `${pendingTxns.length} transaction${pendingTxns.length === 1 ? '' : 's'} awaiting review`
+                : 'Import transactions automatically via Plaid'}
+            </div>
           </div>
           <div className="qa-arrow"><Icon.Chevron /></div>
         </button>
@@ -267,7 +275,7 @@ function ExpenseLog2({ expenses, onAdd, onEdit, onDelete, onBulkDelete }) {
         <span className="label">Category</span>
         <select className="select" value={catFilter} onChange={e => setCatFilter(e.target.value)}>
           <option value="all">All categories</option>
-          {CATEGORIES.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+          {CATEGORIES.map(c => <option key={c.id} value={c.id}>{c.emoji}  {c.name}</option>)}
         </select>
         <span className="label">Source</span>
         <select className="select" value={source} onChange={e => setSource(e.target.value)}>
@@ -328,8 +336,8 @@ function ExpenseLog2({ expenses, onAdd, onEdit, onDelete, onBulkDelete }) {
                     <td className="col-date">{fmtDateNumeric(e.date)}</td>
                     <td>
                       <span className="cat-tag">
-                        <span className="dot" style={{ background: cat.color }} />
-                        {cat.name}
+                        <span className="cat-emoji">{cat?.emoji}</span>
+                        {cat?.name}
                       </span>
                     </td>
                     <td>{e.description}</td>
@@ -340,8 +348,8 @@ function ExpenseLog2({ expenses, onAdd, onEdit, onDelete, onBulkDelete }) {
                     </td>
                     <td style={{ textAlign: 'center' }}>
                       {e.receipt ? (
-                        <span title="Receipt attached" style={{ color: 'var(--forest-3)', display: 'inline-flex' }}>
-                          <Icon.Receipt />
+                        <span title="Receipt attached" style={{ color: 'var(--forest-3)', display: 'inline-flex', width: 18, height: 18 }}>
+                          <Icon.Receipt width={18} height={18} />
                         </span>
                       ) : (
                         <span style={{ color: 'var(--ink-4)' }}>—</span>
@@ -379,6 +387,60 @@ function ExpenseLog2({ expenses, onAdd, onEdit, onDelete, onBulkDelete }) {
 }
 
 // ─────────────────────────────────────────────────────────────────────────
+// Category Picker with info popup
+// ─────────────────────────────────────────────────────────────────────────
+function CategoryPicker({ value, onChange }) {
+  const [open, setOpen] = React.useState(false);
+  const ref = React.useRef(null);
+  const cat = CAT_BY_ID[value] || CATEGORIES[0];
+
+  React.useEffect(() => {
+    if (!open) return;
+    const handler = (e) => { if (ref.current && !ref.current.contains(e.target)) setOpen(false); };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, [open]);
+
+  return (
+    <div ref={ref} style={{ position: 'relative' }}>
+      <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+        <select
+          className="select"
+          value={value}
+          onChange={e => { onChange(e.target.value); setOpen(false); }}
+          style={{ flex: 1 }}
+        >
+          {CATEGORIES.map(c => (
+            <option key={c.id} value={c.id}>{c.emoji}  {c.name}</option>
+          ))}
+        </select>
+        <button
+          type="button"
+          className="cat-info-btn"
+          onClick={() => setOpen(v => !v)}
+          title="What qualifies for this category?"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        </button>
+      </div>
+      {open && (
+        <div className="cat-info-popup">
+          <div className="cat-info-head">
+            <span className="cat-info-emoji">{cat.emoji}</span>
+            <strong className="cat-info-name">{cat.name}</strong>
+            <button className="cat-info-close" onClick={() => setOpen(false)}>×</button>
+          </div>
+          <p className="cat-info-label">Qualifying expenses include:</p>
+          <ul className="cat-info-list">
+            {cat.description.map((item, i) => <li key={i}>{item}</li>)}
+          </ul>
+          <p className="cat-info-irs">Per IRS Publication 517 · IRC §107</p>
+        </div>
+      )}
+    </div>
+  );
+}
+
 // Expense Form (modal)
 // ─────────────────────────────────────────────────────────────────────────
 function ExpenseForm2({ initial, onSave, onCancel, onDelete }) {
@@ -390,6 +452,7 @@ function ExpenseForm2({ initial, onSave, onCancel, onDelete }) {
   const [amount, setAmount] = React.useState(initial?.amount?.toFixed(2) || '');
   const [notes, setNotes] = React.useState(initial?.notes || '');
   const [receipt, setReceipt] = React.useState(initial?.receipt || null);
+  const [receiptFile, setReceiptFile] = React.useState(null);
   const [err, setErr] = React.useState({});
   const fileRef = React.useRef(null);
 
@@ -397,7 +460,6 @@ function ExpenseForm2({ initial, onSave, onCancel, onDelete }) {
     e?.preventDefault();
     const errs = {};
     if (!date) errs.date = 'Required';
-    if (!description.trim()) errs.description = 'Required';
     const num = parseFloat(amount);
     if (!amount || isNaN(num) || num <= 0) errs.amount = 'Enter a valid amount';
     if (Object.keys(errs).length) { setErr(errs); return; }
@@ -408,12 +470,14 @@ function ExpenseForm2({ initial, onSave, onCancel, onDelete }) {
       amount: num,
       notes: notes.trim(),
       receipt,
+      receiptFile, // the actual File object — uploaded to S3 in handleSaveExpense
       source: initial?.source || 'manual',
     });
   };
 
   const onPick = (file) => {
     if (!file) return;
+    setReceiptFile(file);
     setReceipt({ name: file.name, size: file.size });
   };
 
@@ -437,9 +501,7 @@ function ExpenseForm2({ initial, onSave, onCancel, onDelete }) {
             </div>
             <div className="field">
               <label>Category</label>
-              <select className="select" value={categoryId} onChange={e => setCategoryId(e.target.value)}>
-                {CATEGORIES.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
-              </select>
+              <CategoryPicker value={categoryId} onChange={setCategoryId} />
             </div>
           </div>
 
@@ -721,13 +783,20 @@ function SettingsPage2({ settings, onSave, onSignOut }) {
           <div className="field-row">
             <div className="field">
               <label>Email <span className="secure-lbl"><Icon.Lock /> encrypted</span></label>
-              <input className="input" type="email" defaultValue="tom@gracecovenant.org" />
+              <input className="input" type="email" value={Auth.getEmail()} readOnly
+                style={{ background: 'var(--paper-2)', color: 'var(--ink-3)', cursor: 'default' }} />
             </div>
             <div className="field">
               <label>Password</label>
-              <button type="button" className="btn btn-secondary" style={{ width: 'fit-content' }}>
-                Change password
-              </button>
+              {Auth.getEmail() && TokenStore.isGoogleUser() ? (
+                <div style={{ fontSize: 13, color: 'var(--ink-3)', paddingTop: 8 }}>
+                  Signed in with Google — no password needed.
+                </div>
+              ) : (
+                <button type="button" className="btn btn-secondary" style={{ width: 'fit-content' }}>
+                  Change password
+                </button>
+              )}
             </div>
           </div>
 
@@ -803,16 +872,17 @@ function SettingsPage2({ settings, onSave, onSignOut }) {
             </div>
             <div className="setting-row" style={{ borderTop: '1px solid var(--hairline-2)' }}>
               <div className="body">
-                <div className="title">MacBook Pro · Safari <span style={{ color: 'var(--forest-3)', fontSize: 11, marginLeft: 6 }}>· Current</span></div>
-                <div className="desc">Greenville, SC · Active now</div>
+                <div className="title">
+                  {(() => {
+                    const ua = navigator.userAgent;
+                    const browser = ua.includes('Edg') ? 'Edge' : ua.includes('Chrome') ? 'Chrome' : ua.includes('Firefox') ? 'Firefox' : ua.includes('Safari') ? 'Safari' : 'Browser';
+                    const device  = ua.includes('iPhone') ? 'iPhone' : ua.includes('iPad') ? 'iPad' : ua.includes('Android') ? 'Android' : ua.includes('Mac') ? 'Mac' : 'Windows PC';
+                    return `${device} · ${browser}`;
+                  })()}
+                  <span style={{ color: 'var(--forest-3)', fontSize: 11, marginLeft: 6 }}>· Current</span>
+                </div>
+                <div className="desc">Active now</div>
               </div>
-            </div>
-            <div className="setting-row">
-              <div className="body">
-                <div className="title">iPhone · Clergy Housing mobile</div>
-                <div className="desc">Greenville, SC · Last seen 2 days ago</div>
-              </div>
-              <button type="button" className="btn btn-ghost" style={{ color: 'var(--plum)' }}>Sign out</button>
             </div>
           </div>
 

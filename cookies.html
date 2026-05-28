@@ -1,0 +1,530 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cookies Policy — Clergy Housing</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&family=Geist:wght@400;500;600&display=swap" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink:      #1F1B14;
+      --ink-2:    #3A332A;
+      --ink-3:    #6B6256;
+      --ink-4:    #948A7B;
+      --forest:   #1E3A2E;
+      --forest-2: #284A3B;
+      --forest-3: #3B6A56;
+      --brass:    #A88542;
+      --brass-2:  #C9A968;
+      --paper:    #F5F0E8;
+      --card:     #FFFDF8;
+      --border:   #E2D9CC;
+      --serif: 'Source Serif 4', Georgia, serif;
+      --sans:  'Geist', system-ui, sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--sans);
+      font-size: 15px;
+      line-height: 1.7;
+      color: var(--ink);
+      background: var(--paper);
+      background-image:
+        radial-gradient(at 12% 8%, color-mix(in srgb, var(--brass) 5%, transparent), transparent 40%),
+        radial-gradient(at 88% 92%, color-mix(in srgb, var(--forest) 4%, transparent), transparent 40%);
+      min-height: 100vh;
+    }
+
+    /* ── Top nav ── */
+    header {
+      background: var(--forest);
+      padding: 0 24px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 1px 4px rgba(0,0,0,.25);
+    }
+    .logo {
+      font-family: var(--serif);
+      font-size: 18px;
+      font-weight: 500;
+      color: #F1E7CF;
+      text-decoration: none;
+      letter-spacing: .01em;
+    }
+    .logo span { color: var(--brass-2); }
+    .back-link {
+      font-size: 13px;
+      color: rgba(241,231,207,.7);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: color .15s;
+    }
+    .back-link:hover { color: #F1E7CF; }
+
+    /* ── Page wrapper ── */
+    .page {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
+
+    /* ── Hero ── */
+    .doc-hero {
+      margin-bottom: 40px;
+      padding-bottom: 32px;
+      border-bottom: 1px solid var(--border);
+    }
+    .doc-hero .eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--brass);
+      margin-bottom: 10px;
+    }
+    .doc-hero h1 {
+      font-family: var(--serif);
+      font-size: clamp(26px, 4vw, 36px);
+      font-weight: 500;
+      color: var(--ink);
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+    .doc-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 24px;
+      font-size: 13px;
+      color: var(--ink-3);
+    }
+    .doc-meta strong { color: var(--ink-2); font-weight: 500; }
+
+    /* ── Info card ── */
+    .info-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px 24px;
+      margin-bottom: 40px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 12px 24px;
+    }
+    .info-card .row { display: flex; flex-direction: column; gap: 2px; }
+    .info-card .label { font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-4); }
+    .info-card .value { font-size: 14px; color: var(--ink-2); }
+    .info-card .value a { color: var(--forest-3); text-decoration: none; }
+    .info-card .value a:hover { text-decoration: underline; }
+    .info-card .row.full { grid-column: 1 / -1; }
+
+    /* ── Body content ── */
+    .doc-body { color: var(--ink-2); }
+
+    h2 {
+      font-family: var(--serif);
+      font-size: 20px;
+      font-weight: 500;
+      color: var(--forest);
+      margin: 40px 0 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+    h3 {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--ink);
+      margin: 24px 0 8px;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+    }
+    p { margin-bottom: 14px; }
+    p:last-child { margin-bottom: 0; }
+    a { color: var(--forest-3); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ── Tables ── */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0 24px;
+      font-size: 14px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .data-table thead tr { background: var(--forest); }
+    .data-table thead th {
+      padding: 10px 16px;
+      text-align: left;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: rgba(241,231,207,.85);
+    }
+    .data-table tbody tr { border-top: 1px solid var(--border); }
+    .data-table tbody tr:first-child { border-top: none; }
+    .data-table tbody tr:nth-child(even) { background: rgba(0,0,0,.018); }
+    .data-table td { padding: 10px 16px; vertical-align: top; line-height: 1.55; }
+    .data-table td:first-child { font-family: 'Geist Mono', monospace; font-size: 12px; color: var(--forest-3); white-space: nowrap; width: 240px; }
+    .data-table.no-mono td:first-child { font-family: var(--sans); font-size: 14px; color: var(--ink); font-weight: 500; white-space: normal; width: 200px; }
+    .data-table td:nth-child(2) { width: 100px; color: var(--ink-3); font-size: 13px; }
+    .data-table.two-col td:nth-child(2) { width: auto; color: var(--ink-2); font-size: 14px; }
+
+    /* ── Lists ── */
+    ul.bullet {
+      margin: 8px 0 16px 0;
+      padding-left: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    ul.bullet li { line-height: 1.55; }
+
+    /* ── Notice box ── */
+    .notice {
+      background: color-mix(in srgb, var(--forest) 8%, transparent);
+      border: 1px solid color-mix(in srgb, var(--forest) 20%, transparent);
+      border-left: 3px solid var(--forest-3);
+      border-radius: 6px;
+      padding: 14px 18px;
+      margin: 16px 0 24px;
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--ink-2);
+    }
+    .notice strong { color: var(--forest); }
+
+    /* ── "Do not" box ── */
+    .dont-box {
+      background: color-mix(in srgb, var(--brass) 7%, transparent);
+      border: 1px solid color-mix(in srgb, var(--brass) 20%, transparent);
+      border-left: 3px solid var(--brass);
+      border-radius: 6px;
+      padding: 14px 18px;
+      margin: 16px 0 24px;
+    }
+    .dont-box p { font-size: 14px; font-weight: 600; color: var(--ink); margin-bottom: 8px; }
+
+    /* ── Contact card ── */
+    .contact-card {
+      background: var(--forest);
+      border-radius: 10px;
+      padding: 28px 32px;
+      margin-top: 40px;
+      color: rgba(241,231,207,.85);
+    }
+    .contact-card h2 {
+      font-family: var(--serif);
+      font-size: 18px;
+      font-weight: 500;
+      color: #F1E7CF;
+      border-bottom: 1px solid rgba(255,255,255,.1);
+      padding-bottom: 12px;
+      margin-top: 0;
+    }
+    .contact-card a { color: var(--brass-2); }
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 16px 32px;
+      margin-top: 16px;
+    }
+    .contact-grid .row { display: flex; flex-direction: column; gap: 3px; }
+    .contact-grid .label { font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: rgba(201,169,104,.8); }
+    .contact-grid .value { font-size: 14px; color: rgba(241,231,207,.9); }
+    .contact-grid .value a { color: var(--brass-2); text-decoration: none; }
+    .contact-grid .value a:hover { text-decoration: underline; }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 1px solid var(--border);
+      margin-top: 64px;
+      padding: 24px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--ink-4);
+    }
+    footer a { color: var(--forest-3); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+    footer .links { display: flex; justify-content: center; gap: 24px; margin-bottom: 8px; flex-wrap: wrap; }
+
+    @media (max-width: 600px) {
+      .page { padding: 32px 16px 60px; }
+      .data-table td:first-child { white-space: normal; width: auto; }
+      .data-table td:nth-child(2) { width: auto; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <a class="logo" href="/">Clergy <span>Housing</span></a>
+  <a class="back-link" href="/">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+    Back to app
+  </a>
+</header>
+
+<div class="page">
+
+  <!-- Hero -->
+  <div class="doc-hero">
+    <div class="eyebrow">Legal</div>
+    <h1>Cookies Policy</h1>
+    <div class="doc-meta">
+      <span><strong>Effective Date:</strong> May 28, 2026</span>
+      <span><strong>Last Updated:</strong> May 28, 2026</span>
+      <span><strong>Platform:</strong> Clergy Housing &mdash; clergyhousing.com</span>
+    </div>
+  </div>
+
+  <!-- Info card -->
+  <div class="info-card">
+    <div class="row"><span class="label">Company</span><span class="value">Clario Consulting Corporation (S-Corporation)</span></div>
+    <div class="row"><span class="label">Platform</span><span class="value">Clergy Housing</span></div>
+    <div class="row"><span class="label">Website</span><span class="value"><a href="https://www.clergyhousing.com">www.clergyhousing.com</a></span></div>
+    <div class="row"><span class="label">Mailing Address</span><span class="value">PO Box 51675, Mesa, AZ 85208-0084</span></div>
+    <div class="row"><span class="label">Privacy Contact</span><span class="value"><a href="mailto:security@clergyhousing.com">security@clergyhousing.com</a></span></div>
+    <div class="row full"><span class="label">Related Documents</span><span class="value"><a href="/privacy.html">Privacy Policy</a> &nbsp;&middot;&nbsp; <a href="/terms.html">Terms of Service</a></span></div>
+  </div>
+
+  <div class="doc-body">
+
+    <!-- 1. What Are Cookies? -->
+    <h2>1. What Are Cookies?</h2>
+    <p>This Cookies Policy explains what cookies are, how Clario Consulting Corporation uses them on the Clergy Housing platform, the types of cookies we use, and how you can manage your cookie preferences.</p>
+    <p>Cookies are small text files that are stored on your device when you visit a website or web application. These files enable the platform to function properly, maintain your authenticated session securely, and help us understand how the platform is being used so we can improve it.</p>
+    <p>Clergy Housing is hosted on Amazon Web Services (AWS) infrastructure including AWS Amplify and uses AWS Cognito for user authentication. The cookies used by our platform reflect this AWS-based architecture. We do not use cookies for advertising or marketing purposes.</p>
+
+    <!-- 2. How We Use Cookies -->
+    <h2>2. How We Use Cookies</h2>
+    <p>The Clergy Housing platform uses both first-party and third-party cookies exclusively for the following purposes:</p>
+    <ul class="bullet">
+      <li><strong>First-party cookies</strong> are set directly by the Clergy Housing platform and are essential for core functionality including user authentication, session management, and multi-factor authentication (MFA). They do not collect personally identifiable information beyond what is necessary to maintain your secure session.</li>
+      <li><strong>Third-party cookies</strong> are set by our trusted service providers including AWS Cognito, Stripe, and Plaid. These cookies are used exclusively to facilitate secure authentication, payment processing, and bank account connectivity. They are never used for advertising, tracking, or marketing purposes.</li>
+    </ul>
+    <div class="notice">
+      <strong>Our commitment:</strong> We do not use cookies for advertising, behavioral tracking, or marketing purposes of any kind. No advertising networks, social media trackers, or analytics platforms that share data with third parties for marketing are used on the Clergy Housing platform.
+    </div>
+
+    <!-- 3. Types of Cookies -->
+    <h2>3. Types of Cookies We Use</h2>
+
+    <h3>3.1 Strictly Necessary Cookies</h3>
+    <p>These cookies are essential for the Clergy Housing platform to function correctly and securely. They cannot be disabled without significantly impairing the platform's functionality. No personal financial data is stored in these cookies.</p>
+    <table class="data-table">
+      <thead><tr><th>Cookie</th><th>Duration</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>CognitoIdentityServiceProvider.*</td>
+          <td>Session</td>
+          <td>Set by AWS Cognito to manage your authenticated user session. These cookies maintain your login state and MFA verification status throughout your session. They expire automatically when you log out or close your browser.</td>
+        </tr>
+        <tr>
+          <td>amplify-signin-with-hostedUI</td>
+          <td>Session</td>
+          <td>Set by AWS Amplify to manage the authenticated sign-in state on the Clergy Housing platform. This cookie confirms that you have completed the full sign-in process including MFA verification.</td>
+        </tr>
+        <tr>
+          <td>aws-amplify-cacheShard</td>
+          <td>Session</td>
+          <td>Set by AWS Amplify for internal session caching during authenticated use of the platform. Used to maintain performance during your active session.</td>
+        </tr>
+        <tr>
+          <td>__stripe_mid</td>
+          <td>1 year</td>
+          <td>Set by Stripe, Inc. to facilitate secure payment processing for subscription billing. This cookie helps Stripe detect fraudulent activity and ensure payment security.</td>
+        </tr>
+        <tr>
+          <td>__stripe_sid</td>
+          <td>30 minutes</td>
+          <td>Set by Stripe, Inc. to facilitate payment processing during an active checkout session. Expires automatically after 30 minutes of inactivity.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>3.2 Functional Cookies</h3>
+    <p>These cookies enable enhanced functionality and personalization on the Clergy Housing platform. They remember your preferences and settings to provide a more consistent experience.</p>
+    <table class="data-table">
+      <thead><tr><th>Cookie</th><th>Duration</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>clergy-housing-prefs</td>
+          <td>1 year</td>
+          <td>Set by Clergy Housing to remember your platform preferences such as your selected tax year, display settings, and notification preferences between sessions.</td>
+        </tr>
+        <tr>
+          <td>clergy-housing-consent</td>
+          <td>1 year</td>
+          <td>Set by Clergy Housing to record your cookie consent preferences. Stores your acceptance or modification of cookie settings so you are not prompted on every visit.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>3.3 Bank Connectivity Cookies (Plaid)</h3>
+    <p>These cookies are set by Plaid Technologies, Inc. when you use the bank account connection feature in Clergy Housing. They are used exclusively to facilitate the secure bank connection process through Plaid Link and expire immediately after the connection process is complete.</p>
+    <table class="data-table">
+      <thead><tr><th>Cookie</th><th>Duration</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>plaid-link-*</td>
+          <td>Session</td>
+          <td>Set by Plaid Technologies, Inc. to manage the secure bank account connection flow through Plaid Link. These cookies are session-only and are deleted automatically when the Plaid Link connection process is completed or closed. Your bank credentials are never stored in these cookies.</td>
+        </tr>
+        <tr>
+          <td>_plaid_csrf_token</td>
+          <td>Session</td>
+          <td>Set by Plaid Technologies, Inc. as a security measure to prevent cross-site request forgery (CSRF) attacks during the bank account connection process. Expires at the end of the session.</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="notice">
+      By connecting a bank account through Plaid Link, you also agree to Plaid's Cookie Policy and Privacy Notice available at <a href="https://plaid.com/legal/privacy-notice" target="_blank" rel="noopener">plaid.com/legal/privacy-notice</a>.
+    </div>
+
+    <h3>3.4 Analytics Cookies</h3>
+    <p>These cookies help us understand how users interact with the Clergy Housing platform so we can improve its features and performance. Analytics data is aggregated and anonymized — no personally identifiable financial information is included.</p>
+    <table class="data-table">
+      <thead><tr><th>Cookie</th><th>Duration</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>_clergy_session_analytics</td>
+          <td>Session</td>
+          <td>Set by Clergy Housing to track anonymous usage patterns within the platform such as which features are used most frequently. This data is used solely to improve the platform experience and is never shared with third parties.</td>
+        </tr>
+        <tr>
+          <td>aws-waf-token</td>
+          <td>Session</td>
+          <td>Set by AWS Web Application Firewall (WAF) to protect the platform from malicious traffic and bot activity. This is a security cookie that also enables performance monitoring of the platform infrastructure.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- 4. Cookies We Do NOT Use -->
+    <h2>4. Cookies We Do NOT Use</h2>
+    <p>Clergy Housing is committed to protecting your privacy. We explicitly do not use the following types of cookies:</p>
+    <div class="dont-box">
+      <ul class="bullet">
+        <li>Advertising or marketing cookies of any kind</li>
+        <li>Social media tracking cookies (Facebook, Twitter, LinkedIn, Instagram)</li>
+        <li>Google advertising or remarketing cookies</li>
+        <li>YouTube or video platform tracking cookies</li>
+        <li>Cross-site behavioral tracking cookies</li>
+        <li>Third-party analytics cookies that share data with advertising networks</li>
+        <li>Any cookie from a platform or service not directly involved in delivering the Clergy Housing service</li>
+      </ul>
+    </div>
+    <p>This commitment is consistent with our <a href="/privacy.html">Privacy Policy</a>, which states that your personal and financial data is never used for advertising, marketing, or any purpose beyond housing allowance expense tracking and tax report generation.</p>
+
+    <!-- 5. Cookie Consent -->
+    <h2>5. Cookie Consent</h2>
+    <p>When you first visit the Clergy Housing platform, you will be presented with a cookie consent banner that explains the cookies we use and gives you the following options:</p>
+    <ul class="bullet">
+      <li><strong>Accept All Cookies</strong> — accept all cookies including functional and analytics cookies</li>
+      <li><strong>Necessary Cookies Only</strong> — accept only the strictly necessary cookies required for the platform to function</li>
+      <li><strong>Manage Preferences</strong> — customize which categories of cookies you accept</li>
+    </ul>
+    <div class="notice">
+      <strong>Please note:</strong> Strictly necessary cookies including AWS Cognito session cookies and Stripe payment cookies cannot be disabled as they are required for the platform to function securely. Disabling these cookies will prevent you from logging in or processing subscription payments.<br><br>
+      Your cookie consent preferences are saved in the <code style="font-size:13px; background:rgba(0,0,0,.06); padding:1px 5px; border-radius:3px;">clergy-housing-consent</code> cookie for one year. You can change your preferences at any time by clicking the Cookie Settings link in the platform footer.
+    </div>
+
+    <!-- 6. Managing Preferences -->
+    <h2>6. Managing Your Cookie Preferences</h2>
+
+    <h3>6.1 Platform Cookie Settings</h3>
+    <p>You can manage your Clergy Housing cookie preferences at any time by clicking the <strong>Cookie Settings</strong> button in the platform footer. This will allow you to review, modify, or withdraw your cookie consent at any time.</p>
+
+    <h3>6.2 Browser Settings</h3>
+    <p>You can also manage cookies through your browser settings. Most browsers allow you to view, block, and delete cookies. Please note that blocking strictly necessary cookies will prevent you from using the Clergy Housing platform. Below are links to cookie management guides for the most commonly used browsers:</p>
+    <ul class="bullet">
+      <li><a href="https://support.google.com/accounts/answer/32050" target="_blank" rel="noopener">Google Chrome</a></li>
+      <li><a href="https://support.apple.com/en-us/guide/safari/sfri11471/mac" target="_blank" rel="noopener">Safari (Mac)</a></li>
+      <li><a href="https://support.mozilla.org/en-US/kb/clear-cookies-and-site-data-firefox" target="_blank" rel="noopener">Mozilla Firefox</a></li>
+      <li><a href="https://support.microsoft.com/en-us/microsoft-edge/delete-cookies-in-microsoft-edge-63947406-40ac-c3b8-57b9-2a946a29ae09" target="_blank" rel="noopener">Microsoft Edge</a></li>
+    </ul>
+    <p>If you use a different browser, please refer to that browser's official support documentation for instructions on managing cookies.</p>
+
+    <!-- 7. Do Not Track -->
+    <h2>7. Do Not Track Signals</h2>
+    <p>Some browsers include a Do Not Track (DNT) feature that signals to websites that you do not want your online activities tracked. The Clergy Housing platform respects your privacy preferences. Because we do not use behavioral tracking or advertising cookies, enabling Do Not Track in your browser does not change the cookies used by our platform beyond what is already described in this policy.</p>
+    <p>The only cookies we use are those strictly necessary for platform operation, functional preferences, secure bank connectivity, and anonymous performance analytics — none of which involve cross-site behavioral tracking.</p>
+
+    <!-- 8. AWS Infrastructure -->
+    <h2>8. AWS Infrastructure and Security Cookies</h2>
+    <p>The Clergy Housing platform is hosted entirely on Amazon Web Services (AWS) infrastructure in the United States. AWS may set certain security and performance cookies as part of its infrastructure services including:</p>
+    <ul class="bullet">
+      <li>AWS WAF (Web Application Firewall) tokens to protect against malicious traffic</li>
+      <li>AWS CloudFront cookies to optimize content delivery performance</li>
+      <li>AWS Cognito session tokens to manage secure authentication</li>
+    </ul>
+    <p>These infrastructure cookies are strictly necessary for the secure and performant operation of the platform. They are governed by AWS's own privacy and security practices. For more information about AWS data handling, please visit <a href="https://aws.amazon.com/privacy" target="_blank" rel="noopener">aws.amazon.com/privacy</a>.</p>
+
+    <!-- 9. Third-Party Cookie Policies -->
+    <h2>9. Third-Party Service Cookie Policies</h2>
+    <p>The Clergy Housing platform integrates with the following third-party services that may set their own cookies. Please review their respective cookie and privacy policies for full details:</p>
+    <table class="data-table no-mono two-col">
+      <thead><tr><th>Service Provider</th><th>Cookie &amp; Privacy Policy</th></tr></thead>
+      <tbody>
+        <tr><td>AWS (Amazon Web Services)</td><td><a href="https://aws.amazon.com/privacy" target="_blank" rel="noopener">aws.amazon.com/privacy</a></td></tr>
+        <tr><td>Plaid Technologies, Inc.</td><td><a href="https://plaid.com/legal/privacy-notice" target="_blank" rel="noopener">plaid.com/legal/privacy-notice</a></td></tr>
+        <tr><td>Stripe, Inc.</td><td><a href="https://stripe.com/privacy" target="_blank" rel="noopener">stripe.com/privacy</a></td></tr>
+      </tbody>
+    </table>
+
+    <!-- 10. Changes -->
+    <h2>10. Changes to This Cookies Policy</h2>
+    <p>We may update this Cookies Policy from time to time to reflect changes in our platform, the cookies we use, or applicable regulations. When we make changes we will:</p>
+    <ul class="bullet">
+      <li>Update the Effective Date and Last Updated date at the top of this policy</li>
+      <li>Post the updated policy at <a href="https://www.clergyhousing.com/cookies">www.clergyhousing.com/cookies</a></li>
+      <li>Notify registered users by email of any material changes</li>
+    </ul>
+    <p>Your continued use of the Clergy Housing platform after any changes to this Cookies Policy constitutes your acceptance of the updated policy. We encourage you to review this policy periodically.</p>
+
+    <!-- 11. Contact -->
+    <div class="contact-card">
+      <h2>11. Contact Us</h2>
+      <p style="font-size:14px; margin-bottom:4px;">If you have any questions about this Cookies Policy or how we use cookies on the Clergy Housing platform, please contact us:</p>
+      <div class="contact-grid">
+        <div class="row"><span class="label">Company</span><span class="value">Clario Consulting Corporation (S-Corporation)</span></div>
+        <div class="row"><span class="label">Platform</span><span class="value">Clergy Housing</span></div>
+        <div class="row"><span class="label">Privacy Contact</span><span class="value">Joaquin Abrahan Vargas, Founder &amp; CEO</span></div>
+        <div class="row"><span class="label">Email</span><span class="value"><a href="mailto:security@clergyhousing.com">security@clergyhousing.com</a></span></div>
+        <div class="row"><span class="label">Mailing Address</span><span class="value">PO Box 51675, Mesa, AZ 85208-0084</span></div>
+        <div class="row"><span class="label">Cookies Policy URL</span><span class="value"><a href="https://www.clergyhousing.com/cookies">www.clergyhousing.com/cookies</a></span></div>
+        <div class="row"><span class="label">Response Time</span><span class="value">Within 30 days of your inquiry</span></div>
+      </div>
+    </div>
+
+  </div><!-- /doc-body -->
+</div><!-- /page -->
+
+<footer>
+  <div class="links">
+    <a href="/">Clergy Housing App</a>
+    <a href="/privacy.html">Privacy Policy</a>
+    <a href="/terms.html">Terms of Service</a>
+    <a href="/sms.html">SMS Notifications</a>
+    <a href="/cookies.html">Cookies Policy</a>
+  </div>
+  <div>&copy; 2026 Clario Consulting Corporation &middot; All rights reserved</div>
+</footer>
+
+</body>
+</html>

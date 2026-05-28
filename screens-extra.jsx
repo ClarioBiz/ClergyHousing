@@ -49,6 +49,11 @@ function BankAccounts({ banks, pendingTxns, onAddExpenses }) {
 
       <div className="banks-grid">
         <div>
+          {banks.length === 0 && (
+            <div style={{ padding: '18px 20px', background: 'var(--card)', border: '1px solid var(--hairline)', borderRadius: 10, marginBottom: 10, color: 'var(--ink-3)', fontSize: 13, textAlign: 'center' }}>
+              No bank accounts connected yet. Use the button below to link your first account.
+            </div>
+          )}
           {banks.map(b => (
             <div className="bank-card" key={b.id}>
               <div className="bank-logo" style={{ background: b.color }}>{b.initial}</div>
@@ -87,7 +92,13 @@ function BankAccounts({ banks, pendingTxns, onAddExpenses }) {
       </div>
 
       {/* Transaction review */}
-      <div className="txn-review">
+      {pendingTxns.length === 0 && (
+        <div style={{ textAlign: 'center', padding: '32px 20px', color: 'var(--ink-3)', fontSize: 13, background: 'var(--card)', border: '1px solid var(--hairline)', borderRadius: 12, marginTop: 16 }}>
+          <div style={{ fontFamily: 'var(--serif)', fontSize: 15, color: 'var(--ink-2)', marginBottom: 6 }}>No transactions to review</div>
+          Connect a bank account above and sync to see new transactions here.
+        </div>
+      )}
+      {pendingTxns.length > 0 && <div className="txn-review">
         <div className="txn-review-hd">
           <div>
             <h3>Awaiting your review</h3>
@@ -121,7 +132,7 @@ function BankAccounts({ banks, pendingTxns, onAddExpenses }) {
             </div>
           );
         })}
-      </div>
+      </div>}
     </div>
   );
 }
@@ -129,9 +140,45 @@ function BankAccounts({ banks, pendingTxns, onAddExpenses }) {
 // ─────────────────────────────────────────────────────────────────────────
 // Documents & Receipts
 // ─────────────────────────────────────────────────────────────────────────
-function Documents({ documents }) {
+function Documents({ documents, onDocumentUploaded, onDocumentDeleted }) {
   const [view, setView] = React.useState('grid');
-  const [year, setYear] = React.useState('2025');
+  const [year, setYear] = React.useState(new Date().getFullYear().toString());
+  const [uploading, setUploading] = React.useState(false);
+  const [deleting, setDeleting] = React.useState(null);
+  const fileInputRef = React.useRef(null);
+
+  const handleDelete = async (doc) => {
+    if (!confirm(`Delete "${doc.name}"? This cannot be undone.`)) return;
+    setDeleting(doc.id);
+    try {
+      await API.deleteDocument(doc.id);
+      if (onDocumentDeleted) onDocumentDeleted(doc.id);
+    } catch (err) {
+      alert('Could not delete: ' + err.message);
+    } finally {
+      setDeleting(null);
+    }
+  };
+
+  const handleUploadClick = () => fileInputRef.current?.click();
+
+  const handleFileChange = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploading(true);
+    try {
+      const { uploadUrl, s3Key } = await API.getUploadUrl(file.name, file.type);
+      const s3Res = await fetch(uploadUrl, { method: 'PUT', body: file, headers: { 'Content-Type': file.type } });
+      if (!s3Res.ok) throw new Error('S3 upload failed (' + s3Res.status + ')');
+      const doc = await API.createDocument({ fileName: file.name, s3Key, sizeBytes: file.size, category: 'receipts' });
+      if (onDocumentUploaded) onDocumentUploaded(doc);
+    } catch (err) {
+      alert('Upload failed: ' + err.message);
+    } finally {
+      setUploading(false);
+      e.target.value = '';
+    }
+  };
 
   // group by category
   const byCat = {};
@@ -143,7 +190,11 @@ function Documents({ documents }) {
   const limitMB = 1024;
   const usedMB = totalSize / 1024 / 1024;
 
-  const catLabel = (key) => key === 'reports' ? 'Tax Reports' : CAT_BY_ID[key]?.name || 'Other';
+  const catLabel = (key) => {
+    if (key === 'reports') return 'Tax Reports';
+    if (key === 'receipts') return 'Receipts';
+    return CAT_BY_ID[key]?.name || 'Other';
+  };
 
   return (
     <div className="page" data-screen-label="Documents">
@@ -152,7 +203,11 @@ function Documents({ documents }) {
           <div className="page-title">Documents & receipts</div>
           <div className="page-sub">Every uploaded receipt and exported report, organized by tax year and category. Stored encrypted in AWS S3.</div>
         </div>
-        <button className="btn btn-primary"><Icon.Upload /> Upload</button>
+        <input ref={fileInputRef} type="file" style={{ display: 'none' }} onChange={handleFileChange}
+               accept=".pdf,.jpg,.jpeg,.png,.heic,.doc,.docx" />
+        <button className="btn btn-primary" onClick={handleUploadClick} disabled={uploading}>
+          <Icon.Upload /> {uploading ? 'Uploading…' : 'Upload'}
+        </button>
       </div>
 
       <div className="docs-toolbar">
@@ -170,7 +225,17 @@ function Documents({ documents }) {
         </div>
       </div>
 
-      {Object.entries(byCat).map(([cat, docs]) => (
+      {documents.length === 0 ? (
+        <div style={{ textAlign: 'center', padding: '48px 20px', color: 'var(--ink-3)' }}>
+          <div style={{ width: 48, height: 48, borderRadius: 12, background: 'var(--paper-2)', border: '1px solid var(--hairline)', display: 'grid', placeItems: 'center', margin: '0 auto 14px' }}>
+            <Icon.Doc />
+          </div>
+          <div style={{ fontFamily: 'var(--serif)', fontSize: 16, color: 'var(--ink-2)', marginBottom: 6 }}>No documents yet</div>
+          <div style={{ fontSize: 13, lineHeight: 1.6 }}>
+            Upload receipts using the button above, or attach them directly<br />to individual expenses in your ledger.
+          </div>
+        </div>
+      ) : Object.entries(byCat).map(([cat, docs]) => (
         <div className="doc-section" key={cat}>
           <h3>
             <span>{catLabel(cat)}</span>
@@ -192,7 +257,17 @@ function Documents({ documents }) {
                   )}
                 </div>
                 <div className="doc-body">
-                  <div className="doc-name">{d.name}</div>
+                  <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 4 }}>
+                    <div className="doc-name" style={{ flex: 1 }}>{d.name}</div>
+                    <button
+                      onClick={e => { e.stopPropagation(); handleDelete(d); }}
+                      disabled={deleting === d.id}
+                      style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--ink-4)', padding: '0 2px', lineHeight: 1, flexShrink: 0 }}
+                      title="Delete file"
+                      aria-label="Delete file">
+                      {deleting === d.id ? '…' : '×'}
+                    </button>
+                  </div>
                   <div className="doc-meta">
                     <span>{fmtDateShort(d.date)}</span><i />
                     <span>{fmtSize(d.size)}</span>
@@ -210,7 +285,7 @@ function Documents({ documents }) {
 // ─────────────────────────────────────────────────────────────────────────
 // Billing
 // ─────────────────────────────────────────────────────────────────────────
-function Billing({ subscription, onSubscribe }) {
+function Billing({ subscription, invoices = [], onSubscribe }) {
   return (
     <div className="page" data-screen-label="Billing">
       <div className="page-head">
@@ -235,7 +310,7 @@ function Billing({ subscription, onSubscribe }) {
               : <>Renews {fmtDateLong(subscription.nextBilling)} · ${subscription.amount.toFixed(2)} {subscription.plan === 'annual' ? 'per year' : 'per month'}</>}
           </div>
         </div>
-        <button className="btn btn-secondary"><Icon.External /> Manage in Stripe</button>
+        <button className="btn btn-secondary" disabled title="Online billing coming soon — contact support@clergyhousing.com to subscribe"><Icon.External /> Manage billing</button>
       </div>
 
       <div className="plan-grid">
@@ -255,10 +330,12 @@ function Billing({ subscription, onSubscribe }) {
               <div className="plan-cta">
                 {isCurrent ? (
                   <button className="btn btn-secondary" disabled style={{ opacity: .65 }}>Current plan</button>
+                ) : p.id === 'trial' ? (
+                  <button className="btn btn-secondary" disabled style={{ opacity: .65 }}>Current plan</button>
                 ) : (
                   <button className={'btn ' + (p.featured ? 'btn-brass' : 'btn-primary')}
-                          onClick={() => onSubscribe(p.id)}>
-                    {p.id === 'trial' ? 'Continue trial' : 'Upgrade'}
+                          onClick={() => alert('To subscribe, please contact us at support@clergyhousing.com — online payments coming soon!')}>
+                    Upgrade
                   </button>
                 )}
               </div>
@@ -281,11 +358,17 @@ function Billing({ subscription, onSubscribe }) {
               </tr>
             </thead>
             <tbody>
-              {INVOICES.map(i => (
+              {invoices.length === 0 ? (
+                <tr>
+                  <td colSpan={5} style={{ textAlign: 'center', color: 'var(--ink-3)', padding: '28px 0', fontSize: 13 }}>
+                    No invoices yet. Charges will appear here once you subscribe.
+                  </td>
+                </tr>
+              ) : invoices.map(i => (
                 <tr key={i.id}>
                   <td>{fmtDateNumeric(i.date)}</td>
-                  <td>{i.plan}</td>
-                  <td>${i.amount.toFixed(2)}</td>
+                  <td>{i.plan || i.description}</td>
+                  <td>${(parseFloat(i.amount) || 0).toFixed(2)}</td>
                   <td>
                     <span className={'status-pill' + (i.status === 'failed' ? ' failed' : '')}>
                       <span className="dot" />
@@ -306,13 +389,12 @@ function Billing({ subscription, onSubscribe }) {
             <div style={{ fontSize: 10.5, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--ink-3)', marginBottom: 12 }}>
               Payment method
             </div>
-            <div className="card-visual">
-              <div className="brand">Visa</div>
-              <div className="num">•••• •••• •••• 4242</div>
-              <div className="exp">EXP 08 / 28</div>
+            <div style={{ border: '1px dashed var(--hairline-2)', borderRadius: 10, padding: '22px 16px', textAlign: 'center', marginBottom: 14 }}>
+              <div style={{ color: 'var(--ink-3)', fontSize: 13, marginBottom: 6 }}>No payment method on file.</div>
+              <div style={{ color: 'var(--ink-3)', fontSize: 12 }}>Add a card to subscribe when your trial ends.</div>
             </div>
             <button className="btn btn-secondary" style={{ width: '100%', justifyContent: 'center' }}>
-              <Icon.Card /> Update card on file
+              <Icon.Card /> Add payment method
             </button>
             <div style={{ fontSize: 11.5, color: 'var(--ink-3)', marginTop: 12, display: 'flex', alignItems: 'center', gap: 6 }}>
               <Icon.Lock /> Card details are stored by Stripe, never on our servers.

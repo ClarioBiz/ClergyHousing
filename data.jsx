@@ -1,15 +1,95 @@
 // Shared data, icons, and helpers
 
 const CATEGORIES = [
-  { id: 'mortgage', name: 'Mortgage / Rent', color: '#1E3A2E' },
-  { id: 'utilities', name: 'Utilities', color: '#A88542' },
-  { id: 'tax',       name: 'Property Tax', color: '#6E2E2A' },
-  { id: 'insurance', name: 'Home Insurance', color: '#3B6A56' },
-  { id: 'repairs',   name: 'Repairs & Maintenance', color: '#8FA98E' },
-  { id: 'furnish',   name: 'Furnishings', color: '#C9A968' },
-  { id: 'decor',     name: 'Decor & Improvements', color: '#7C5E3C' },
-  { id: 'hoa',       name: 'HOA / Lawn Care', color: '#506B4A' },
-  { id: 'other',     name: 'Other', color: '#948A7B' },
+  {
+    id: 'mortgage', emoji: '🏡', color: '#1E3A2E',
+    name: 'Mortgage or Rent',
+    description: [
+      'Mortgage principal and interest payments',
+      'Rent payments',
+      'HOA fees',
+    ]
+  },
+  {
+    id: 'utilities', emoji: '⚡', color: '#A88542',
+    name: 'Utilities',
+    description: [
+      'Electricity',
+      'Gas / Heating oil',
+      'Water and sewer',
+      'Trash collection',
+      'Internet and phone (home portion only)',
+    ]
+  },
+  {
+    id: 'tax', emoji: '🏛️', color: '#6E2E2A',
+    name: 'Property Taxes',
+    description: [
+      'Annual property tax payments',
+      'Special assessments',
+    ]
+  },
+  {
+    id: 'insurance', emoji: '🔒', color: '#3B6A56',
+    name: 'Insurance',
+    description: [
+      "Homeowner's or renter's insurance",
+      'Flood or earthquake insurance',
+      'Umbrella policy (home portion)',
+    ]
+  },
+  {
+    id: 'repairs', emoji: '🔧', color: '#8FA98E',
+    name: 'Repairs & Maintenance',
+    description: [
+      'Plumbing, electrical, HVAC repairs',
+      'Roof repairs',
+      'General upkeep and maintenance',
+      'Pest control',
+      'Lawn care and landscaping',
+    ]
+  },
+  {
+    id: 'furnish', emoji: '🛋️', color: '#C9A968',
+    name: 'Furnishings & Appliances',
+    description: [
+      'Furniture purchases',
+      'Kitchen appliances',
+      'Washer / dryer',
+      'Window treatments / blinds',
+    ]
+  },
+  {
+    id: 'decor', emoji: '🏗️', color: '#7C5E3C',
+    name: 'Décor & Home Improvements',
+    description: [
+      'Renovations and remodeling',
+      'Additions or structural improvements',
+      'Accessibility modifications',
+    ]
+  },
+  {
+    id: 'yard', emoji: '🌿', color: '#506B4A',
+    name: 'Yard & Grounds',
+    description: [
+      'Landscaping',
+      'Sprinkler system maintenance',
+      'Snow removal',
+      'Tree trimming',
+      'HOA services',
+    ]
+  },
+  {
+    id: 'other', emoji: '🧾', color: '#948A7B',
+    name: 'Other Qualifying Expenses',
+    description: [
+      'Home security system',
+      'Cleaning supplies and services',
+      'Garage door repairs',
+      'Moving expenses',
+      'Any other expense directly related to the home',
+    ]
+  },
 ];
 
 const CAT_BY_ID = Object.fromEntries(CATEGORIES.map(c => [c.id, c]));
@@ -23,7 +103,7 @@ const SAMPLE_EXPENSES = [
   { id: 'e06', date: '2025-10-15', categoryId: 'insurance', description: 'State Farm — homeowners quarterly premium',            amount: 612.40 },
   { id: 'e07', date: '2025-10-04', categoryId: 'mortgage',  description: 'October mortgage payment — principal & interest',     amount: 1842.50 },
   { id: 'e08', date: '2025-09-30', categoryId: 'tax',       description: 'Pickens County — second-half property tax',           amount: 1486.00 },
-  { id: 'e09', date: '2025-09-27', categoryId: 'hoa',       description: 'Greenbrier HOA — quarterly assessment',                amount: 285.00 },
+  { id: 'e09', date: '2025-09-27', categoryId: 'yard',      description: 'Greenbrier HOA — quarterly assessment',                amount: 285.00 },
   { id: 'e10', date: '2025-09-19', categoryId: 'decor',     description: 'Sherwin Williams — interior paint, study refresh',    amount: 218.74 },
   { id: 'e11', date: '2025-09-09', categoryId: 'utilities', description: 'Piedmont Natural Gas — service',                       amount: 64.82 },
   { id: 'e12', date: '2025-09-04', categoryId: 'mortgage',  description: 'September mortgage payment',                            amount: 1842.50 },
@@ -161,8 +241,8 @@ Object.assign(Icon, {
       <path d="M7 3h8l4 4v14H7Z" /><path d="M15 3v4h4" />
     </svg>
   ),
-  Receipt: () => (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+  Receipt: ({ width = 18, height = 18 } = {}) => (
+    <svg width={width} height={height} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
       <path d="M6 3h12v18l-2-1.5L14 21l-2-1.5L10 21l-2-1.5L6 21Z" /><path d="M9 8h6M9 12h6M9 16h4" />
     </svg>
   ),

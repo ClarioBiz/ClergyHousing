@@ -1,0 +1,26 @@
+﻿# ── Sensitive files — NEVER push these ──
+aws-config.md
+upload_url.txt
+lambda/ses-policy.json
+
+# ── Lambda utility scripts with hardcoded DB credentials ──
+lambda/check-*.js
+lambda/fix-*.js
+lambda/migrate-*.js
+lambda/create-*.js
+
+# ── Build artifacts & zips ──
+*.zip
+deploy.zip
+frontend.zip
+clergy-housing-lambda.zip
+
+# ── Node dependencies ──
+node_modules/
+lambda/node_modules/
+package-lock.json
+lambda/package-lock.json
+
+# ── OS files ──
+.DS_Store
+Thumbs.db

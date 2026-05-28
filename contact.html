@@ -1,0 +1,456 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Contact Us — Clergy Housing</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&family=Geist:wght@400;500;600&display=swap" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink:      #1F1B14;
+      --ink-2:    #3A332A;
+      --ink-3:    #6B6256;
+      --ink-4:    #948A7B;
+      --forest:   #1E3A2E;
+      --forest-2: #284A3B;
+      --forest-3: #3B6A56;
+      --brass:    #A88542;
+      --brass-2:  #C9A968;
+      --paper:    #F5F0E8;
+      --card:     #FFFDF8;
+      --border:   #E2D9CC;
+      --serif: 'Source Serif 4', Georgia, serif;
+      --sans:  'Geist', system-ui, sans-serif;
+    }
+
+    body {
+      font-family: var(--sans);
+      font-size: 15px;
+      line-height: 1.7;
+      color: var(--ink);
+      background: var(--paper);
+      background-image:
+        radial-gradient(at 12% 8%, color-mix(in srgb, var(--brass) 5%, transparent), transparent 40%),
+        radial-gradient(at 88% 92%, color-mix(in srgb, var(--forest) 4%, transparent), transparent 40%);
+      min-height: 100vh;
+    }
+
+    /* ── Header ── */
+    header {
+      background: var(--forest);
+      padding: 0 24px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 1px 4px rgba(0,0,0,.25);
+    }
+    .logo {
+      font-family: var(--serif);
+      font-size: 18px;
+      font-weight: 500;
+      color: #F1E7CF;
+      text-decoration: none;
+    }
+    .logo span { color: var(--brass-2); }
+    .back-link {
+      font-size: 13px;
+      color: rgba(241,231,207,.7);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: color .15s;
+    }
+    .back-link:hover { color: #F1E7CF; }
+
+    /* ── Layout ── */
+    .page {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 56px 24px 80px;
+      display: grid;
+      grid-template-columns: 1fr 420px;
+      gap: 64px;
+      align-items: start;
+    }
+
+    /* ── Left column ── */
+    .hero .eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--brass);
+      margin-bottom: 10px;
+    }
+    .hero h1 {
+      font-family: var(--serif);
+      font-size: clamp(28px, 4vw, 40px);
+      font-weight: 500;
+      color: var(--ink);
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+    .hero p {
+      color: var(--ink-3);
+      font-size: 15px;
+      line-height: 1.7;
+      margin-bottom: 32px;
+    }
+
+    .contact-info { display: flex; flex-direction: column; gap: 16px; }
+    .contact-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+    }
+    .contact-icon {
+      width: 36px;
+      height: 36px;
+      background: color-mix(in srgb, var(--forest) 10%, transparent);
+      border: 1px solid color-mix(in srgb, var(--forest) 15%, transparent);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: var(--forest-3);
+    }
+    .contact-row-text .label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--ink-4);
+      margin-bottom: 2px;
+    }
+    .contact-row-text .value {
+      font-size: 14px;
+      color: var(--ink-2);
+    }
+    .contact-row-text .value a {
+      color: var(--forest-3);
+      text-decoration: none;
+    }
+    .contact-row-text .value a:hover { text-decoration: underline; }
+
+    .response-note {
+      margin-top: 32px;
+      padding: 14px 18px;
+      background: color-mix(in srgb, var(--forest) 7%, transparent);
+      border: 1px solid color-mix(in srgb, var(--forest) 15%, transparent);
+      border-left: 3px solid var(--forest-3);
+      border-radius: 6px;
+      font-size: 13px;
+      color: var(--ink-3);
+      line-height: 1.6;
+    }
+
+    /* ── Form card ── */
+    .form-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 32px;
+      box-shadow: 0 2px 12px rgba(0,0,0,.06);
+    }
+    .form-card h2 {
+      font-family: var(--serif);
+      font-size: 20px;
+      font-weight: 500;
+      color: var(--ink);
+      margin-bottom: 24px;
+    }
+
+    .field { margin-bottom: 18px; }
+    .field label {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--ink-2);
+      margin-bottom: 6px;
+    }
+    .field label .req { color: var(--brass); margin-left: 2px; }
+    .field input,
+    .field select,
+    .field textarea {
+      width: 100%;
+      padding: 10px 13px;
+      font-family: var(--sans);
+      font-size: 14px;
+      color: var(--ink);
+      background: var(--paper);
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      outline: none;
+      transition: border-color .15s, box-shadow .15s;
+      -webkit-appearance: none;
+    }
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
+      border-color: var(--forest-3);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--forest) 12%, transparent);
+    }
+    .field textarea {
+      resize: vertical;
+      min-height: 130px;
+      line-height: 1.6;
+    }
+    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+    /* ── Submit button ── */
+    .btn-submit {
+      width: 100%;
+      padding: 12px;
+      font-family: var(--sans);
+      font-size: 15px;
+      font-weight: 600;
+      color: #fff;
+      background: var(--forest);
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background .15s, transform .1s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .btn-submit:hover { background: var(--forest-2); }
+    .btn-submit:active { transform: translateY(1px); }
+    .btn-submit:disabled { opacity: .6; cursor: not-allowed; transform: none; }
+
+    /* ── Status messages ── */
+    .status {
+      display: none;
+      margin-top: 16px;
+      padding: 12px 16px;
+      border-radius: 7px;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    .status.success {
+      display: block;
+      background: color-mix(in srgb, var(--forest) 8%, transparent);
+      border: 1px solid color-mix(in srgb, var(--forest) 20%, transparent);
+      color: var(--forest);
+    }
+    .status.error {
+      display: block;
+      background: color-mix(in srgb, #C0392B 8%, transparent);
+      border: 1px solid color-mix(in srgb, #C0392B 20%, transparent);
+      color: #8B1A10;
+    }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 1px solid var(--border);
+      margin-top: 64px;
+      padding: 24px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--ink-4);
+    }
+    footer a { color: var(--forest-3); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+    footer .links { display: flex; justify-content: center; gap: 24px; margin-bottom: 8px; flex-wrap: wrap; }
+
+    /* ── Responsive ── */
+    @media (max-width: 720px) {
+      .page { grid-template-columns: 1fr; gap: 40px; padding: 32px 16px 60px; }
+      .field-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <a class="logo" href="/">Clergy <span>Housing</span></a>
+  <a class="back-link" href="/">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+    Back to app
+  </a>
+</header>
+
+<div class="page">
+
+  <!-- Left: info -->
+  <div>
+    <div class="hero">
+      <div class="eyebrow">Get in touch</div>
+      <h1>We're here to help.</h1>
+      <p>Have a question about your housing allowance tracker, your subscription, or need technical support? Send us a message and we'll get back to you within one business day.</p>
+    </div>
+
+    <div class="contact-info">
+      <div class="contact-row">
+        <div class="contact-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg>
+        </div>
+        <div class="contact-row-text">
+          <div class="label">Email</div>
+          <div class="value"><a href="mailto:security@clergyhousing.com">security@clergyhousing.com</a></div>
+        </div>
+      </div>
+
+      <div class="contact-row">
+        <div class="contact-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        </div>
+        <div class="contact-row-text">
+          <div class="label">SMS / Phone</div>
+          <div class="value"><a href="tel:+16025654420">(602) 565-4420</a></div>
+        </div>
+      </div>
+
+      <div class="contact-row">
+        <div class="contact-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+        </div>
+        <div class="contact-row-text">
+          <div class="label">Mailing Address</div>
+          <div class="value">PO Box 51675<br>Mesa, AZ 85208-0084</div>
+        </div>
+      </div>
+
+      <div class="contact-row">
+        <div class="contact-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <div class="contact-row-text">
+          <div class="label">Response Time</div>
+          <div class="value">Within 1 business day</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="response-note">
+      <strong>A product of Clario Consulting Corporation</strong><br>
+      PO Box 51675 &middot; Mesa, AZ 85208 &middot; <a href="https://clarioconsulting.com" target="_blank" rel="noopener">clarioconsulting.com</a>
+    </div>
+  </div>
+
+  <!-- Right: form -->
+  <div class="form-card">
+    <h2>Send us a message</h2>
+
+    <form id="contactForm" novalidate>
+      <!-- Honeypot — hidden from real users, bots fill it in -->
+      <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off" />
+
+      <div class="field-row">
+        <div class="field">
+          <label for="name">Your name <span class="req">*</span></label>
+          <input type="text" id="name" name="name" placeholder="Rev. Jane Smith" required autocomplete="name" />
+        </div>
+        <div class="field">
+          <label for="email">Email address <span class="req">*</span></label>
+          <input type="email" id="email" name="email" placeholder="you@church.org" required autocomplete="email" />
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="subject">Subject</label>
+        <select id="subject" name="subject">
+          <option value="General Inquiry">General Inquiry</option>
+          <option value="Technical Support">Technical Support</option>
+          <option value="Billing & Subscription">Billing &amp; Subscription</option>
+          <option value="Account Help">Account Help</option>
+          <option value="Housing Allowance Question">Housing Allowance Question</option>
+          <option value="Feature Request">Feature Request</option>
+          <option value="Privacy or Data Request">Privacy or Data Request</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="message">Message <span class="req">*</span></label>
+        <textarea id="message" name="message" placeholder="How can we help you?" required></textarea>
+      </div>
+
+      <button type="submit" class="btn-submit" id="submitBtn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        Send Message
+      </button>
+
+      <div class="status success" id="successMsg">
+        ✓ Message sent! We'll get back to you within one business day at the email address you provided.
+      </div>
+      <div class="status error" id="errorMsg"></div>
+    </form>
+  </div>
+
+</div>
+
+<footer>
+  <div class="links">
+    <a href="/">Clergy Housing App</a>
+    <a href="/privacy.html">Privacy Policy</a>
+    <a href="/terms.html">Terms of Service</a>
+    <a href="/sms-terms.html">SMS Terms</a>
+    <a href="/cookies.html">Cookies Policy</a>
+  </div>
+  <div>&copy; 2026 Clario Consulting Corporation &middot; All rights reserved</div>
+</footer>
+
+<script>
+  const API = 'https://hy8fdgwatb.execute-api.us-east-1.amazonaws.com';
+
+  document.getElementById('contactForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    // Honeypot check
+    if (this._honey && this._honey.value) return;
+
+    const btn      = document.getElementById('submitBtn');
+    const success  = document.getElementById('successMsg');
+    const errorDiv = document.getElementById('errorMsg');
+
+    const name    = document.getElementById('name').value.trim();
+    const email   = document.getElementById('email').value.trim();
+    const subject = document.getElementById('subject').value;
+    const message = document.getElementById('message').value.trim();
+
+    // Client-side validation
+    if (!name || !email || !message) {
+      errorDiv.textContent = 'Please fill in your name, email, and message.';
+      errorDiv.style.display = 'block';
+      success.style.display = 'none';
+      return;
+    }
+
+    btn.disabled = true;
+    btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg> Sending…';
+    errorDiv.style.display = 'none';
+    success.style.display  = 'none';
+
+    try {
+      const res = await fetch(API + '/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, subject, message }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Something went wrong.');
+      success.style.display = 'block';
+      this.reset();
+    } catch (err) {
+      errorDiv.textContent = err.message || 'Failed to send. Please email us directly at security@clergyhousing.com.';
+      errorDiv.style.display = 'block';
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Send Message';
+    }
+  });
+</script>
+</body>
+</html>

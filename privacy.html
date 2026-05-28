@@ -1,0 +1,539 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Privacy Policy — Clergy Housing</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&family=Geist:wght@400;500;600&display=swap" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink:      #1F1B14;
+      --ink-2:    #3A332A;
+      --ink-3:    #6B6256;
+      --ink-4:    #948A7B;
+      --forest:   #1E3A2E;
+      --forest-2: #284A3B;
+      --forest-3: #3B6A56;
+      --brass:    #A88542;
+      --brass-2:  #C9A968;
+      --paper:    #F5F0E8;
+      --card:     #FFFDF8;
+      --border:   #E2D9CC;
+      --serif: 'Source Serif 4', Georgia, serif;
+      --sans:  'Geist', system-ui, sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--sans);
+      font-size: 15px;
+      line-height: 1.7;
+      color: var(--ink);
+      background: var(--paper);
+      background-image:
+        radial-gradient(at 12% 8%, color-mix(in srgb, var(--brass) 5%, transparent), transparent 40%),
+        radial-gradient(at 88% 92%, color-mix(in srgb, var(--forest) 4%, transparent), transparent 40%);
+      min-height: 100vh;
+    }
+
+    /* ── Top nav ── */
+    header {
+      background: var(--forest);
+      padding: 0 24px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 1px 4px rgba(0,0,0,.25);
+    }
+    .logo {
+      font-family: var(--serif);
+      font-size: 18px;
+      font-weight: 500;
+      color: #F1E7CF;
+      text-decoration: none;
+      letter-spacing: .01em;
+    }
+    .logo span { color: var(--brass-2); }
+    .back-link {
+      font-size: 13px;
+      color: rgba(241,231,207,.7);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: color .15s;
+    }
+    .back-link:hover { color: #F1E7CF; }
+
+    /* ── Page wrapper ── */
+    .page {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
+
+    /* ── Hero ── */
+    .doc-hero {
+      margin-bottom: 40px;
+      padding-bottom: 32px;
+      border-bottom: 1px solid var(--border);
+    }
+    .doc-hero .eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--brass);
+      margin-bottom: 10px;
+    }
+    .doc-hero h1 {
+      font-family: var(--serif);
+      font-size: clamp(26px, 4vw, 36px);
+      font-weight: 500;
+      color: var(--ink);
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+    .doc-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 24px;
+      font-size: 13px;
+      color: var(--ink-3);
+    }
+    .doc-meta strong { color: var(--ink-2); font-weight: 500; }
+
+    /* ── Info card ── */
+    .info-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px 24px;
+      margin-bottom: 40px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 12px 24px;
+    }
+    .info-card .row { display: flex; flex-direction: column; gap: 2px; }
+    .info-card .label { font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-4); }
+    .info-card .value { font-size: 14px; color: var(--ink-2); }
+    .info-card .value a { color: var(--forest-3); text-decoration: none; }
+    .info-card .value a:hover { text-decoration: underline; }
+
+    /* ── Body content ── */
+    .doc-body { color: var(--ink-2); }
+
+    h2 {
+      font-family: var(--serif);
+      font-size: 20px;
+      font-weight: 500;
+      color: var(--forest);
+      margin: 40px 0 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+    h3 {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--ink);
+      margin: 24px 0 8px;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+    }
+    p { margin-bottom: 14px; }
+    p:last-child { margin-bottom: 0; }
+
+    /* ── Tables ── */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0 24px;
+      font-size: 14px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .data-table thead tr { background: var(--forest); }
+    .data-table thead th {
+      padding: 10px 16px;
+      text-align: left;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: rgba(241,231,207,.85);
+    }
+    .data-table tbody tr { border-top: 1px solid var(--border); }
+    .data-table tbody tr:first-child { border-top: none; }
+    .data-table tbody tr:nth-child(even) { background: rgba(0,0,0,.018); }
+    .data-table td { padding: 10px 16px; vertical-align: top; line-height: 1.5; }
+    .data-table td:first-child { font-weight: 500; color: var(--ink); white-space: nowrap; width: 220px; }
+
+    /* ── Lists ── */
+    ul.bullet {
+      margin: 8px 0 16px 0;
+      padding-left: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    ul.bullet li { line-height: 1.55; }
+
+    /* ── Notice box ── */
+    .notice {
+      background: color-mix(in srgb, var(--forest) 8%, transparent);
+      border: 1px solid color-mix(in srgb, var(--forest) 20%, transparent);
+      border-left: 3px solid var(--forest-3);
+      border-radius: 6px;
+      padding: 14px 18px;
+      margin: 16px 0 24px;
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--ink-2);
+    }
+    .notice strong { color: var(--forest); }
+
+    /* ── "Do not" box ── */
+    .dont-box {
+      background: color-mix(in srgb, var(--brass) 7%, transparent);
+      border: 1px solid color-mix(in srgb, var(--brass) 20%, transparent);
+      border-left: 3px solid var(--brass);
+      border-radius: 6px;
+      padding: 14px 18px;
+      margin: 16px 0 24px;
+    }
+    .dont-box p { font-size: 14px; font-weight: 600; color: var(--ink); margin-bottom: 8px; }
+
+    /* ── Contact card ── */
+    .contact-card {
+      background: var(--forest);
+      border-radius: 10px;
+      padding: 28px 32px;
+      margin-top: 40px;
+      color: rgba(241,231,207,.85);
+    }
+    .contact-card h2 {
+      font-family: var(--serif);
+      font-size: 18px;
+      font-weight: 500;
+      color: #F1E7CF;
+      border-bottom: 1px solid rgba(255,255,255,.1);
+      padding-bottom: 12px;
+      margin-top: 0;
+    }
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 16px 32px;
+      margin-top: 16px;
+    }
+    .contact-grid .row { display: flex; flex-direction: column; gap: 3px; }
+    .contact-grid .label { font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: rgba(201,169,104,.8); }
+    .contact-grid .value { font-size: 14px; color: rgba(241,231,207,.9); }
+    .contact-grid .value a { color: var(--brass-2); text-decoration: none; }
+    .contact-grid .value a:hover { text-decoration: underline; }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 1px solid var(--border);
+      margin-top: 64px;
+      padding: 24px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--ink-4);
+    }
+    footer a { color: var(--forest-3); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+    footer .links { display: flex; justify-content: center; gap: 24px; margin-bottom: 8px; flex-wrap: wrap; }
+
+    @media (max-width: 600px) {
+      .page { padding: 32px 16px 60px; }
+      .data-table td:first-child { white-space: normal; width: auto; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <a class="logo" href="/">Clergy <span>Housing</span></a>
+  <a class="back-link" href="/">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+    Back to app
+  </a>
+</header>
+
+<div class="page">
+
+  <!-- Hero -->
+  <div class="doc-hero">
+    <div class="eyebrow">Legal</div>
+    <h1>Privacy Policy</h1>
+    <div class="doc-meta">
+      <span><strong>Effective Date:</strong> May 28, 2026</span>
+      <span><strong>Last Updated:</strong> May 28, 2026</span>
+      <span><strong>Platform:</strong> Clergy Housing &mdash; clergyhousing.com</span>
+    </div>
+  </div>
+
+  <!-- Info card -->
+  <div class="info-card">
+    <div class="row"><span class="label">Company</span><span class="value">Clario Consulting Corporation (S-Corporation)</span></div>
+    <div class="row"><span class="label">Platform</span><span class="value">Clergy Housing</span></div>
+    <div class="row"><span class="label">Website</span><span class="value"><a href="https://www.clergyhousing.com">www.clergyhousing.com</a></span></div>
+    <div class="row"><span class="label">Mailing Address</span><span class="value">PO Box 51675, Mesa, AZ 85208-0084</span></div>
+    <div class="row"><span class="label">Privacy Contact</span><span class="value"><a href="mailto:security@clergyhousing.com">security@clergyhousing.com</a></span></div>
+  </div>
+
+  <div class="doc-body">
+
+    <!-- 1. Introduction -->
+    <h2>1. Introduction</h2>
+    <p>Clario Consulting Corporation ("Company", "we", "us", or "our") operates the Clergy Housing platform ("Platform", "Service") accessible at www.clergyhousing.com. We are committed to protecting the privacy and security of our users' personal and financial information.</p>
+    <p>This Privacy Policy explains how we collect, use, store, protect, and share information about you when you use the Clergy Housing platform. Please read this policy carefully. By using the Clergy Housing platform, you agree to the collection and use of information in accordance with this Privacy Policy.</p>
+    <p>This Privacy Policy applies to all clergy members, ministers, pastors, and other ordained professionals ("users", "you") who register for and use the Clergy Housing platform.</p>
+
+    <!-- 2. Information We Collect -->
+    <h2>2. Information We Collect</h2>
+    <p>We collect the following categories of information to provide and improve the Clergy Housing platform:</p>
+
+    <h3>2.1 Information You Provide Directly</h3>
+    <table class="data-table">
+      <thead><tr><th>Data Type</th><th>Details</th></tr></thead>
+      <tbody>
+        <tr><td>Account Information</td><td>Full name, church or organization name, email address, and password when you register for an account</td></tr>
+        <tr><td>Profile Information</td><td>Tax year, designated housing allowance amount, and minister profile details entered in Settings</td></tr>
+        <tr><td>Expense Records</td><td>Housing allowance expense entries including date, category, description, and amount that you manually enter into the platform</td></tr>
+        <tr><td>Receipt Documents</td><td>Images or scans of receipts and supporting documents you upload to the platform</td></tr>
+        <tr><td>Tax Report Data</td><td>Minister name, church name, tax year, and fair rental value information you enter when generating tax reports</td></tr>
+      </tbody>
+    </table>
+
+    <h3>2.2 Information Collected Through Bank Account Connection (Plaid)</h3>
+    <p>If you choose to connect your bank or credit card accounts, we use Plaid Technologies, Inc. ("Plaid") to facilitate the connection. When you connect a bank account through Plaid Link, we receive the following information from Plaid:</p>
+    <table class="data-table">
+      <thead><tr><th>Data Type</th><th>Details</th></tr></thead>
+      <tbody>
+        <tr><td>Transaction Data</td><td>Transaction history including date, merchant name, amount, and transaction category for connected accounts — used solely to identify and import qualifying housing allowance expenses</td></tr>
+        <tr><td>Account Information</td><td>Bank account name, account type (checking, savings, credit), and account metadata</td></tr>
+        <tr><td>Institution Information</td><td>Name of the financial institution associated with the connected account</td></tr>
+        <tr><td>Mortgage Data</td><td>If applicable, mortgage account details including payment amounts and lender information retrieved via Plaid Liabilities</td></tr>
+      </tbody>
+    </table>
+    <div class="notice">
+      <strong>Important:</strong> Clario Consulting does not store your bank login credentials. All bank authentication is handled exclusively and securely through Plaid Link. Your banking username and password are never transmitted to or stored on Clergy Housing servers.<br><br>
+      By connecting your bank account, you also agree to Plaid's Privacy Policy, available at <a href="https://plaid.com/legal/privacy-notice" target="_blank" rel="noopener">plaid.com/legal/privacy-notice</a>.
+    </div>
+
+    <h3>2.3 Information Collected Automatically</h3>
+    <table class="data-table">
+      <thead><tr><th>Data Type</th><th>Details</th></tr></thead>
+      <tbody>
+        <tr><td>Usage Data</td><td>Pages visited, features used, actions taken within the platform, and session duration</td></tr>
+        <tr><td>Device Information</td><td>Browser type, operating system, device type, and screen resolution</td></tr>
+        <tr><td>Log Data</td><td>IP address, access timestamps, and error logs for security monitoring and troubleshooting</td></tr>
+        <tr><td>Authentication Data</td><td>Login timestamps, MFA verification records, and session tokens managed by AWS Cognito</td></tr>
+      </tbody>
+    </table>
+
+    <!-- 3. How We Use Your Information -->
+    <h2>3. How We Use Your Information</h2>
+    <p>We use the information we collect exclusively for the following purposes:</p>
+    <table class="data-table">
+      <thead><tr><th>Purpose</th><th>Details</th></tr></thead>
+      <tbody>
+        <tr><td>Expense Tracking</td><td>To record, categorize, and manage your housing allowance expenses throughout the tax year</td></tr>
+        <tr><td>Bank Transaction Import</td><td>To automatically import and suggest categorization of bank transactions as qualifying housing allowance expenses under IRS Publication 517</td></tr>
+        <tr><td>Tax Report Generation</td><td>To compile and generate your annual housing allowance tax report including IRS-compliant expense summaries and allowable exclusion calculations</td></tr>
+        <tr><td>Account Management</td><td>To create and manage your account, authenticate your identity, and maintain your subscription</td></tr>
+        <tr><td>Platform Improvement</td><td>To analyze usage patterns and improve the features and functionality of the Clergy Housing platform</td></tr>
+        <tr><td>Security &amp; Fraud Prevention</td><td>To detect, investigate, and prevent unauthorized access, fraud, and security incidents</td></tr>
+        <tr><td>Communications</td><td>To send account-related notifications including trial expiration reminders, payment receipts, and security alerts</td></tr>
+        <tr><td>Legal Compliance</td><td>To comply with applicable laws, regulations, and legal obligations</td></tr>
+      </tbody>
+    </table>
+
+    <div class="dont-box">
+      <p>We do NOT use your information for the following purposes:</p>
+      <ul class="bullet">
+        <li>We do not sell your personal or financial data to any third party</li>
+        <li>We do not use your data for advertising or marketing purposes</li>
+        <li>We do not use your data for credit decisioning or lending</li>
+        <li>We do not share your data with employers, churches, or church organizations without your explicit consent</li>
+        <li>We do not use your bank transaction data for any purpose other than housing allowance expense tracking and tax report generation</li>
+      </ul>
+    </div>
+
+    <!-- 4. How We Share Your Information -->
+    <h2>4. How We Share Your Information</h2>
+    <p>We share your information only with the following trusted service providers who help us operate the Clergy Housing platform, and only to the extent necessary to provide their services:</p>
+    <table class="data-table">
+      <thead><tr><th>Service Provider</th><th>Details</th></tr></thead>
+      <tbody>
+        <tr><td>Amazon Web Services (AWS)</td><td>Cloud infrastructure provider — hosts our database, file storage, authentication, and API services. All data is stored on AWS servers located in the United States.</td></tr>
+        <tr><td>Plaid Technologies, Inc.</td><td>Bank connectivity provider — facilitates secure bank account connections and transaction data retrieval. Plaid operates under its own Privacy Policy at <a href="https://plaid.com/legal/privacy-notice" target="_blank" rel="noopener">plaid.com/legal/privacy-notice</a>.</td></tr>
+        <tr><td>Stripe, Inc.</td><td>Payment processing provider — manages subscription billing and payment processing. Stripe operates under its own Privacy Policy at <a href="https://stripe.com/privacy" target="_blank" rel="noopener">stripe.com/privacy</a>. Stripe never receives your financial expense data.</td></tr>
+        <tr><td>AWS Simple Email Service (SES)</td><td>Email delivery provider — sends transactional emails including account notifications and tax report delivery.</td></tr>
+      </tbody>
+    </table>
+    <p>All service providers are contractually required to protect your information and use it only for the specific purposes for which it was shared. We do not sell, rent, or trade your personal information to any third party for their own use.</p>
+    <p>We may also disclose your information if required by law, court order, or government regulation, or if we believe disclosure is necessary to protect the rights, property, or safety of Clario Consulting, our users, or the public.</p>
+
+    <!-- 5. How We Protect Your Information -->
+    <h2>5. How We Protect Your Information</h2>
+    <p>We take the security of your personal and financial information seriously. The following security measures are in place to protect your data:</p>
+    <ul class="bullet">
+      <li>All data is encrypted at rest using AES-256 encryption on AWS RDS and AWS S3</li>
+      <li>All data is encrypted in transit using TLS 1.2 or higher on all platform connections</li>
+      <li>Multi-factor authentication (MFA) is required for all user accounts</li>
+      <li>Bank account credentials are never stored on our servers — handled exclusively by Plaid</li>
+      <li>All API keys and credentials are stored in AWS Secrets Manager and never exposed in code</li>
+      <li>Access to your data is restricted to authorized personnel on a strict need-to-know basis</li>
+      <li>AWS CloudTrail monitors all access to production systems and data</li>
+      <li>Automated vulnerability scanning and regular security reviews are conducted on all infrastructure</li>
+    </ul>
+    <p>While we implement industry-standard security measures, no method of electronic transmission or storage is 100% secure. We cannot guarantee absolute security of your information. If you believe your account has been compromised, please contact us immediately at <a href="mailto:security@clergyhousing.com">security@clergyhousing.com</a>.</p>
+
+    <!-- 6. Data Retention and Deletion -->
+    <h2>6. Data Retention and Deletion</h2>
+    <p>We retain your information for the following periods in compliance with applicable data privacy laws including the California Consumer Privacy Act (CCPA) and IRS record-keeping requirements:</p>
+    <table class="data-table">
+      <thead><tr><th>Data Type</th><th>Retention Period</th></tr></thead>
+      <tbody>
+        <tr><td>Active Account Data</td><td>Retained for the duration of your active subscription</td></tr>
+        <tr><td>Inactive Account Data</td><td>Retained for 90 days after subscription cancellation or account closure, then permanently deleted</td></tr>
+        <tr><td>Tax Reports &amp; Expense Records</td><td>Retained for 7 years in accordance with IRS record-keeping recommendations under IRS Publication 583</td></tr>
+        <tr><td>Receipt &amp; Document Uploads</td><td>Retained for 7 years or until you delete them, whichever comes first</td></tr>
+        <tr><td>Bank Transaction Data</td><td>Retained only as long as necessary for expense tracking and tax reporting purposes. Plaid access tokens are immediately revoked and deleted upon bank account disconnection.</td></tr>
+        <tr><td>Audit &amp; Security Logs</td><td>Retained for 12 months for security monitoring purposes</td></tr>
+        <tr><td>Backup Data</td><td>Encrypted backups retained for 30 days with automated deletion thereafter</td></tr>
+      </tbody>
+    </table>
+
+    <h3>6.1 Data Deletion</h3>
+    <p>You may request deletion of your account and all associated personal data at any time through the Settings screen or by contacting us at <a href="mailto:security@clergyhousing.com">security@clergyhousing.com</a>. Upon receiving a deletion request:</p>
+    <ul class="bullet">
+      <li>We will process your request within 30 days</li>
+      <li>All personal data will be permanently and irreversibly removed from all production systems, databases, and file storage</li>
+      <li>You will receive an email confirmation when your data has been deleted</li>
+      <li>We may retain certain information as required by law, for fraud prevention, or to resolve disputes</li>
+    </ul>
+
+    <h3>6.2 Automated Deletion Controls</h3>
+    <p>The following automated deletion controls are enforced at the infrastructure level to ensure data is not retained beyond its scheduled retention period:</p>
+    <ul class="bullet">
+      <li>AWS RDS automated backup retention is configured to 30 days with automatic deletion thereafter</li>
+      <li>AWS S3 lifecycle policies enforce automatic deletion of expired temporary files and backups</li>
+      <li>Inactive accounts are automatically flagged for deletion after 90 days and users are notified by email before deletion occurs</li>
+      <li>Plaid access tokens are immediately revoked and deleted upon bank account disconnection</li>
+      <li>Session tokens expire automatically and are not retained beyond their active session</li>
+    </ul>
+
+    <h3>6.3 Compliance with Applicable Privacy Laws</h3>
+    <table class="data-table">
+      <thead><tr><th>Law / Requirement</th><th>Details</th></tr></thead>
+      <tbody>
+        <tr><td>California Consumer Privacy Act (CCPA)</td><td>California residents have the right to request deletion of their personal data. All deletion requests are processed within 30 days regardless of the user's state of residence.</td></tr>
+        <tr><td>IRS Publication 583</td><td>Tax records and housing allowance expense documentation are retained for 7 years in accordance with IRS record-keeping recommendations.</td></tr>
+        <tr><td>Plaid Data Use Policy</td><td>Transaction data received from Plaid is used only for its stated purpose of housing allowance expense tracking and tax report generation and is deleted upon account closure.</td></tr>
+      </tbody>
+    </table>
+
+    <h3>6.4 Policy Review</h3>
+    <p>This data retention and deletion policy is reviewed annually and updated as needed to reflect changes in applicable laws, regulations, Plaid data use requirements, or business operations. The policy effective date is shown at the top of this Privacy Policy.</p>
+
+    <!-- 7. Your Privacy Rights -->
+    <h2>7. Your Privacy Rights</h2>
+    <p>As a user of the Clergy Housing platform, you have the following rights regarding your personal information:</p>
+    <table class="data-table">
+      <thead><tr><th>Right</th><th>Details</th></tr></thead>
+      <tbody>
+        <tr><td>Right to Access</td><td>You may request a copy of all personal information we hold about you at any time</td></tr>
+        <tr><td>Right to Correction</td><td>You may update or correct inaccurate personal information through your account Settings or by contacting us</td></tr>
+        <tr><td>Right to Deletion</td><td>You may request deletion of your account and all associated personal data at any time</td></tr>
+        <tr><td>Right to Data Portability</td><td>You may export your expense data as a CSV file at any time through the Settings screen</td></tr>
+        <tr><td>Right to Withdraw Consent</td><td>You may disconnect any linked bank account at any time through the Bank Accounts screen</td></tr>
+        <tr><td>Right to Opt Out</td><td>You may opt out of non-essential email communications through your notification Settings</td></tr>
+      </tbody>
+    </table>
+    <p>To exercise any of these rights, please contact us at <a href="mailto:security@clergyhousing.com">security@clergyhousing.com</a>. We will respond to all privacy rights requests within 30 days.</p>
+
+    <!-- 8. Plaid -->
+    <h2>8. Plaid Bank Connectivity — Additional Disclosures</h2>
+    <p>The Clergy Housing platform uses Plaid Technologies, Inc. to enable bank account connectivity. The following additional disclosures apply to the use of Plaid:</p>
+    <ul class="bullet">
+      <li>Plaid Link is used to securely connect your bank accounts — your bank credentials are entered directly into Plaid's secure interface and are never shared with Clergy Housing</li>
+      <li>By connecting a bank account, you authorize Clergy Housing to receive transaction data from Plaid for the purpose of identifying and importing qualifying housing allowance expenses</li>
+      <li>You may disconnect any linked bank account at any time by visiting the Bank Accounts screen in the Clergy Housing platform</li>
+      <li>Upon disconnecting a bank account, we will delete your Plaid access token and stop retrieving new transaction data from that account</li>
+      <li>Historical transaction data already imported into your expense log will be retained in accordance with our Data Retention policy in Section 6</li>
+      <li>Plaid collects and processes your information under its own Privacy Policy available at <a href="https://plaid.com/legal/privacy-notice" target="_blank" rel="noopener">plaid.com/legal/privacy-notice</a></li>
+      <li>For questions about how Plaid handles your information, please contact Plaid directly at <a href="mailto:privacy@plaid.com">privacy@plaid.com</a></li>
+    </ul>
+
+    <!-- 9. Cookies -->
+    <h2>9. Cookies and Tracking Technologies</h2>
+    <p>The Clergy Housing platform uses cookies to enable secure authentication, maintain your session, facilitate bank account connectivity through Plaid, and process subscription payments through Stripe. We do not use cookies for advertising, behavioral tracking, or marketing purposes of any kind.</p>
+    <p>Our cookies fall into the following categories:</p>
+    <ul class="bullet">
+      <li><strong>Strictly Necessary Cookies</strong> — required for the platform to function securely, including AWS Cognito session management and Stripe payment processing cookies. These cannot be disabled.</li>
+      <li><strong>Functional Cookies</strong> — used to remember your platform preferences and cookie consent settings between sessions.</li>
+      <li><strong>Bank Connectivity Cookies</strong> — set by Plaid Technologies during the bank account connection process. These are session-only cookies that expire immediately after the connection process is complete.</li>
+      <li><strong>Analytics Cookies</strong> — used to understand anonymous usage patterns to improve the platform. No personally identifiable financial information is included.</li>
+    </ul>
+    <p>For complete details about the specific cookies we use, their duration, descriptions, and instructions for managing your cookie preferences, please review our full Cookies Policy at <a href="https://www.clergyhousing.com/cookies">www.clergyhousing.com/cookies</a>.</p>
+    <p>You may configure your browser to block cookies, but please note that blocking strictly necessary cookies will prevent you from logging in or using the Clergy Housing platform.</p>
+
+    <!-- 10. Children -->
+    <h2>10. Children's Privacy</h2>
+    <p>The Clergy Housing platform is intended for use by ordained ministers and clergy professionals who are adults. We do not knowingly collect personal information from children under the age of 13. If we become aware that we have inadvertently collected information from a child under 13, we will take steps to delete that information promptly. If you believe we have collected information from a child under 13, please contact us at <a href="mailto:security@clergyhousing.com">security@clergyhousing.com</a>.</p>
+
+    <!-- 11. Changes -->
+    <h2>11. Changes to This Privacy Policy</h2>
+    <p>We may update this Privacy Policy from time to time to reflect changes in our practices, technology, legal requirements, or for other business reasons. When we make changes we will:</p>
+    <ul class="bullet">
+      <li>Update the Effective Date and Last Updated date at the top of this policy</li>
+      <li>Post the updated Privacy Policy on our website at <a href="https://www.clergyhousing.com/privacy">www.clergyhousing.com/privacy</a></li>
+      <li>Send an email notification to all registered users for any material changes</li>
+      <li>Require acknowledgment of material changes upon next login to the platform</li>
+    </ul>
+    <p>Your continued use of the Clergy Housing platform after any changes to this Privacy Policy constitutes your acceptance of the updated policy. We encourage you to review this Privacy Policy periodically.</p>
+
+    <!-- 12. Contact -->
+    <div class="contact-card">
+      <h2>12. Contact Us</h2>
+      <p style="font-size:14px; margin-bottom:4px;">If you have any questions, concerns, or requests regarding this Privacy Policy or our privacy practices, please contact us:</p>
+      <div class="contact-grid">
+        <div class="row"><span class="label">Company</span><span class="value">Clario Consulting Corporation (S-Corporation)</span></div>
+        <div class="row"><span class="label">Platform</span><span class="value">Clergy Housing</span></div>
+        <div class="row"><span class="label">Privacy Contact</span><span class="value">Joaquin Abrahan Vargas, Founder &amp; CEO</span></div>
+        <div class="row"><span class="label">Email</span><span class="value"><a href="mailto:security@clergyhousing.com">security@clergyhousing.com</a></span></div>
+        <div class="row"><span class="label">Mailing Address</span><span class="value">PO Box 51675, Mesa, AZ 85208-0084</span></div>
+        <div class="row"><span class="label">Response Time</span><span class="value">Within 30 days of your request</span></div>
+      </div>
+    </div>
+
+  </div><!-- /doc-body -->
+</div><!-- /page -->
+
+<footer>
+  <div class="links">
+    <a href="/">Clergy Housing App</a>
+    <a href="/privacy.html">Privacy Policy</a>
+    <a href="/terms.html">Terms of Service</a>
+    <a href="/sms.html">SMS Notifications</a>
+  </div>
+  <div>&copy; 2026 Clario Consulting Corporation &middot; All rights reserved</div>
+</footer>
+
+</body>
+</html>

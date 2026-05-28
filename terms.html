@@ -1,0 +1,633 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Terms of Service — Clergy Housing</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&family=Geist:wght@400;500;600&display=swap" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink:      #1F1B14;
+      --ink-2:    #3A332A;
+      --ink-3:    #6B6256;
+      --ink-4:    #948A7B;
+      --forest:   #1E3A2E;
+      --forest-2: #284A3B;
+      --forest-3: #3B6A56;
+      --brass:    #A88542;
+      --brass-2:  #C9A968;
+      --paper:    #F5F0E8;
+      --card:     #FFFDF8;
+      --border:   #E2D9CC;
+      --serif: 'Source Serif 4', Georgia, serif;
+      --sans:  'Geist', system-ui, sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--sans);
+      font-size: 15px;
+      line-height: 1.7;
+      color: var(--ink);
+      background: var(--paper);
+      background-image:
+        radial-gradient(at 12% 8%, color-mix(in srgb, var(--brass) 5%, transparent), transparent 40%),
+        radial-gradient(at 88% 92%, color-mix(in srgb, var(--forest) 4%, transparent), transparent 40%);
+      min-height: 100vh;
+    }
+
+    /* ── Top nav ── */
+    header {
+      background: var(--forest);
+      padding: 0 24px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 1px 4px rgba(0,0,0,.25);
+    }
+    .logo {
+      font-family: var(--serif);
+      font-size: 18px;
+      font-weight: 500;
+      color: #F1E7CF;
+      text-decoration: none;
+      letter-spacing: .01em;
+    }
+    .logo span { color: var(--brass-2); }
+    .back-link {
+      font-size: 13px;
+      color: rgba(241,231,207,.7);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: color .15s;
+    }
+    .back-link:hover { color: #F1E7CF; }
+
+    /* ── Page wrapper ── */
+    .page {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
+
+    /* ── Hero ── */
+    .doc-hero {
+      margin-bottom: 40px;
+      padding-bottom: 32px;
+      border-bottom: 1px solid var(--border);
+    }
+    .doc-hero .eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--brass);
+      margin-bottom: 10px;
+    }
+    .doc-hero h1 {
+      font-family: var(--serif);
+      font-size: clamp(26px, 4vw, 36px);
+      font-weight: 500;
+      color: var(--ink);
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+    .doc-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 24px;
+      font-size: 13px;
+      color: var(--ink-3);
+    }
+    .doc-meta strong { color: var(--ink-2); font-weight: 500; }
+
+    /* ── Info card ── */
+    .info-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px 24px;
+      margin-bottom: 40px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 12px 24px;
+    }
+    .info-card .row { display: flex; flex-direction: column; gap: 2px; }
+    .info-card .label { font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-4); }
+    .info-card .value { font-size: 14px; color: var(--ink-2); }
+    .info-card .value a { color: var(--forest-3); text-decoration: none; }
+    .info-card .value a:hover { text-decoration: underline; }
+
+    /* ── Body content ── */
+    .doc-body { color: var(--ink-2); }
+
+    h2 {
+      font-family: var(--serif);
+      font-size: 20px;
+      font-weight: 500;
+      color: var(--forest);
+      margin: 40px 0 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+    h3 {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--ink);
+      margin: 24px 0 8px;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+    }
+    p { margin-bottom: 14px; }
+    p:last-child { margin-bottom: 0; }
+    a { color: var(--forest-3); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ── Tables ── */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0 24px;
+      font-size: 14px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .data-table thead tr { background: var(--forest); }
+    .data-table thead th {
+      padding: 10px 16px;
+      text-align: left;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: rgba(241,231,207,.85);
+    }
+    .data-table tbody tr { border-top: 1px solid var(--border); }
+    .data-table tbody tr:first-child { border-top: none; }
+    .data-table tbody tr:nth-child(even) { background: rgba(0,0,0,.018); }
+    .data-table td { padding: 10px 16px; vertical-align: top; line-height: 1.55; }
+    .data-table td:first-child { font-weight: 500; color: var(--ink); width: 200px; }
+
+    /* ── Lists ── */
+    ul.bullet {
+      margin: 8px 0 16px 0;
+      padding-left: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    ul.bullet li { line-height: 1.55; }
+
+    /* ── Notice box ── */
+    .notice {
+      background: color-mix(in srgb, var(--forest) 8%, transparent);
+      border: 1px solid color-mix(in srgb, var(--forest) 20%, transparent);
+      border-left: 3px solid var(--forest-3);
+      border-radius: 6px;
+      padding: 14px 18px;
+      margin: 16px 0 24px;
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--ink-2);
+    }
+    .notice strong { color: var(--forest); }
+
+    /* ── Alert box ── */
+    .alert-box {
+      background: color-mix(in srgb, var(--brass) 7%, transparent);
+      border: 1px solid color-mix(in srgb, var(--brass) 20%, transparent);
+      border-left: 3px solid var(--brass);
+      border-radius: 6px;
+      padding: 16px 18px;
+      margin: 16px 0 24px;
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--ink-2);
+    }
+    .alert-box strong { color: var(--brass); display: block; margin-bottom: 8px; font-size: 13px; letter-spacing: .04em; text-transform: uppercase; }
+
+    /* ── Caps block (for legal disclaimers) ── */
+    .legal-caps {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin: 16px 0 24px;
+      font-size: 13px;
+      line-height: 1.65;
+      color: var(--ink-3);
+      font-weight: 500;
+    }
+
+    /* ── Contact card ── */
+    .contact-card {
+      background: var(--forest);
+      border-radius: 10px;
+      padding: 28px 32px;
+      margin-top: 40px;
+      color: rgba(241,231,207,.85);
+    }
+    .contact-card h2 {
+      font-family: var(--serif);
+      font-size: 18px;
+      font-weight: 500;
+      color: #F1E7CF;
+      border-bottom: 1px solid rgba(255,255,255,.1);
+      padding-bottom: 12px;
+      margin-top: 0;
+    }
+    .contact-card a { color: var(--brass-2); }
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 16px 32px;
+      margin-top: 16px;
+    }
+    .contact-grid .row { display: flex; flex-direction: column; gap: 3px; }
+    .contact-grid .label { font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: rgba(201,169,104,.8); }
+    .contact-grid .value { font-size: 14px; color: rgba(241,231,207,.9); }
+    .contact-grid .value a { color: var(--brass-2); text-decoration: none; }
+    .contact-grid .value a:hover { text-decoration: underline; }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 1px solid var(--border);
+      margin-top: 64px;
+      padding: 24px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--ink-4);
+    }
+    footer a { color: var(--forest-3); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+    footer .links { display: flex; justify-content: center; gap: 24px; margin-bottom: 8px; flex-wrap: wrap; }
+
+    @media (max-width: 600px) {
+      .page { padding: 32px 16px 60px; }
+      .data-table td:first-child { width: auto; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <a class="logo" href="/">Clergy <span>Housing</span></a>
+  <a class="back-link" href="/">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+    Back to app
+  </a>
+</header>
+
+<div class="page">
+
+  <!-- Hero -->
+  <div class="doc-hero">
+    <div class="eyebrow">Legal</div>
+    <h1>Terms of Service</h1>
+    <div class="doc-meta">
+      <span><strong>Effective Date:</strong> May 27, 2026</span>
+      <span><strong>Last Updated:</strong> May 27, 2026</span>
+      <span><strong>Platform:</strong> Clergy Housing &mdash; clergyhousing.com</span>
+    </div>
+  </div>
+
+  <!-- Info card -->
+  <div class="info-card">
+    <div class="row"><span class="label">Company</span><span class="value">Clario Consulting Corporation (S-Corporation)</span></div>
+    <div class="row"><span class="label">Platform</span><span class="value">Clergy Housing</span></div>
+    <div class="row"><span class="label">Website</span><span class="value"><a href="https://www.clergyhousing.com">www.clergyhousing.com</a></span></div>
+    <div class="row"><span class="label">Mailing Address</span><span class="value">PO Box 51675, Mesa, AZ 85208-0084</span></div>
+    <div class="row"><span class="label">Contact Email</span><span class="value"><a href="mailto:security@clergyhousing.com">security@clergyhousing.com</a></span></div>
+  </div>
+
+  <div class="doc-body">
+
+    <!-- 1. Agreement -->
+    <h2>1. Agreement to Terms</h2>
+    <p>These Terms of Service ("Terms") constitute a legally binding agreement between you ("User", "you", or "your") and Clario Consulting Corporation, an S-Corporation ("Company", "we", "us", or "our"), governing your access to and use of the Clergy Housing platform, including the website at www.clergyhousing.com and all related services ("Platform" or "Service").</p>
+    <div class="alert-box">
+      <strong>Please read carefully</strong>
+      By registering for an account, clicking "I Agree", or otherwise accessing or using the platform, you acknowledge that you have read, understood, and agree to be bound by these Terms and our Privacy Policy. If you do not agree to these Terms, you may not access or use the Clergy Housing platform.
+    </div>
+    <p>If you are using the platform on behalf of a church or organization, you represent that you have the authority to bind that organization to these Terms.</p>
+
+    <!-- 2. Definitions -->
+    <h2>2. Definitions</h2>
+    <table class="data-table">
+      <thead><tr><th>Term</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td>Platform / Service</td><td>The Clergy Housing web application, website, and all related features and services operated by Clario Consulting Corporation</td></tr>
+        <tr><td>User / You</td><td>Any ordained minister, clergy member, pastor, priest, or other individual who registers for and uses the Clergy Housing platform</td></tr>
+        <tr><td>Account</td><td>Your registered user account on the Clergy Housing platform</td></tr>
+        <tr><td>Housing Allowance</td><td>The IRS-designated housing allowance amount established by a church or organization for an ordained minister under Section 107 of the Internal Revenue Code</td></tr>
+        <tr><td>Qualifying Expenses</td><td>Housing-related expenses that qualify for exclusion from gross income under IRS Publication 517 and Section 107 of the Internal Revenue Code</td></tr>
+        <tr><td>Subscription</td><td>A paid monthly or annual plan that grants access to the Clergy Housing platform following the completion of the free trial period</td></tr>
+        <tr><td>Free Trial</td><td>The initial three-month period during which you may access the full features of the platform at no charge</td></tr>
+        <tr><td>Plaid</td><td>Plaid Technologies, Inc., the third-party service provider used to facilitate secure bank account connectivity</td></tr>
+        <tr><td>Stripe</td><td>Stripe, Inc., the third-party service provider used to process subscription payments</td></tr>
+        <tr><td>Content</td><td>All data, text, files, documents, and information you upload, submit, or create within the platform</td></tr>
+      </tbody>
+    </table>
+
+    <!-- 3. Eligibility -->
+    <h2>3. Eligibility and Account Registration</h2>
+
+    <h3>3.1 Eligibility</h3>
+    <p>To use the Clergy Housing platform, you must:</p>
+    <ul class="bullet">
+      <li>Be an ordained minister, clergy member, pastor, priest, or other individual eligible to receive a tax-exempt housing allowance under Section 107 of the Internal Revenue Code</li>
+      <li>Be at least 18 years of age</li>
+      <li>Be a resident of the United States</li>
+      <li>Have the legal authority to enter into these Terms</li>
+      <li>Provide accurate, current, and complete registration information</li>
+    </ul>
+
+    <h3>3.2 Account Registration</h3>
+    <p>To access the Clergy Housing platform you must create an account by providing your full name, church or organization name, email address, and a secure password. You agree to:</p>
+    <ul class="bullet">
+      <li>Provide accurate, current, and complete information during registration</li>
+      <li>Maintain and promptly update your account information to keep it accurate and current</li>
+      <li>Keep your password secure and confidential and not share it with any third party</li>
+      <li>Complete multi-factor authentication (MFA) setup as required during onboarding</li>
+      <li>Notify us immediately at <a href="mailto:security@clergyhousing.com">security@clergyhousing.com</a> if you suspect unauthorized access to your account</li>
+      <li>Accept responsibility for all activity that occurs under your account</li>
+    </ul>
+
+    <h3>3.3 One Account Per User</h3>
+    <p>Each user may maintain only one active account on the Clergy Housing platform. Creating multiple accounts to circumvent subscription requirements, trial limitations, or any other platform policies is strictly prohibited and may result in immediate termination of all associated accounts.</p>
+
+    <!-- 4. Trial & Subscription -->
+    <h2>4. Free Trial and Subscription Plans</h2>
+
+    <h3>4.1 Free Trial</h3>
+    <p>Upon registration, you will receive a free trial period of three (3) months during which you will have full access to all features of the Clergy Housing platform at no charge. The free trial begins on the date of your account registration.</p>
+    <ul class="bullet">
+      <li>No credit card or payment information is required to start your free trial</li>
+      <li>The free trial provides full access to all platform features including expense tracking, bank account connectivity, and tax report generation</li>
+      <li>You will receive email notifications at 30 days and 7 days before your trial expires</li>
+      <li>At the end of the trial period, access to the platform will be restricted until you subscribe to a paid plan</li>
+      <li>Your data will be retained for 90 days after trial expiration, giving you time to subscribe and regain full access</li>
+    </ul>
+
+    <h3>4.2 Subscription Plans</h3>
+    <p>Following the free trial period, continued access to the Clergy Housing platform requires a paid subscription. The following plans are available:</p>
+    <table class="data-table">
+      <thead><tr><th>Plan</th><th>Details</th></tr></thead>
+      <tbody>
+        <tr><td>Monthly Plan</td><td>Billed monthly. Access to all platform features. Cancel at any time. Access continues until the end of the current billing period upon cancellation.</td></tr>
+        <tr><td>Annual Plan</td><td>Billed annually at a discounted rate. Access to all platform features for one full year. Cancel at any time. No refund for unused portion of annual term unless required by law.</td></tr>
+      </tbody>
+    </table>
+    <p>Current pricing for all subscription plans is displayed on the Clergy Housing website at <a href="https://www.clergyhousing.com/pricing">www.clergyhousing.com/pricing</a>. Pricing is subject to change with 30 days advance notice to subscribers.</p>
+
+    <h3>4.3 Payment and Billing</h3>
+    <p>All subscription payments are processed securely by Stripe, Inc. By subscribing to a paid plan, you agree to the following:</p>
+    <ul class="bullet">
+      <li>You authorize Clario Consulting Corporation to charge your payment method on a recurring basis at the applicable subscription rate</li>
+      <li>Subscription fees are billed in advance at the beginning of each billing period</li>
+      <li>All fees are non-refundable except as expressly stated in these Terms or required by applicable law</li>
+      <li>You are responsible for providing accurate and current payment information</li>
+      <li>If a payment fails, we will notify you by email and attempt to process the payment again. Continued failure to pay may result in suspension or termination of your account</li>
+      <li>You may update your payment method at any time through the Subscription &amp; Billing screen or the Stripe Customer Portal</li>
+    </ul>
+
+    <h3>4.4 Cancellation</h3>
+    <p>You may cancel your subscription at any time through the Subscription &amp; Billing screen or the Stripe Customer Portal. Upon cancellation:</p>
+    <ul class="bullet">
+      <li>Your access to the platform will continue until the end of your current billing period</li>
+      <li>You will not be charged for the following billing period</li>
+      <li>Your data will be retained for 90 days after your subscription ends</li>
+      <li>After 90 days your account and all associated data will be permanently deleted</li>
+      <li>You may reactivate your subscription at any time before your data is deleted</li>
+    </ul>
+
+    <h3>4.5 Refund Policy</h3>
+    <p>All subscription fees are non-refundable except in the following circumstances:</p>
+    <ul class="bullet">
+      <li>You were charged incorrectly due to a billing error on our part</li>
+      <li>You are entitled to a refund under applicable consumer protection laws in your jurisdiction</li>
+      <li>Refund requests must be submitted to <a href="mailto:security@clergyhousing.com">security@clergyhousing.com</a> within 30 days of the charge</li>
+    </ul>
+
+    <!-- 5. Use of Platform -->
+    <h2>5. Use of the Platform</h2>
+
+    <h3>5.1 Permitted Use</h3>
+    <p>The Clergy Housing platform is provided exclusively for the following permitted uses:</p>
+    <ul class="bullet">
+      <li>Tracking and managing your personal IRS-designated housing allowance expenses</li>
+      <li>Connecting your personal bank and credit card accounts to automatically import qualifying housing expense transactions</li>
+      <li>Generating year-end housing allowance tax reports for your personal IRS tax filing</li>
+      <li>Uploading and storing receipts and supporting documents for your housing allowance expenses</li>
+    </ul>
+
+    <h3>5.2 Prohibited Use</h3>
+    <p>You agree not to use the Clergy Housing platform for any of the following prohibited purposes:</p>
+    <ul class="bullet">
+      <li>Using the platform to track expenses on behalf of another person without their explicit written consent</li>
+      <li>Submitting false, fraudulent, or misleading expense records or tax information</li>
+      <li>Attempting to gain unauthorized access to any part of the platform or other users' accounts</li>
+      <li>Using the platform in any way that violates applicable federal, state, or local laws or regulations</li>
+      <li>Reverse engineering, decompiling, or attempting to extract the source code of the platform</li>
+      <li>Using automated tools, bots, or scripts to access or interact with the platform</li>
+      <li>Transmitting viruses, malware, or any other malicious code through the platform</li>
+      <li>Using the platform for any commercial purpose other than managing your own housing allowance</li>
+      <li>Sharing your account credentials with any other person</li>
+    </ul>
+
+    <h3>5.3 Bank Account Connectivity</h3>
+    <p>By connecting a bank account through Plaid Link, you represent and warrant that:</p>
+    <ul class="bullet">
+      <li>You are the legal owner of the bank account you are connecting</li>
+      <li>You have the legal authority to authorize access to the transaction data of the connected account</li>
+      <li>You will only connect accounts that contain transactions relevant to your housing allowance expenses</li>
+      <li>You understand that Clergy Housing will retrieve transaction history for the purpose of identifying qualifying housing expenses</li>
+    </ul>
+    <p>You may disconnect any connected bank account at any time through the Bank Accounts screen. Clergy Housing is not responsible for any issues, errors, or disruptions in bank connectivity caused by Plaid or your financial institution.</p>
+
+    <!-- 6. Tax Disclaimer -->
+    <h2>6. Tax and Financial Disclaimer</h2>
+    <div class="alert-box">
+      <strong>Important — Please Read Carefully</strong>
+      The Clergy Housing platform is a financial data management and organization tool designed to help clergy members track and report their housing allowance expenses. The platform is <strong>NOT a tax preparation service</strong> and does not provide tax advice, legal advice, or financial advice.
+    </div>
+    <ul class="bullet">
+      <li>The information and reports generated by the Clergy Housing platform are provided for organizational and informational purposes only</li>
+      <li>Nothing in the platform or its output constitutes tax advice or a guarantee of tax treatment by the IRS</li>
+      <li>You are solely responsible for the accuracy and completeness of all expense records you enter or import into the platform</li>
+      <li>You are solely responsible for determining which expenses qualify as housing allowance expenses under IRS Publication 517 and Section 107 of the Internal Revenue Code</li>
+      <li>You should consult a qualified tax professional, CPA, or tax attorney regarding your specific housing allowance situation before filing your taxes</li>
+      <li>Clario Consulting Corporation is not responsible for any tax liability, penalties, interest, or other consequences arising from your use of the platform or the information it generates</li>
+      <li>IRS rules regarding housing allowances are subject to change — you are responsible for ensuring compliance with current IRS regulations</li>
+    </ul>
+
+    <!-- 7. Data & Privacy -->
+    <h2>7. Your Data and Privacy</h2>
+
+    <h3>7.1 Your Data Ownership</h3>
+    <p>You retain full ownership of all data, expense records, documents, and content you submit to the Clergy Housing platform. By using the platform, you grant Clario Consulting Corporation a limited, non-exclusive license to store, process, and display your data solely for the purpose of providing the platform services to you. We do not claim any ownership rights over your data.</p>
+
+    <h3>7.2 Data Privacy</h3>
+    <p>Your use of the Clergy Housing platform is also governed by our <a href="/privacy.html">Privacy Policy</a>, which is incorporated into these Terms by reference. By agreeing to these Terms, you also agree to our Privacy Policy. Please review our Privacy Policy carefully to understand how we collect, use, and protect your personal and financial information.</p>
+
+    <h3>7.3 Data Export and Deletion</h3>
+    <p>You may export all of your expense data at any time through the Settings screen. You may request deletion of your account and all associated data at any time by visiting the Settings screen or contacting us at <a href="mailto:security@clergyhousing.com">security@clergyhousing.com</a>. Data deletion requests are processed within 30 days.</p>
+
+    <h3>7.4 Consent to Data Collection</h3>
+    <p>By registering for an account and using the Clergy Housing platform, you expressly consent to:</p>
+    <ul class="bullet">
+      <li>The collection, processing, and storage of your personal and financial data as described in our Privacy Policy</li>
+      <li>The use of Plaid to connect your bank accounts and retrieve transaction data for the purpose of housing allowance expense tracking</li>
+      <li>The use of Stripe to process your subscription payments</li>
+      <li>The use of AWS services to host, store, and secure your data in the United States</li>
+      <li>Receiving transactional emails related to your account, subscription, and platform activity</li>
+    </ul>
+
+    <!-- 8. Third-Party Services -->
+    <h2>8. Third-Party Services</h2>
+    <p>The Clergy Housing platform integrates with the following third-party services. Your use of these services is subject to their respective terms of service and privacy policies:</p>
+    <table class="data-table">
+      <thead><tr><th>Service Provider</th><th>Details</th></tr></thead>
+      <tbody>
+        <tr><td>Plaid Technologies, Inc.</td><td>Bank account connectivity. By connecting a bank account, you agree to Plaid's <a href="https://plaid.com/legal" target="_blank" rel="noopener">Terms of Service</a> and <a href="https://plaid.com/legal/privacy-notice" target="_blank" rel="noopener">Privacy Policy</a>.</td></tr>
+        <tr><td>Stripe, Inc.</td><td>Subscription payment processing. By subscribing to a paid plan, you agree to Stripe's <a href="https://stripe.com/legal" target="_blank" rel="noopener">Terms of Service</a> and <a href="https://stripe.com/privacy" target="_blank" rel="noopener">Privacy Policy</a>.</td></tr>
+        <tr><td>Amazon Web Services</td><td>Cloud infrastructure, authentication, and data storage. AWS operates under its own <a href="https://aws.amazon.com/legal" target="_blank" rel="noopener">terms of service</a>.</td></tr>
+      </tbody>
+    </table>
+    <p>Clario Consulting Corporation is not responsible for the availability, accuracy, or practices of any third-party services. Any issues with third-party services should be directed to those providers directly.</p>
+
+    <!-- 9. Intellectual Property -->
+    <h2>9. Intellectual Property</h2>
+    <p>The Clergy Housing platform, including its design, features, code, content, trademarks, and all related intellectual property, is owned by Clario Consulting Corporation and is protected by applicable intellectual property laws. These Terms do not grant you any right, title, or interest in the platform beyond the limited right to use it in accordance with these Terms.</p>
+    <p>You may not copy, modify, distribute, sell, or create derivative works of any part of the Clergy Housing platform without our prior written consent. All rights not expressly granted in these Terms are reserved by Clario Consulting Corporation.</p>
+
+    <!-- 10. Disclaimers -->
+    <h2>10. Disclaimers and Limitation of Liability</h2>
+
+    <h3>10.1 Disclaimer of Warranties</h3>
+    <div class="legal-caps">
+      THE CLERGY HOUSING PLATFORM IS PROVIDED ON AN "AS IS" AND "AS AVAILABLE" BASIS WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, ACCURACY, OR NON-INFRINGEMENT. WE DO NOT WARRANT THAT THE PLATFORM WILL BE UNINTERRUPTED, ERROR-FREE, OR COMPLETELY SECURE.
+    </div>
+
+    <h3>10.2 Limitation of Liability</h3>
+    <div class="legal-caps">
+      TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, CLARIO CONSULTING CORPORATION SHALL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES ARISING OUT OF OR RELATED TO YOUR USE OF THE CLERGY HOUSING PLATFORM, INCLUDING BUT NOT LIMITED TO:
+    </div>
+    <ul class="bullet">
+      <li>Loss of data or inability to access your expense records or tax reports</li>
+      <li>Tax liability, penalties, or interest resulting from information generated by the platform</li>
+      <li>Unauthorized access to your account or financial data</li>
+      <li>Interruption or unavailability of the platform or third-party services</li>
+      <li>Any errors or inaccuracies in expense categorization or tax report generation</li>
+    </ul>
+    <div class="notice">
+      In no event shall our total liability to you exceed the amount you paid to us in the twelve (12) months preceding the claim.
+    </div>
+
+    <!-- 11. Indemnification -->
+    <h2>11. Indemnification</h2>
+    <p>You agree to indemnify, defend, and hold harmless Clario Consulting Corporation, its officers, directors, employees, and agents from and against any claims, liabilities, damages, losses, and expenses, including reasonable legal fees, arising out of or related to:</p>
+    <ul class="bullet">
+      <li>Your use of or access to the Clergy Housing platform</li>
+      <li>Your violation of these Terms of Service</li>
+      <li>Your violation of any applicable law or regulation</li>
+      <li>Any false, inaccurate, or misleading information you submit to the platform</li>
+      <li>Your violation of any third-party rights including Plaid, Stripe, or your financial institution</li>
+    </ul>
+
+    <!-- 12. Termination -->
+    <h2>12. Termination</h2>
+
+    <h3>12.1 Termination by You</h3>
+    <p>You may terminate your account at any time by canceling your subscription and requesting account deletion through the Settings screen or by contacting us at <a href="mailto:security@clergyhousing.com">security@clergyhousing.com</a>. Upon termination, your access to the platform will cease and your data will be retained for 90 days before permanent deletion.</p>
+
+    <h3>12.2 Termination by Us</h3>
+    <p>We reserve the right to suspend or terminate your account and access to the platform at any time, with or without notice, for any of the following reasons:</p>
+    <ul class="bullet">
+      <li>Violation of these Terms of Service</li>
+      <li>Fraudulent, abusive, or illegal activity</li>
+      <li>Non-payment of subscription fees</li>
+      <li>Actions that harm or threaten the security, integrity, or availability of the platform</li>
+      <li>At our sole discretion for any other reason with reasonable notice</li>
+    </ul>
+    <p>In the event of termination by us for cause, you will not be entitled to a refund of any prepaid subscription fees.</p>
+
+    <!-- 13. Changes -->
+    <h2>13. Changes to These Terms</h2>
+    <p>We reserve the right to update or modify these Terms of Service at any time. When we make changes we will:</p>
+    <ul class="bullet">
+      <li>Update the Effective Date and Last Updated date at the top of these Terms</li>
+      <li>Post the updated Terms on our website at <a href="https://www.clergyhousing.com/terms.html">www.clergyhousing.com/terms</a></li>
+      <li>Send an email notification to all registered users for any material changes</li>
+      <li>Require your acknowledgment of material changes upon your next login to the platform</li>
+    </ul>
+    <p>Your continued use of the Clergy Housing platform after the effective date of any changes constitutes your acceptance of the updated Terms. If you do not agree to the updated Terms, you must stop using the platform and cancel your subscription.</p>
+
+    <!-- 14. Governing Law -->
+    <h2>14. Governing Law and Dispute Resolution</h2>
+    <p>These Terms of Service shall be governed by and construed in accordance with the laws of the State of Arizona, without regard to its conflict of law provisions. Any disputes arising out of or related to these Terms or your use of the Clergy Housing platform shall be resolved as follows:</p>
+    <ul class="bullet">
+      <li>You and Clario Consulting Corporation agree to first attempt to resolve any dispute informally by contacting us at <a href="mailto:security@clergyhousing.com">security@clergyhousing.com</a></li>
+      <li>If informal resolution is unsuccessful, disputes shall be resolved through binding arbitration in Maricopa County, Arizona in accordance with the rules of the American Arbitration Association</li>
+      <li>You waive any right to participate in a class action lawsuit or class-wide arbitration against Clario Consulting Corporation</li>
+      <li>Notwithstanding the foregoing, either party may seek injunctive or other equitable relief in a court of competent jurisdiction</li>
+    </ul>
+
+    <!-- 15. General -->
+    <h2>15. General Provisions</h2>
+    <table class="data-table">
+      <thead><tr><th>Provision</th><th>Details</th></tr></thead>
+      <tbody>
+        <tr><td>Entire Agreement</td><td>These Terms of Service and our Privacy Policy constitute the entire agreement between you and Clario Consulting Corporation regarding the Clergy Housing platform and supersede all prior agreements.</td></tr>
+        <tr><td>Severability</td><td>If any provision of these Terms is found to be unenforceable, the remaining provisions will continue in full force and effect.</td></tr>
+        <tr><td>Waiver</td><td>Our failure to enforce any right or provision of these Terms shall not constitute a waiver of that right or provision.</td></tr>
+        <tr><td>Assignment</td><td>You may not assign or transfer your rights under these Terms without our prior written consent. We may assign our rights and obligations under these Terms without restriction.</td></tr>
+        <tr><td>Force Majeure</td><td>We shall not be liable for any failure or delay in performance due to causes beyond our reasonable control including natural disasters, government actions, or third-party service outages.</td></tr>
+        <tr><td>No Tax or Legal Advice</td><td>Nothing in these Terms or the Clergy Housing platform constitutes tax advice, legal advice, or financial advice. You should consult qualified professionals for guidance specific to your situation.</td></tr>
+      </tbody>
+    </table>
+
+    <!-- 16. Contact -->
+    <div class="contact-card">
+      <h2>16. Contact Us</h2>
+      <p style="font-size:14px; margin-bottom:4px;">If you have any questions, concerns, or requests regarding these Terms of Service, please contact us:</p>
+      <div class="contact-grid">
+        <div class="row"><span class="label">Company</span><span class="value">Clario Consulting Corporation (S-Corporation)</span></div>
+        <div class="row"><span class="label">Platform</span><span class="value">Clergy Housing</span></div>
+        <div class="row"><span class="label">Contact Person</span><span class="value">Joaquin Abrahan Vargas, Founder &amp; CEO</span></div>
+        <div class="row"><span class="label">Email</span><span class="value"><a href="mailto:security@clergyhousing.com">security@clergyhousing.com</a></span></div>
+        <div class="row"><span class="label">Mailing Address</span><span class="value">PO Box 51675, Mesa, AZ 85208-0084</span></div>
+        <div class="row"><span class="label">Website</span><span class="value"><a href="https://www.clergyhousing.com">www.clergyhousing.com</a></span></div>
+        <div class="row"><span class="label">Response Time</span><span class="value">Within 30 days of your inquiry</span></div>
+      </div>
+    </div>
+
+  </div><!-- /doc-body -->
+</div><!-- /page -->
+
+<footer>
+  <div class="links">
+    <a href="/">Clergy Housing App</a>
+    <a href="/privacy.html">Privacy Policy</a>
+    <a href="/terms.html">Terms of Service</a>
+    <a href="/sms-terms.html">SMS Terms</a>
+    <a href="/cookies.html">Cookies Policy</a>
+  </div>
+  <div>&copy; 2026 Clario Consulting Corporation &middot; All rights reserved</div>
+</footer>
+
+</body>
+</html>

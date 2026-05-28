@@ -9,7 +9,10 @@ function Landing({ onStart, onSignIn }) {
       <header className="land-nav">
         <div className="land-brand">
           <div className="mark"><Icon.Logo /></div>
-          <div className="name">Clergy Housing</div>
+          <div>
+            <div className="name">Clergy Housing</div>
+            <div className="by-clario">By Clario Consulting</div>
+          </div>
         </div>
         <div className="links">
           <a href="#features">Features</a>
@@ -25,11 +28,11 @@ function Landing({ onStart, onSignIn }) {
       <section className="land-hero">
         <div className="land-eyebrow">Built for Ministry Professionals</div>
         <h1 className="land-h1">
-          Honor your calling.<br/>Keep your housing<br/>allowance in good order.
+          Keep your Housing Allowance in good order.
         </h1>
         <p className="land-lede">
-          A calm, careful ledger for your IRC §107 housing allowance. Track expenses, sync your bank,
-          and generate a year-end report your CPA will recognize at a glance.
+          An easy-to-use, precise ledger for your Housing Allowance. Track expenses, sync your bank account
+          and generate a year-end report your CPA or Tax Preparer will recognize at a glance.
         </p>
         <div className="land-cta">
           <button className="btn btn-primary" onClick={onStart}>
@@ -71,8 +74,8 @@ function Landing({ onStart, onSignIn }) {
             <div className="feat-icon"><Icon.Report /></div>
             <h3 className="feat-h">Year-end report</h3>
             <p className="feat-p">
-              One click produces a print-ready worksheet grouped by category, with your IRC §107
-              exclusion calculated. Save as PDF, hand to your CPA.
+              One click produces a print-ready worksheet grouped by category, with your Housing Allowance
+              exclusion calculated. Save as PDF, hand to your CPA or Tax Preparer.
             </p>
           </div>
         </div>
@@ -110,11 +113,20 @@ function Landing({ onStart, onSignIn }) {
 
       <footer className="land-footer">
         <div className="links">
-          <a href="#">Privacy Policy</a>
-          <a href="#">Terms of Service</a>
-          <a href="#">Contact</a>
+          <a href="/privacy.html">Privacy Policy</a>
+          <a href="/terms.html">Terms of Service</a>
+          <a href="/cookies.html">Cookies Policy</a>
+          <a href="/sms-terms.html">SMS Terms</a>
+          <a href="/contact.html">Contact</a>
         </div>
-        <div>© 2025 Clergy Housing. All rights reserved.</div>
+        <div>© 2026 Clario Consulting Corporation. All rights reserved.</div>
+        <div className="footer-clario">
+          <span>A product of</span>
+          <a href="https://clarioconsulting.com" target="_blank" rel="noopener noreferrer">
+            <img src="https://clarioconsulting.com/wp-content/uploads/2022/12/Logo-Clario-e1768800479993.png" alt="Clario Consulting" className="footer-clario-logo" />
+          </a>
+          <a href="https://clarioconsulting.com" target="_blank" rel="noopener noreferrer" className="footer-clario-link">Clario Consulting</a>
+        </div>
       </footer>
     </div>
   );
@@ -125,16 +137,49 @@ function Landing({ onStart, onSignIn }) {
 // ─────────────────────────────────────────────────────────────────────────
 function AuthScreen({ mode: initialMode, onComplete, onBackToLanding }) {
   const [mode, setMode] = React.useState(initialMode || 'signup');
-  const [step, setStep] = React.useState('form'); // 'form' | 'mfa' | 'welcome'
-  const [name, setName] = React.useState('Rev. Thomas R. Whitfield');
-  const [church, setChurch] = React.useState('Grace Covenant Church');
-  const [email, setEmail] = React.useState('tom@gracecovenant.org');
+  const [step, setStep] = React.useState('form'); // 'form' | 'confirm' | 'welcome'
+  const [name, setName] = React.useState('');
+  const [church, setChurch] = React.useState('');
+  const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
+  const [code, setCode] = React.useState('');
+  const [loading, setLoading] = React.useState(false);
+  const [error, setError] = React.useState('');
 
-  const submit = (e) => {
+  const submit = async (e) => {
     e.preventDefault();
-    if (mode === 'signup') setStep('mfa');
-    else onComplete();
+    setError('');
+    setLoading(true);
+    try {
+      if (mode === 'signup') {
+        await Auth.signUp(email, password, name, church);
+        setStep('confirm');
+      } else {
+        await Auth.signIn(email, password);
+        onComplete();
+      }
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const confirmCode = async (e) => {
+    e.preventDefault();
+    setError('');
+    setLoading(true);
+    try {
+      await Auth.confirmSignUp(email, code);
+      await Auth.signIn(email, password);
+      setStep('welcome');
+      // Store for onComplete
+      window._signupInfo = { name, church };
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -145,15 +190,15 @@ function AuthScreen({ mode: initialMode, onComplete, onBackToLanding }) {
             <div className="brand-mark"><Icon.Logo /></div>
             <div>
               <div className="brand-name">Clergy Housing</div>
-              <div className="brand-sub" style={{ color: '#A8B6A4' }}>Housing Worksheet</div>
+              <div className="brand-sub" style={{ color: '#A8B6A4' }}>by Clario Consulting</div>
             </div>
           </div>
-          <h2>The dignified way to keep your housing allowance records.</h2>
+          <h2>The dignified way to keep your Housing Allowance records.</h2>
         </div>
         <div className="quote">
           "Finally a tool that doesn't feel like wrestling with a spreadsheet.
           My CPA recognized the report format on first glance."
-          <div className="quote-att">Rev. Margaret Ellis — Asheville, NC</div>
+          <div className="quote-att">Rev. John Steward — Asheville, NC</div>
         </div>
       </aside>
 
@@ -167,7 +212,7 @@ function AuthScreen({ mode: initialMode, onComplete, onBackToLanding }) {
                 : 'Sign in to your housing worksheet.'}
             </div>
 
-            <button type="button" className="btn btn-google">
+            <button type="button" className="btn btn-google" onClick={() => Auth.signInWithGoogle()}>
               <Icon.Google /> Continue with Google
             </button>
 
@@ -199,8 +244,13 @@ function AuthScreen({ mode: initialMode, onComplete, onBackToLanding }) {
               </div>
             </div>
 
-            <button type="submit" className="btn btn-primary">
-              {mode === 'signup' ? 'Create account & start trial' : 'Sign in'}
+            {error && (
+              <div style={{ color: '#c0392b', fontSize: 13, padding: '8px 12px', background: '#fdf0ee', borderRadius: 8, marginBottom: 4 }}>
+                {error}
+              </div>
+            )}
+            <button type="submit" className="btn btn-primary" disabled={loading}>
+              {loading ? 'Please wait…' : (mode === 'signup' ? 'Create account & start trial' : 'Sign in')}
             </button>
 
             <div className="auth-foot">
@@ -215,28 +265,35 @@ function AuthScreen({ mode: initialMode, onComplete, onBackToLanding }) {
           </form>
         )}
 
-        {step === 'mfa' && (
-          <div className="auth-form">
-            <h1>Secure your account</h1>
-            <div className="sub">We strongly recommend two-factor authentication for ministry financial records.</div>
+        {step === 'confirm' && (
+          <form className="auth-form" onSubmit={confirmCode}>
+            <h1>Check your email</h1>
+            <div className="sub">We sent a 6-digit code to <strong>{email}</strong>. Enter it below to verify your account.</div>
 
-            <div className="mfa-card">
-              <div style={{ width: 56, height: 56, borderRadius: 12, background: 'rgba(168,133,66,.18)', margin: '0 auto 14px', display: 'grid', placeItems: 'center', color: 'var(--brass)' }}>
-                <Icon.ShieldCheck />
+            <div className="fields">
+              <div className="field">
+                <label>Verification code</label>
+                <input className="input" type="text" inputMode="numeric" maxLength={6}
+                  placeholder="123456" value={code} onChange={e => setCode(e.target.value)} autoFocus />
               </div>
-              <h4>Set up two-factor authentication</h4>
-              <p>Use an authenticator app (Google Authenticator, Authy, 1Password) to add a one-time code at sign-in.</p>
-              <button className="btn btn-primary" style={{ width: '100%', justifyContent: 'center' }} onClick={() => setStep('welcome')}>
-                <Icon.Lock /> Enable MFA via authenticator app
-              </button>
             </div>
+
+            {error && (
+              <div style={{ color: '#c0392b', fontSize: 13, padding: '8px 12px', background: '#fdf0ee', borderRadius: 8, marginBottom: 4 }}>
+                {error}
+              </div>
+            )}
+
+            <button type="submit" className="btn btn-primary" disabled={loading}>
+              {loading ? 'Verifying…' : 'Verify & continue'}
+            </button>
 
             <div className="auth-foot">
-              <button onClick={() => setStep('welcome')} style={{ color: 'var(--ink-3)', fontWeight: 400 }}>
-                Skip for now — I'll set this up later
+              <button type="button" onClick={async () => { await Auth.resendCode(email); }} style={{ color: 'var(--ink-3)', fontWeight: 400 }}>
+                Resend code
               </button>
             </div>
-          </div>
+          </form>
         )}
 
         {step === 'welcome' && (
@@ -248,7 +305,7 @@ function AuthScreen({ mode: initialMode, onComplete, onBackToLanding }) {
             <div className="sub" style={{ marginBottom: 24 }}>
               Three months of full access — no credit card needed. We'll send a gentle reminder before your trial ends so nothing surprises you.
             </div>
-            <button className="btn btn-primary" style={{ width: '100%', justifyContent: 'center' }} onClick={onComplete}>
+            <button className="btn btn-primary" style={{ width: '100%', justifyContent: 'center' }} onClick={() => onComplete(window._signupInfo)}>
               Enter your dashboard
             </button>
           </div>
