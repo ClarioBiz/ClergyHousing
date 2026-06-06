@@ -68,7 +68,7 @@ h1, h2, h3, h4 {
 /* ─────────── Sidebar ─────────── */
 .sidebar {
   background: var(--forest);
-  color: #E8DFC8;
+  color: #B8C8DC;
   padding: 28px 18px 24px;
   display: flex;
   flex-direction: column;
@@ -76,7 +76,7 @@ h1, h2, h3, h4 {
   position: sticky;
   top: 0;
   height: 100vh;
-  border-right: 1px solid #15281F;
+  border-right: 1px solid rgba(255,255,255,.08);
 }
 .brand {
   display: flex;
@@ -99,13 +99,13 @@ h1, h2, h3, h4 {
   font-size: 19px;
   font-weight: 500;
   letter-spacing: 0.01em;
-  color: #F1E7CF;
+  color: #EDF2FA;
 }
 .brand-sub {
   font-size: 10.5px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: #A8B6A4;
+  color: #7A8FA8;
   margin-top: 2px;
 }
 
@@ -119,14 +119,14 @@ h1, h2, h3, h4 {
   font-size: 10px;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: #7E8E7B;
+  color: #5E7090;
   padding: 0 12px 8px;
 }
 .nav-item {
   appearance: none;
   background: transparent;
   border: 0;
-  color: #C8C0AA;
+  color: #A0B2C8;
   text-align: left;
   font: inherit;
   font-size: 13.5px;
@@ -138,10 +138,10 @@ h1, h2, h3, h4 {
   gap: 11px;
   transition: background .15s, color .15s;
 }
-.nav-item:hover { background: rgba(255,255,255,.05); color: #F1E7CF; }
+.nav-item:hover { background: rgba(255,255,255,.06); color: #EDF2FA; }
 .nav-item.active {
-  background: rgba(201,169,104,.14);
-  color: #F4EAD2;
+  background: rgba(43,224,77,.1);
+  color: #E8F5EC;
   box-shadow: inset 2px 0 0 var(--brass-2);
   border-radius: 4px 8px 8px 4px;
 }
@@ -151,10 +151,10 @@ h1, h2, h3, h4 {
   border-top: 1px solid rgba(255,255,255,.07);
   padding: 18px 10px 0;
   font-size: 11.5px;
-  color: #98A595;
+  color: #6E84A0;
   line-height: 1.5;
 }
-.sidebar-footer strong { color: #DCD2B6; font-weight: 500; }
+.sidebar-footer strong { color: #B0C4DC; font-weight: 500; }
 .sidebar-footer .yr {
   display: inline-block;
   font-family: var(--serif);
@@ -267,8 +267,8 @@ td svg { width: 18px; height: 18px; }
 
 .btn-primary {
   background: var(--forest);
-  color: #F2EBDC;
-  border-color: #15281F;
+  color: #FFFFFF;
+  border-color: rgba(0,0,0,.2);
   box-shadow: 0 1px 0 rgba(255,255,255,.08) inset, 0 1px 2px rgba(0,0,0,.12);
 }
 .btn-primary:hover { background: var(--forest-2); }
@@ -335,12 +335,12 @@ td svg { width: 18px; height: 18px; }
 
 .stat.feature {
   background: var(--forest);
-  color: #E8DFC8;
-  border-color: #15281F;
+  color: #B8C8DC;
+  border-color: rgba(255,255,255,.08);
 }
-.stat.feature .stat-label { color: #98A595; }
-.stat.feature .stat-val { color: #F4EAD2; }
-.stat.feature .stat-foot { color: #B5BFAA; }
+.stat.feature .stat-label { color: #7A92B0; }
+.stat.feature .stat-val { color: #EDF2FA; }
+.stat.feature .stat-foot { color: #8EA8C4; }
 
 .delta-pos { color: var(--forest-3); }
 .delta-neg { color: var(--plum); }
@@ -1047,7 +1047,7 @@ textarea.input {
   left: 50%;
   transform: translateX(-50%);
   background: var(--forest);
-  color: #F2EBDC;
+  color: #FFFFFF;
   padding: 12px 18px;
   border-radius: 10px;
   font-size: 13.5px;
@@ -1128,7 +1128,7 @@ textarea.input {
   width: 32px; height: 32px;
   border-radius: 50%;
   background: linear-gradient(180deg, var(--forest-3), var(--forest));
-  color: #F2EBDC;
+  color: #FFFFFF;
   display: grid; place-items: center;
   font-family: var(--serif);
   font-size: 13px;
@@ -1212,7 +1212,7 @@ textarea.input {
   width: 44px; height: 44px;
   border-radius: 8px;
   display: grid; place-items: center;
-  color: #F2EBDC;
+  color: #FFFFFF;
   font-family: var(--serif);
   font-size: 18px;
   font-weight: 500;
@@ -1299,7 +1299,7 @@ textarea.input {
   position: absolute;
   left: 4px; top: 1px;
   width: 6px; height: 10px;
-  border: solid #F2EBDC;
+  border: solid #FFFFFF;
   border-width: 0 1.7px 1.7px 0;
   transform: rotate(40deg);
 }
@@ -1383,7 +1383,7 @@ textarea.input {
   letter-spacing: 0.12em;
   text-transform: uppercase;
   background: var(--forest);
-  color: #F2EBDC;
+  color: #FFFFFF;
   padding: 3px 8px;
   border-radius: 4px;
 }
@@ -1446,14 +1446,14 @@ textarea.input {
 }
 .plan.featured {
   background: var(--forest);
-  color: #E8DFC8;
-  border-color: #15281F;
-  box-shadow: 0 12px 30px rgba(20,30,20,.18);
+  color: #B8C8DC;
+  border-color: rgba(255,255,255,.08);
+  box-shadow: 0 12px 30px rgba(0,0,0,.22);
 }
-.plan.featured .plan-name { color: #F4EAD2; }
-.plan.featured .plan-price { color: #F4EAD2; }
-.plan.featured .plan-price .unit { color: #98A595; }
-.plan.featured .plan-feat { color: #C8C0AA; }
+.plan.featured .plan-name { color: #EDF2FA; }
+.plan.featured .plan-price { color: #EDF2FA; }
+.plan.featured .plan-price .unit { color: #7A92B0; }
+.plan.featured .plan-feat { color: #A0B4CC; }
 .plan.featured .plan-feat svg { color: var(--brass-2); }
 .plan-tag {
   position: absolute; top: -10px; right: 18px;
@@ -1508,7 +1508,7 @@ textarea.input {
 }
 .card-visual {
   background: linear-gradient(135deg, var(--forest), var(--forest-2));
-  color: #F2EBDC;
+  color: #FFFFFF;
   padding: 18px 20px;
   border-radius: 10px;
   font-family: var(--mono);
@@ -1670,7 +1670,7 @@ textarea.input {
   border-radius: 7px;
   background: var(--forest);
   display: grid; place-items: center;
-  color: #F2EBDC;
+  color: #FFFFFF;
 }
 .land-brand .name {
   font-family: var(--serif);
@@ -1839,7 +1839,7 @@ textarea.input {
 }
 .auth-aside {
   background: var(--forest);
-  color: #E8DFC8;
+  color: #B8C8DC;
   padding: 48px 56px;
   display: flex;
   flex-direction: column;
@@ -1867,7 +1867,7 @@ textarea.input {
   font-weight: 500;
   line-height: 1.15;
   letter-spacing: -0.02em;
-  color: #F1E7CF;
+  color: #EDF2FA;
   margin-top: 40px;
   max-width: 360px;
 }
@@ -1876,7 +1876,7 @@ textarea.input {
   font-size: 17px;
   font-style: italic;
   line-height: 1.55;
-  color: #C8C0AA;
+  color: #A0B4CC;
   border-top: 1px solid rgba(255,255,255,.1);
   padding-top: 22px;
   max-width: 380px;
@@ -1885,7 +1885,7 @@ textarea.input {
   font-style: normal;
   font-family: var(--sans);
   font-size: 12px;
-  color: #98A595;
+  color: #7A8FA8;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   margin-top: 12px;
@@ -2031,7 +2031,7 @@ textarea.input {
 .pagination button:hover { background: var(--card-2); }
 .pagination button.active {
   background: var(--forest);
-  color: #F2EBDC;
+  color: #FFFFFF;
   border-color: var(--forest);
 }
 .pagination button:disabled {
@@ -2160,7 +2160,7 @@ textarea.input {
     z-index: 100;
     transform: translateX(-100%);
     transition: transform .22s cubic-bezier(.3,.7,.4,1);
-    border-right: 1px solid #15281F;
+    border-right: 1px solid rgba(255,255,255,.08);
     box-shadow: 12px 0 32px rgba(0,0,0,.25);
   }
   .app[data-drawer="open"] .sidebar { transform: translateX(0); }

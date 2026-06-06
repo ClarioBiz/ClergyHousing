@@ -1,13 +1,25 @@
 // Clergy Housing — main App
 
 const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
-  "palette": "clario",
+  "palette": "darkgreen",
   "headingFont": "Source Serif 4",
   "view": "landing",
   "trialState": "active"
 }/*EDITMODE-END*/;
 
 const PALETTES = {
+  darkgreen: {
+    name: 'Dark & Green',
+    '--paper': '#F0F3F7', '--paper-2': '#E4EAF2',
+    '--card': '#FFFFFF', '--card-2': '#F6F9FC',
+    '--hairline': '#D0DCE8', '--hairline-2': '#DCE6F0',
+    '--ink': '#0F1219', '--ink-2': '#1C2535', '--ink-3': '#5B6A80', '--ink-4': '#9AAABF',
+    '--forest': '#0F1219',   // dark gray — sidebar + primary buttons
+    '--forest-2': '#18A833', // medium green — button hover + progress bar
+    '--forest-3': '#2BE04D', // bright green — accent, active states
+    '--brass': '#18A833',    // CTA gradient end (deeper green)
+    '--brass-2': '#2BE04D',  // CTA gradient start (bright green)
+  },
   clario: {
     name: 'Clario',
     '--paper': '#F4F5F7', '--paper-2': '#E9ECF0',
@@ -555,7 +567,7 @@ function AppTweaks({ t, setTweak }) {
 
       <TweakSection label="Palette" />
       <TweakSelect label="Theme" value={t.palette}
-        options={Object.entries(PALETTES).map(([id, p]) => ({ value: id, label: p.name }))}
+        options={['darkgreen','clario','forest','navy','oxblood','stone'].map(id => ({ value: id, label: PALETTES[id].name }))}
         onChange={(v) => setTweak('palette', v)} />
 
       <TweakSection label="Typography" />
