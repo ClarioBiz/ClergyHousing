@@ -6,7 +6,9 @@ const AUTH_CONFIG = {
   clientId:  'bdu43kd9f7cabta3jt0r6c0pm',
   endpoint:  'https://cognito-idp.us-east-1.amazonaws.com/',
   hostedUI:  'https://clergy-housing-auth.auth.us-east-1.amazoncognito.com',
-  redirectUri: 'https://clergyhousing.com',
+  redirectUri: window.location.hostname === 'localhost'
+    ? `http://localhost:${window.location.port || 8080}`
+    : 'https://clergyhousing.com',
 };
 const API_BASE = 'https://hy8fdgwatb.execute-api.us-east-1.amazonaws.com';
 

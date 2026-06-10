@@ -46,7 +46,7 @@ const CATEGORIES = [
       'Roof repairs',
       'General upkeep and maintenance',
       'Pest control',
-      'Lawn care and landscaping',
+      'Garage door repairs',
     ]
   },
   {
@@ -61,7 +61,7 @@ const CATEGORIES = [
   },
   {
     id: 'decor', emoji: '🏗️', color: '#7C5E3C',
-    name: 'Décor & Home Improvements',
+    name: 'Decor & Home Improvements',
     description: [
       'Renovations and remodeling',
       'Additions or structural improvements',
@@ -85,7 +85,6 @@ const CATEGORIES = [
     description: [
       'Home security system',
       'Cleaning supplies and services',
-      'Garage door repairs',
       'Moving expenses',
       'Any other expense directly related to the home',
     ]
@@ -299,6 +298,16 @@ Object.assign(Icon, {
   External: () => (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
       <path d="M14 4h6v6" /><path d="m20 4-9 9" /><path d="M20 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h5" />
+    </svg>
+  ),
+  BarChart: () => (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M3 3v18h18" /><path d="M7 16V11M11 16V7M15 16V13M19 16V9" />
+    </svg>
+  ),
+  X: () => (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
+      <path d="M18 6 6 18M6 6l12 12" />
     </svg>
   ),
   Star: () => (

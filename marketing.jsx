@@ -8,16 +8,12 @@ function Landing({ onStart, onSignIn }) {
     <div className="land">
       <header className="land-nav">
         <div className="land-brand">
-          <div className="mark"><Icon.Logo /></div>
-          <div>
-            <div className="name">Clergy Housing</div>
-            <div className="by-clario">By Clario Consulting</div>
-          </div>
+          <img src="logo-color.png" alt="Clergy Housing" className="land-logo" />
         </div>
         <div className="links">
           <a href="#features">Features</a>
           <a href="#pricing">Pricing</a>
-          <a href="#security">Security</a>
+          <a href="/contact.html">Contact</a>
         </div>
         <div style={{ display: 'flex', gap: 10 }}>
           <button className="btn btn-ghost" onClick={onSignIn}>Sign in</button>
@@ -186,13 +182,7 @@ function AuthScreen({ mode: initialMode, onComplete, onBackToLanding }) {
     <div className="auth-wrap">
       <aside className="auth-aside">
         <div>
-          <div className="brand" style={{ padding: 0 }}>
-            <div className="brand-mark"><Icon.Logo /></div>
-            <div>
-              <div className="brand-name">Clergy Housing</div>
-              <div className="brand-sub" style={{ color: '#A8B6A4' }}>by Clario Consulting</div>
-            </div>
-          </div>
+          <img src="logo-light.png" alt="Clergy Housing" className="sidebar-logo" />
           <h2>The dignified way to keep your Housing Allowance records.</h2>
         </div>
         <div className="quote">
@@ -394,4 +384,194 @@ function Paywall({ summary, onSubscribe, onSignOut }) {
   );
 }
 
-Object.assign(window, { Landing, AuthScreen, Paywall });
+// ─────────────────────────────────────────────────────────────────────────
+// Onboarding Wizard (shown once after signup, before entering the dashboard)
+// ─────────────────────────────────────────────────────────────────────────
+function OnboardingWizard({ onComplete }) {
+  const [step, setStep] = React.useState(1);
+  // Step 1 — personal info
+  const [firstName, setFirstName]       = React.useState('');
+  const [lastName, setLastName]         = React.useState('');
+  const [ministerName, setMinisterName] = React.useState('');
+  const [churchName, setChurchName]     = React.useState('');
+  // Step 2 — allowance details
+  const [taxYear, setTaxYear]           = React.useState(new Date().getFullYear());
+  const [designated, setDesignated]     = React.useState('');
+  const [designatedSetOn, setDesignatedSetOn] = React.useState('');
+  // Step 3 — fair rental value
+  const [fairRentalValue, setFairRentalValue] = React.useState('');
+  const [loading, setLoading]           = React.useState(false);
+  const [dateError, setDateError]       = React.useState('');
+
+  const parseAmount = (v) => parseFloat(String(v).replace(/[^\d.]/g, '')) || 0;
+
+  const validateStep2 = (e) => {
+    e.preventDefault();
+    if (designatedSetOn) {
+      const parsed = new Date(designatedSetOn);
+      const cutoff = new Date(`${Number(taxYear)}-01-01T00:00:00`);
+      if (isNaN(parsed.getTime()) || parsed >= cutoff) {
+        setDateError(`Please enter a date before January 1, ${Number(taxYear)}. The board must approve the allowance before the tax year it covers begins.`);
+        return;
+      }
+    }
+    setDateError('');
+    setStep(3);
+  };
+
+  const save = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    const data = {
+      firstName, lastName, ministerName, churchName,
+      taxYear:        Number(taxYear),
+      designated:     parseAmount(designated),
+      designatedSetOn,
+      fairRentalValue: parseAmount(fairRentalValue),
+    };
+    try { await API.updateProfile(data); } catch (_) {}
+    onComplete(data);
+  };
+
+  return (
+    <div className="onboarding-wrap">
+      <div className="onboarding-card" style={{ animation: 'slideUp .24s cubic-bezier(.3,.7,.4,1)' }}>
+
+        <div className="onboarding-steps">
+          <div className={'onboarding-step' + (step >= 1 ? ' active' : '')} />
+          <div className={'onboarding-step' + (step >= 2 ? ' active' : '')} />
+          <div className={'onboarding-step' + (step >= 3 ? ' active' : '')} />
+        </div>
+
+        {step === 1 && (
+          <form onSubmit={e => { e.preventDefault(); setStep(2); }}>
+            <div className="onboarding-icon"><Icon.Logo /></div>
+            <h2>Tell us about yourself</h2>
+            <p className="onboarding-sub">
+              This information will appear on your year-end tax report and all official records.
+            </p>
+
+            <div className="field-row" style={{ marginBottom: 14 }}>
+              <div className="field">
+                <label>First name</label>
+                <input className="input" type="text" placeholder="John"
+                  value={firstName} onChange={e => setFirstName(e.target.value)} required autoFocus />
+              </div>
+              <div className="field">
+                <label>Last name</label>
+                <input className="input" type="text" placeholder="Smith"
+                  value={lastName} onChange={e => setLastName(e.target.value)} required />
+              </div>
+            </div>
+
+            <div className="field" style={{ marginBottom: 14 }}>
+              <label>Name as it appears on your income tax return</label>
+              <input className="input" type="text" placeholder="Rev. John Smith"
+                value={ministerName} onChange={e => setMinisterName(e.target.value)} required />
+              <div className="hint">Use the exact name on file with the IRS — including title if applicable.</div>
+            </div>
+
+            <div className="field" style={{ marginBottom: 24 }}>
+              <label>Church or ministry name</label>
+              <input className="input" type="text" placeholder="Grace Community Church"
+                value={churchName} onChange={e => setChurchName(e.target.value)} required />
+            </div>
+
+            <button type="submit" className="btn btn-primary" style={{ width: '100%', justifyContent: 'center' }}>
+              Continue →
+            </button>
+          </form>
+        )}
+
+        {step === 2 && (
+          <form onSubmit={validateStep2}>
+            <div className="onboarding-icon"><Icon.Report /></div>
+            <h2>Your housing allowance</h2>
+            <p className="onboarding-sub">
+              Your church board must formally designate your housing allowance each year.
+              We need these details to track your IRS §107 exclusion accurately.
+            </p>
+
+            <div className="field" style={{ marginBottom: 14 }}>
+              <label>Tax year</label>
+              <select className="select" value={taxYear} onChange={e => { setTaxYear(e.target.value); setDateError(''); }}>
+                {[2024, 2025, 2026].map(y => <option key={y} value={y}>{y}</option>)}
+              </select>
+            </div>
+
+            <div className="field" style={{ marginBottom: 14 }}>
+              <label>Designated allowance</label>
+              <div className="amount-input">
+                <span>$</span>
+                <input className="input" type="text" inputMode="decimal"
+                  placeholder="36,000" value={designated}
+                  onChange={e => setDesignated(e.target.value)} required />
+              </div>
+              <div className="hint">Total amount your board designated for housing this year.</div>
+            </div>
+
+            <div className="field" style={{ marginBottom: 24 }}>
+              <label>Date the board approved the housing allowance</label>
+              <input className="input" type="text"
+                placeholder={`December 31, ${Number(taxYear) - 1}`}
+                value={designatedSetOn}
+                onChange={e => { setDesignatedSetOn(e.target.value); setDateError(''); }}
+                style={dateError ? { borderColor: 'var(--danger)' } : {}} />
+              <div className="hint">
+                Must be before January 1, {Number(taxYear)} — for {Number(taxYear)}, the latest valid date is December 31, {Number(taxYear) - 1}.
+              </div>
+              {dateError && <div className="onboarding-field-error">{dateError}</div>}
+            </div>
+
+            <button type="submit" className="btn btn-primary" style={{ width: '100%', justifyContent: 'center' }}>
+              Continue →
+            </button>
+            <button type="button" onClick={() => setStep(1)}
+              style={{ display: 'block', margin: '12px auto 0', background: 'none', border: 'none',
+                       color: 'var(--ink-3)', fontSize: 13, cursor: 'pointer' }}>
+              ← Back
+            </button>
+          </form>
+        )}
+
+        {step === 3 && (
+          <form onSubmit={save}>
+            <div className="onboarding-icon"><Icon.Home /></div>
+            <h2>Fair rental value</h2>
+            <p className="onboarding-sub">
+              The IRS limits your tax-free exclusion to what it would cost to rent your home
+              for the year — fully furnished, with utilities included. Enter your best
+              annual estimate. If you are unsure, check local rental listings or ask a real
+              estate agent for a comparable figure.
+            </p>
+
+            <div className="field" style={{ marginBottom: 24 }}>
+              <label>Annual fair rental value (furnished + utilities)</label>
+              <div className="amount-input">
+                <span>$</span>
+                <input className="input" type="text" inputMode="decimal"
+                  placeholder="24,000" value={fairRentalValue}
+                  onChange={e => setFairRentalValue(e.target.value)}
+                  autoFocus />
+              </div>
+              <div className="hint">You can update this at any time in Settings.</div>
+            </div>
+
+            <button type="submit" className="btn btn-primary"
+              style={{ width: '100%', justifyContent: 'center' }} disabled={loading}>
+              {loading ? 'Saving…' : 'Save & enter dashboard →'}
+            </button>
+            <button type="button" onClick={() => setStep(2)}
+              style={{ display: 'block', margin: '12px auto 0', background: 'none', border: 'none',
+                       color: 'var(--ink-3)', fontSize: 13, cursor: 'pointer' }}>
+              ← Back
+            </button>
+          </form>
+        )}
+
+      </div>
+    </div>
+  );
+}
+
+Object.assign(window, { Landing, AuthScreen, Paywall, OnboardingWizard });

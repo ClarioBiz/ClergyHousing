@@ -1,5 +1,7 @@
 // Clergy Housing — main App
 
+const DEV_MODE = window.location.hostname === 'localhost';
+
 const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
   "palette": "darkgreen",
   "headingFont": "Source Serif 4",
@@ -54,6 +56,7 @@ function Sidebar({ route, onGo, settings }) {
     { id: 'log',       label: 'Expenses',      icon: <Icon.Ledger /> },
     { id: 'banks',     label: 'Bank Accounts', icon: <Icon.Bank /> },
     { id: 'report',    label: 'Tax Report',    icon: <Icon.Report /> },
+    { id: 'history',   label: 'Year History',  icon: <Icon.BarChart /> },
     { id: 'documents', label: 'Documents',     icon: <Icon.Doc /> },
   ];
   const accountItems = [
@@ -64,11 +67,7 @@ function Sidebar({ route, onGo, settings }) {
   return (
     <aside className="sidebar">
       <div className="brand">
-        <div className="brand-mark"><Icon.Logo /></div>
-        <div>
-          <div className="brand-name">Clergy Housing</div>
-          <div className="brand-sub">By Clario Consulting</div>
-        </div>
+        <img src="logo-light.png" alt="Clergy Housing" className="sidebar-logo" />
       </div>
 
       <nav className="nav">
@@ -112,7 +111,7 @@ function Sidebar({ route, onGo, settings }) {
 function TopBar({ route, subscription, settings, onTrialClick, onSignOut, onMenu }) {
   const labels = {
     dashboard: 'Dashboard', log: 'Expenses', banks: 'Bank Accounts',
-    report: 'Tax Report', documents: 'Documents',
+    report: 'Tax Report', history: 'Year History', documents: 'Documents',
     billing: 'Billing', settings: 'Settings',
   };
   const [menuOpen, setMenuOpen] = React.useState(false);
@@ -163,13 +162,13 @@ function TopBar({ route, subscription, settings, onTrialClick, onSignOut, onMenu
 function App() {
   const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
 
-  // If user is already logged in, go straight to app
-  const initialView = Auth.isLoggedIn() ? 'app' : (t.view === 'app' ? 'landing' : t.view);
+  // If logged in or in dev mode, go straight to app
+  const initialView = (Auth.isLoggedIn() || DEV_MODE) ? 'app' : (t.view === 'app' ? 'landing' : t.view);
   const [view, setView] = React.useState(initialView);
   const [authMode, setAuthMode] = React.useState('signup');
   const [route, setRoute] = React.useState(() => {
     const saved = localStorage.getItem('ch_route');
-    const valid = ['dashboard','log','banks','report','documents','billing','settings'];
+    const valid = ['dashboard','log','banks','report','history','documents','billing','settings'];
     return (saved && valid.includes(saved)) ? saved : 'dashboard';
   });
   const [loading, setLoading] = React.useState(false);
@@ -186,12 +185,31 @@ function App() {
 
   const [modal, setModal] = React.useState(null);
   const [previewReceipt, setPreviewReceipt] = React.useState(null); // { s3Key, fileName }
+  const [csvImport, setCsvImport] = React.useState(false);
   const [toast, setToast] = React.useState(null);
   const [pendingTxns, setPendingTxns] = React.useState([]);
   const [drawer, setDrawer] = React.useState(false);
 
+  // Holds data entered in the onboarding wizard so loadData doesn't overwrite it in DEV_MODE
+  const onboardingDataRef = React.useRef(null);
+
   // Load real data from API after login
   const loadData = React.useCallback(async () => {
+    if (DEV_MODE && !Auth.isLoggedIn()) {
+      setExpenses(SAMPLE_EXPENSES);
+      setSettings({
+        firstName: 'John', lastName: 'Smith',
+        ministerName: 'Rev. John Smith', churchName: 'Grace Community Church',
+        taxYear: 2025, designated: 36000,
+        designatedSetOn: 'January 1, 2025', fairRentalValue: 24000,
+        // Apply any data the user just entered in the onboarding wizard on top
+        ...(onboardingDataRef.current || {}),
+      });
+      setSubscription({ plan: 'trial', daysLeft: 47, trialEnd: '2025-12-31' });
+      setInvoices(INVOICES);
+      setDocuments(DOCUMENTS.map(d => ({ ...d, size: d.size || 0 })));
+      return;
+    }
     setLoading(true);
     try {
       const [profile, expensesData, sub, invoicesData, docsData] = await Promise.all([
@@ -277,8 +295,10 @@ function App() {
 
   // Sync view tweak (dev tool only — never kick an authenticated user back to landing)
   React.useEffect(() => {
-    if (Auth.isLoggedIn()) return;     // logged-in users stay in the app regardless of tweak
-    if (t.view !== 'app') setView(t.view); // unauthenticated users follow the tweak, but can't reach 'app'
+    // Always allow switching to onboarding for preview purposes
+    if (t.view === 'onboarding') { setView('onboarding'); return; }
+    if (Auth.isLoggedIn() || DEV_MODE) return;
+    if (t.view !== 'app') setView(t.view);
   }, [t.view]);
   // Force paywall if trial ended
   React.useEffect(() => {
@@ -306,6 +326,18 @@ function App() {
   };
 
   const handleSaveExpense = async (entry) => {
+    // DEV_MODE: skip API, update local state directly
+    if (DEV_MODE && !Auth.isLoggedIn()) {
+      if (modal?.mode === 'edit') {
+        setExpenses(prev => prev.map(e => e.id === entry.id ? { ...e, ...entry } : e));
+        showToast('Expense updated');
+      } else {
+        setExpenses(prev => [{ ...entry, id: 'e' + Date.now() }, ...prev]);
+        showToast('Expense added to ledger');
+      }
+      setModal(null);
+      return;
+    }
     try {
       // Upload receipt file to S3 if one was picked
       let receiptS3Key = entry.receipt?.s3Key || null;
@@ -313,7 +345,6 @@ function App() {
         const { uploadUrl, s3Key } = await API.getUploadUrl(entry.receiptFile.name, entry.receiptFile.type);
         await fetch(uploadUrl, { method: 'PUT', body: entry.receiptFile, headers: { 'Content-Type': entry.receiptFile.type } });
         receiptS3Key = s3Key;
-        // Record in Documents section too
         const doc = await API.createDocument({
           fileName: entry.receiptFile.name, s3Key, sizeBytes: entry.receiptFile.size,
           category: entry.categoryId,
@@ -346,6 +377,12 @@ function App() {
   };
 
   const handleDeleteExpense = async (entry) => {
+    if (DEV_MODE && !Auth.isLoggedIn()) {
+      setExpenses(prev => prev.filter(e => e.id !== entry.id));
+      setModal(null);
+      showToast('Expense removed');
+      return;
+    }
     try {
       await API.deleteExpense(entry.id);
       setExpenses(prev => prev.filter(e => e.id !== entry.id));
@@ -357,6 +394,11 @@ function App() {
   };
 
   const handleBulkDelete = async (ids) => {
+    if (DEV_MODE && !Auth.isLoggedIn()) {
+      setExpenses(prev => prev.filter(e => !ids.includes(e.id)));
+      showToast(`${ids.length} entries removed`);
+      return;
+    }
     try {
       await Promise.all(ids.map(id => API.deleteExpense(id)));
       setExpenses(prev => prev.filter(e => !ids.includes(e.id)));
@@ -381,6 +423,11 @@ function App() {
   };
 
   const handleSaveSettings = async (s) => {
+    if (DEV_MODE && !Auth.isLoggedIn()) {
+      setSettings(prev => ({ ...prev, ...s }));
+      showToast('Settings saved');
+      return;
+    }
     try {
       await API.updateProfile({
         firstName: s.firstName, lastName: s.lastName,
@@ -403,6 +450,7 @@ function App() {
 
   // ── Render by view ────────────────────────────────────────────────────
   const handleSignOut = () => {
+    if (DEV_MODE) return;
     Auth.signOut();
     localStorage.removeItem('ch_route');
     setExpenses([]);
@@ -431,10 +479,25 @@ function App() {
                 ministerName: signupInfo.name || '',
                 churchName:   signupInfo.church || '',
               }).catch(() => {});
+              // New signup — collect allowance details before entering the app
+              setView('onboarding');
+            } else {
+              setView('app');
             }
-            setView('app');
           }}
           onBackToLanding={() => setView('landing')} />
+        <AppTweaks t={t} setTweak={setTweak} />
+      </>
+    );
+  }
+  if (view === 'onboarding') {
+    return (
+      <>
+        <OnboardingWizard onComplete={(data) => {
+          onboardingDataRef.current = data;
+          setSettings(prev => ({ ...prev, ...data }));
+          setView('app');
+        }} />
         <AppTweaks t={t} setTweak={setTweak} />
       </>
     );
@@ -481,13 +544,17 @@ function App() {
                        onEdit={(e) => setModal({ mode: 'edit', expense: e })}
                        onDelete={handleDeleteExpense}
                        onBulkDelete={handleBulkDelete}
-                       onPreviewReceipt={(s3Key, fileName) => setPreviewReceipt({ s3Key, fileName })} />
+                       onPreviewReceipt={(s3Key, fileName) => setPreviewReceipt({ s3Key, fileName })}
+                       onImportCsv={() => setCsvImport(true)} />
         )}
         {route === 'banks' && (
           <BankAccounts banks={[]} pendingTxns={pendingTxns} onAddExpenses={handleAddBankExpenses} />
         )}
         {route === 'report' && (
           <TaxReport2 settings={settings} expenses={expenses} onUpdateSettings={handleSaveSettings} />
+        )}
+        {route === 'history' && (
+          <YearHistory settings={settings} expenses={expenses} onGoReport={() => go('report')} />
         )}
         {route === 'documents' && (
           <Documents
@@ -507,13 +574,14 @@ function App() {
         )}
         {route === 'settings' && (
           <SettingsPage2 settings={settings} onSave={handleSaveSettings}
-                        onSignOut={handleSignOut} />
+                        onSignOut={handleSignOut} t={t} setTweak={setTweak} />
         )}
       </main>
 
       {modal && (
         <ExpenseForm2
           initial={modal.mode === 'edit' ? modal.expense : null}
+          taxYear={settings.taxYear}
           onSave={handleSaveExpense}
           onCancel={() => setModal(null)}
           onDelete={handleDeleteExpense}
@@ -525,6 +593,25 @@ function App() {
           s3Key={previewReceipt.s3Key}
           fileName={previewReceipt.fileName}
           onClose={() => setPreviewReceipt(null)}
+        />
+      )}
+
+      {csvImport && (
+        <CsvImportModal
+          taxYear={settings.taxYear}
+          onImport={(rows) => {
+            if (DEV_MODE && !Auth.isLoggedIn()) {
+              const now = Date.now();
+              setExpenses(prev => [
+                ...rows.map((r, i) => ({ ...r, id: `csv_${now}_${i}` })),
+                ...prev,
+              ]);
+            } else {
+              rows.forEach(r => handleSaveExpense(r));
+            }
+            setCsvImport(false);
+          }}
+          onClose={() => setCsvImport(false)}
         />
       )}
 
@@ -544,14 +631,15 @@ function App() {
 // ─────────────────────────────────────────────────────────────────────────
 function AppTweaks({ t, setTweak }) {
   return (
-    <TweaksPanel title="Tweaks">
+    <TweaksPanel title="Tweaks" initialOpen={DEV_MODE}>
       <TweakSection label="Navigate" />
       <TweakSelect label="View" value={t.view}
         options={[
-          { value: 'landing', label: 'Landing page' },
-          { value: 'auth',    label: 'Sign up / sign in' },
-          { value: 'app',     label: 'In-app (signed in)' },
-          { value: 'paywall', label: 'Paywall / trial ended' },
+          { value: 'landing',    label: 'Landing page' },
+          { value: 'auth',       label: 'Sign up / sign in' },
+          { value: 'onboarding', label: 'Onboarding wizard' },
+          { value: 'app',        label: 'In-app (signed in)' },
+          { value: 'paywall',    label: 'Paywall / trial ended' },
         ]}
         onChange={(v) => setTweak('view', v)} />
 
@@ -577,5 +665,7 @@ function AppTweaks({ t, setTweak }) {
     </TweaksPanel>
   );
 }
+
+Object.assign(window, { PALETTES, HEADING_FONTS });
 
 ReactDOM.createRoot(document.getElementById('root')).render(<App />);

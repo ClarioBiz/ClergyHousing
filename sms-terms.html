@@ -11,18 +11,18 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --ink:      #1F1B14;
-      --ink-2:    #3A332A;
-      --ink-3:    #6B6256;
-      --ink-4:    #948A7B;
-      --forest:   #1E3A2E;
-      --forest-2: #284A3B;
-      --forest-3: #3B6A56;
-      --brass:    #A88542;
-      --brass-2:  #C9A968;
-      --paper:    #F5F0E8;
-      --card:     #FFFDF8;
-      --border:   #E2D9CC;
+      --ink:      #0F1219;
+      --ink-2:    #1C2535;
+      --ink-3:    #5B6A80;
+      --ink-4:    #9AAABF;
+      --forest:   #0F1219;
+      --forest-2: #18A833;
+      --forest-3: #2BE04D;
+      --brass:    #18A833;
+      --brass-2:  #2BE04D;
+      --paper:    #F0F3F7;
+      --card:     #FFFFFF;
+      --border:   #D0DCE8;
       --serif: 'Source Serif 4', Georgia, serif;
       --sans:  'Geist', system-ui, sans-serif;
     }
@@ -44,8 +44,7 @@
     /* ── Top nav ── */
     header {
       background: var(--forest);
-      padding: 0 24px;
-      height: 56px;
+      padding: 6px 20px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -54,25 +53,18 @@
       z-index: 100;
       box-shadow: 0 1px 4px rgba(0,0,0,.25);
     }
-    .logo {
-      font-family: var(--serif);
-      font-size: 18px;
-      font-weight: 500;
-      color: #F1E7CF;
-      text-decoration: none;
-      letter-spacing: .01em;
-    }
-    .logo span { color: var(--brass-2); }
+    .logo { display: flex; align-items: center; text-decoration: none; }
+
     .back-link {
       font-size: 13px;
-      color: rgba(241,231,207,.7);
+      color: rgba(255,255,255,.7);
       text-decoration: none;
       display: flex;
       align-items: center;
       gap: 6px;
       transition: color .15s;
     }
-    .back-link:hover { color: #F1E7CF; }
+    .back-link:hover { color: #FFFFFF; }
 
     /* ── Page wrapper ── */
     .page {
@@ -136,7 +128,7 @@
       font-family: var(--serif);
       font-size: 20px;
       font-weight: 500;
-      color: var(--forest);
+      color: var(--forest-3);
       margin: 40px 0 12px;
       padding-bottom: 8px;
       border-bottom: 1px solid var(--border);
@@ -173,7 +165,7 @@
       font-weight: 600;
       letter-spacing: .08em;
       text-transform: uppercase;
-      color: rgba(241,231,207,.85);
+      color: rgba(255,255,255,.85);
     }
     .data-table tbody tr { border-top: 1px solid var(--border); }
     .data-table tbody tr:first-child { border-top: none; }
@@ -226,7 +218,7 @@
       align-items: center;
       gap: 6px;
       background: var(--forest);
-      color: #F1E7CF;
+      color: #FFFFFF;
       font-size: 13px;
       font-weight: 600;
       padding: 5px 14px;
@@ -279,18 +271,18 @@
       border-radius: 10px;
       padding: 28px 32px;
       margin-top: 40px;
-      color: rgba(241,231,207,.85);
+      color: rgba(255,255,255,.85);
     }
     .contact-card h2 {
       font-family: var(--serif);
       font-size: 18px;
       font-weight: 500;
-      color: #F1E7CF;
+      color: #FFFFFF;
       border-bottom: 1px solid rgba(255,255,255,.1);
       padding-bottom: 12px;
       margin-top: 0;
     }
-    .contact-card a { color: var(--brass-2); }
+    .contact-card a { color: #FFFFFF; }
     .contact-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -298,9 +290,9 @@
       margin-top: 16px;
     }
     .contact-grid .row { display: flex; flex-direction: column; gap: 3px; }
-    .contact-grid .label { font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: rgba(201,169,104,.8); }
-    .contact-grid .value { font-size: 14px; color: rgba(241,231,207,.9); }
-    .contact-grid .value a { color: var(--brass-2); text-decoration: none; }
+    .contact-grid .label { font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: rgba(43,224,77,.8); }
+    .contact-grid .value { font-size: 14px; color: rgba(255,255,255,.9); }
+    .contact-grid .value a { color: #FFFFFF; text-decoration: none; }
     .contact-grid .value a:hover { text-decoration: underline; }
 
     /* ── Footer ── */
@@ -325,10 +317,10 @@
 <body>
 
 <header>
-  <a class="logo" href="/">Clergy <span>Housing</span></a>
-  <a class="back-link" href="/">
+  <a class="logo" href="/"><img src="logo-light.png" alt="Clergy Housing" style="height:176px;width:auto;"></a>
+<a class="back-link" href="/">
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
-    Back to app
+    Back Home
   </a>
 </header>
 
@@ -351,7 +343,7 @@
     <div class="row"><span class="label">Platform</span><span class="value">Clergy Housing</span></div>
     <div class="row"><span class="label">SMS Number</span><span class="value"><a href="tel:+16025654420">(602) 565-4420</a></span></div>
     <div class="row"><span class="label">Website</span><span class="value"><a href="https://www.clergyhousing.com">www.clergyhousing.com</a></span></div>
-    <div class="row"><span class="label">Contact Email</span><span class="value"><a href="mailto:security@clergyhousing.com">security@clergyhousing.com</a></span></div>
+    <div class="row"><span class="label">Contact Email</span><span class="value"><a href="mailto:hello@clergyhousing.com">hello@clergyhousing.com</a></span></div>
     <div class="row"><span class="label">Mailing Address</span><span class="value">PO Box 51675, Mesa, AZ 85208-0084</span></div>
   </div>
 
@@ -387,7 +379,7 @@
 
     <div class="sms-example">
       <div class="sms-label">MFA Verification Code</div>
-      <div class="sms-bubble">Clergy Housing: Your verification code is 847293. This code expires in 10 minutes. Do not share this code with anyone. If you did not request this, contact us at security@clergyhousing.com. Reply STOP to opt out.</div>
+      <div class="sms-bubble">Clergy Housing: Your verification code is 847293. This code expires in 10 minutes. Do not share this code with anyone. If you did not request this, contact us at hello@clergyhousing.com. Reply STOP to opt out.</div>
     </div>
 
     <div class="sms-example">
@@ -397,7 +389,7 @@
 
     <div class="sms-example">
       <div class="sms-label">Payment Alert</div>
-      <div class="sms-bubble">Clergy Housing: Your subscription payment of $12.00 was processed successfully. Thank you for using Clergy Housing. Questions? Contact security@clergyhousing.com. Reply STOP to opt out.</div>
+      <div class="sms-bubble">Clergy Housing: Your subscription payment of $12.00 was processed successfully. Thank you for using Clergy Housing. Questions? Contact hello@clergyhousing.com. Reply STOP to opt out.</div>
     </div>
 
     <div class="sms-example">
@@ -450,7 +442,7 @@
     <ul class="bullet">
       <li>Reply <strong>STOP</strong> to any SMS message received from (602) 565-4420 — you will receive a final confirmation message, and no further SMS messages will be sent</li>
       <li>Log in to your Clergy Housing account and disable SMS notifications through the Settings screen under Notifications</li>
-      <li>Contact us at <a href="mailto:security@clergyhousing.com">security@clergyhousing.com</a> and request to be removed from SMS communications</li>
+      <li>Contact us at <a href="mailto:hello@clergyhousing.com">hello@clergyhousing.com</a> and request to be removed from SMS communications</li>
     </ul>
     <div class="keyword-row">
       <span class="chip brass">Reply STOP to opt out</span>
@@ -483,7 +475,7 @@
     <p>If you need assistance with SMS messages from Clergy Housing, you may:</p>
     <ul class="bullet">
       <li>Reply <strong>HELP</strong> to any SMS message received from (602) 565-4420 for a brief help message with contact information</li>
-      <li>Email us at <a href="mailto:security@clergyhousing.com">security@clergyhousing.com</a></li>
+      <li>Email us at <a href="mailto:hello@clergyhousing.com">hello@clergyhousing.com</a></li>
       <li>Visit our support page at <a href="https://www.clergyhousing.com/support">www.clergyhousing.com/support</a></li>
     </ul>
     <div class="keyword-row">
@@ -492,7 +484,7 @@
 
     <div class="sms-example">
       <div class="sms-label">HELP Response — message you will receive</div>
-      <div class="sms-bubble">Clergy Housing Help: For support visit clergyhousing.com or email security@clergyhousing.com. Call (602) 565-4420. Reply STOP to unsubscribe. Msg &amp; data rates may apply.</div>
+      <div class="sms-bubble">Clergy Housing Help: For support visit clergyhousing.com or email hello@clergyhousing.com. Call (602) 565-4420. Reply STOP to unsubscribe. Msg &amp; data rates may apply.</div>
     </div>
 
     <!-- 10. Prohibited Uses -->
@@ -564,7 +556,7 @@
         <div class="row"><span class="label">Platform</span><span class="value">Clergy Housing</span></div>
         <div class="row"><span class="label">Contact Person</span><span class="value">Joaquin Abrahan Vargas, Founder &amp; CEO</span></div>
         <div class="row"><span class="label">SMS Number</span><span class="value"><a href="tel:+16025654420">(602) 565-4420</a></span></div>
-        <div class="row"><span class="label">Email</span><span class="value"><a href="mailto:security@clergyhousing.com">security@clergyhousing.com</a></span></div>
+        <div class="row"><span class="label">Email</span><span class="value"><a href="mailto:hello@clergyhousing.com">hello@clergyhousing.com</a></span></div>
         <div class="row"><span class="label">Mailing Address</span><span class="value">PO Box 51675, Mesa, AZ 85208-0084</span></div>
         <div class="row"><span class="label">SMS Terms URL</span><span class="value"><a href="https://www.clergyhousing.com/sms-terms.html">www.clergyhousing.com/sms-terms</a></span></div>
         <div class="row"><span class="label">Response Time</span><span class="value">Within 30 days of your inquiry</span></div>
@@ -576,7 +568,7 @@
 
 <footer>
   <div class="links">
-    <a href="/">Clergy Housing App</a>
+    <a href="/">Home</a>
     <a href="/privacy.html">Privacy Policy</a>
     <a href="/terms.html">Terms of Service</a>
     <a href="/sms-terms.html">SMS Terms</a>

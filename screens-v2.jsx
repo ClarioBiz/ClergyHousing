@@ -211,7 +211,7 @@ function ByCategory({ expenses }) {
 // ─────────────────────────────────────────────────────────────────────────
 // Expense Log
 // ─────────────────────────────────────────────────────────────────────────
-function ExpenseLog2({ expenses, onAdd, onEdit, onDelete, onBulkDelete, onPreviewReceipt }) {
+function ExpenseLog2({ expenses, onAdd, onEdit, onDelete, onBulkDelete, onPreviewReceipt, onImportCsv }) {
   const [catFilter, setCatFilter] = React.useState('all');
   const [from, setFrom] = React.useState('');
   const [to, setTo] = React.useState('');
@@ -261,9 +261,14 @@ function ExpenseLog2({ expenses, onAdd, onEdit, onDelete, onBulkDelete, onPrevie
           <div className="page-title">Expense ledger</div>
           <div className="page-sub">Every housing expense logged this tax year. Filter, search, or edit entries directly.</div>
         </div>
-        <button className="btn btn-primary" onClick={onAdd}>
-          <Icon.Plus /> Add expense
-        </button>
+        <div style={{ display: 'flex', gap: 8 }}>
+          <button className="btn btn-secondary" onClick={onImportCsv}>
+            <Icon.Upload /> Import CSV
+          </button>
+          <button className="btn btn-primary" onClick={onAdd}>
+            <Icon.Plus /> Add expense
+          </button>
+        </div>
       </div>
 
       <div className="filter-bar">
@@ -451,7 +456,7 @@ function CategoryPicker({ value, onChange }) {
 
 // Expense Form (modal)
 // ─────────────────────────────────────────────────────────────────────────
-function ExpenseForm2({ initial, onSave, onCancel, onDelete }) {
+function ExpenseForm2({ initial, onSave, onCancel, onDelete, taxYear }) {
   const isEdit = !!initial?.id;
   const today = new Date().toISOString().slice(0, 10);
   const [date, setDate] = React.useState(initial?.date || today);
@@ -467,7 +472,14 @@ function ExpenseForm2({ initial, onSave, onCancel, onDelete }) {
   const submit = (e) => {
     e?.preventDefault();
     const errs = {};
-    if (!date) errs.date = 'Required';
+    if (!date) {
+      errs.date = 'Required';
+    } else if (taxYear) {
+      const expYear = new Date(date + 'T00:00:00').getFullYear();
+      if (expYear !== Number(taxYear)) {
+        errs.date = `Only expenses from ${taxYear} can be logged here. Please check the date — your current housing allowance year is ${taxYear}.`;
+      }
+    }
     const num = parseFloat(amount);
     if (!amount || isNaN(num) || num <= 0) errs.amount = 'Enter a valid amount';
     if (Object.keys(errs).length) { setErr(errs); return; }
@@ -623,7 +635,7 @@ function TaxReport2({ settings, expenses, onUpdateSettings }) {
           <button className="btn btn-secondary" onClick={() => setEditing(e => !e)}>
             <Icon.Edit /> {editing ? 'Done editing' : 'Edit header'}
           </button>
-          <button className="btn btn-secondary"><Icon.Download /> Export PDF</button>
+          <button className="btn btn-secondary" onClick={handlePrint}><Icon.Download /> Export PDF</button>
           <button className="btn btn-primary" onClick={handlePrint}><Icon.Print /> Print report</button>
         </div>
       </div>
@@ -738,7 +750,7 @@ function TaxReport2({ settings, expenses, onUpdateSettings }) {
 // ─────────────────────────────────────────────────────────────────────────
 // Settings
 // ─────────────────────────────────────────────────────────────────────────
-function SettingsPage2({ settings, onSave, onSignOut }) {
+function SettingsPage2({ settings, onSave, onSignOut, t = {}, setTweak = () => {} }) {
   const [s, setS] = React.useState(settings);
   const [savedAt, setSavedAt] = React.useState(null);
   const [notifs, setNotifs] = React.useState({ trialEnding: true, monthlySummary: true, reportReady: true, productUpdates: false });
@@ -923,6 +935,35 @@ function SettingsPage2({ settings, onSave, onSignOut }) {
           </div>
         </div>
 
+        {/* Appearance */}
+        <aside className="settings-aside">
+          <h4>Appearance</h4>
+          <p>Customize the color theme and typography of your workspace.</p>
+        </aside>
+        <div className="card settings-card">
+          <h3>Theme & typography</h3>
+          <div className="field-row">
+            <div className="field">
+              <label>Color theme</label>
+              <select className="select" value={t.palette || 'darkgreen'}
+                onChange={e => setTweak('palette', e.target.value)}>
+                {Object.entries(window.PALETTES || {}).map(([id, p]) => (
+                  <option key={id} value={id}>{p.name}</option>
+                ))}
+              </select>
+            </div>
+            <div className="field">
+              <label>Heading font</label>
+              <select className="select" value={t.headingFont || 'Source Serif 4'}
+                onChange={e => setTweak('headingFont', e.target.value)}>
+                {Object.keys(window.HEADING_FONTS || {}).map(f => (
+                  <option key={f} value={f}>{f}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+        </div>
+
         {/* Danger zone — full width below */}
         <div></div>
         <div className="danger-zone">
@@ -1027,4 +1068,264 @@ function ReceiptPreviewModal({ s3Key, fileName, onClose }) {
   );
 }
 
-Object.assign(window, { Dashboard2, ExpenseLog2, ExpenseForm2, TaxReport2, SettingsPage2, ReceiptPreviewModal });
+// ─────────────────────────────────────────────────────────────────────────
+// CSV Import Modal
+// ─────────────────────────────────────────────────────────────────────────
+// CSV Import
+// ─────────────────────────────────────────────────────────────────────────
+
+function downloadTemplate(taxYear) {
+  const y = taxYear || new Date().getFullYear();
+  const catList = CATEGORIES.map(c => c.name);
+  // Data rows: columns A-D (Date, Amount, Description, Category)
+  // Reference: columns F-G (Valid Category | ID) — visible right of the data area
+  const dataRows = [
+    [`${y}-01-15`, '1642.50', 'January mortgage payment',   'Mortgage / Rent'],
+    [`${y}-02-01`, '156.40',  'Electric bill',               'Utilities'],
+    [`${y}-03-20`, '558.00',  'Homeowners insurance Q1',     'Insurance'],
+    [`${y}-09-30`, '1400.00', 'County property tax',         'Property Tax'],
+    [`${y}-06-15`, '340.00',  'Plumbing repair',             'Repairs & Maintenance'],
+  ];
+  const rows = [
+    ['Date', 'Amount', 'Description', 'Category', '', 'Valid Category Values'],
+    ...dataRows.map((d, i) => [...d, '', catList[i] || '']),
+    // remaining categories with no data columns
+    ...catList.slice(dataRows.length).map(name => ['', '', '', '', '', name]),
+  ];
+  const q = v => `"${String(v).replace(/"/g, '""')}"`;
+  const csv = rows.map(r => r.map(q).join(',')).join('\r\n');
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `clergy-housing-expenses-${y}.csv`;
+  a.click();
+}
+
+// Proper CSV line parser — handles quoted fields that contain commas or quotes.
+function parseCsvLine(line) {
+  const fields = [];
+  let field = '';
+  let inQuote = false;
+  for (let i = 0; i < line.length; i++) {
+    const c = line[i];
+    if (c === '"') {
+      if (inQuote && line[i + 1] === '"') { field += '"'; i++; }
+      else { inQuote = !inQuote; }
+    } else if (c === ',' && !inQuote) {
+      fields.push(field.trim());
+      field = '';
+    } else {
+      field += c;
+    }
+  }
+  fields.push(field.trim());
+  return fields;
+}
+
+function parseCsv(text) {
+  // Strip BOM (Excel UTF-8 export) and split lines
+  const raw = text.replace(/^﻿/, '');
+  const lines = raw.split(/\r?\n/).filter(l => l.trim());
+  if (!lines.length) return { rows: [], error: 'File appears to be empty.' };
+
+  const header = parseCsvLine(lines[0]).map(h => h.toLowerCase().replace(/[^a-z]/g, ''));
+  const dateIdx = header.indexOf('date');
+  const amtIdx  = header.findIndex(h => h === 'amount' || h === 'amt');
+  const descIdx = header.findIndex(h => h === 'description' || h === 'desc' || h === 'memo' || h === 'note' || h === 'notes');
+  const catIdx  = header.findIndex(h => h === 'category' || h === 'cat');
+
+  if (dateIdx < 0) return { rows: [], error: 'Could not find a "date" column. Make sure the first row is the header.' };
+  if (amtIdx  < 0) return { rows: [], error: 'Could not find an "amount" column.' };
+
+  const rows = []; const errors = [];
+  lines.slice(1).forEach((line, i) => {
+    if (!line.trim()) return;
+    const cols    = parseCsvLine(line);
+    const dateRaw = (cols[dateIdx] || '').trim();
+    const amtRaw  = (cols[amtIdx]  || '').trim();
+    // Silently skip reference/label rows (no amount, or date column is clearly a label)
+    if (!amtRaw && (!dateRaw || !/^\d/.test(dateRaw))) return;
+    const desc    = descIdx >= 0 ? (cols[descIdx] || '').trim() : '';
+    const catRaw  = catIdx  >= 0 ? (cols[catIdx]  || '').trim() : '';
+    const amount  = parseFloat(amtRaw.replace(/[$, ]/g, ''));
+    const lineNum = i + 2;
+
+    // Accept YYYY-MM-DD or MM/DD/YYYY
+    let date = dateRaw;
+    if (/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(date)) {
+      const [m, d, yyyy] = date.split('/');
+      date = `${yyyy}-${m.padStart(2,'0')}-${d.padStart(2,'0')}`;
+    }
+    if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date))
+      { errors.push(`Row ${lineNum}: date "${dateRaw}" — use YYYY-MM-DD or MM/DD/YYYY`); return; }
+    if (isNaN(amount) || amount <= 0)
+      { errors.push(`Row ${lineNum}: amount "${amtRaw}" is not a valid number`); return; }
+
+    // Match by ID ("mortgage") or by display name ("Mortgage / Rent"), case-insensitive
+    const catKey = catRaw.toLowerCase().trim();
+    const matchedCat = CAT_BY_ID[catKey]
+      || CATEGORIES.find(c => c.name.toLowerCase() === catKey)
+      || CATEGORIES.find(c => catKey.includes(c.id) || c.id.includes(catKey));
+    rows.push({ date, amount, categoryId: matchedCat?.id || '', description: desc });
+  });
+  return { rows, errors };
+}
+
+function CsvImportModal({ taxYear, onImport, onClose }) {
+  const [step, setStep] = React.useState(1);
+  const [rows, setRows] = React.useState([]);   // editable preview rows
+  const [parseErrors, setParseErrors] = React.useState([]);
+  const [dragOver, setDragOver] = React.useState(false);
+  const fileRef = React.useRef();
+
+  const setRowCat = (i, catId) =>
+    setRows(prev => prev.map((r, j) => j === i ? { ...r, categoryId: catId } : r));
+
+  const handleFile = (file) => {
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const { rows: parsed, errors, error } = parseCsv(e.target.result);
+      if (error) { setParseErrors([error]); return; }
+      const valid = parsed.filter(r => new Date(r.date + 'T00:00:00').getFullYear() === Number(taxYear));
+      const skipped = parsed.length - valid.length;
+      const warns = errors.slice();
+      if (skipped > 0) warns.push(`${skipped} row(s) skipped — date is outside tax year ${taxYear}.`);
+      setParseErrors(warns);
+      setRows(valid);
+      if (valid.length > 0) setStep(2);
+      else if (!warns.length) setParseErrors(['No rows matched tax year ' + taxYear + '.']);
+    };
+    reader.readAsText(file);
+  };
+
+  const onDrop = (e) => { e.preventDefault(); setDragOver(false); handleFile(e.dataTransfer.files[0]); };
+
+  const allCategorised = rows.every(r => r.categoryId);
+  const readyCount = rows.filter(r => r.categoryId).length;
+
+  return (
+    <div className="modal-backdrop" onClick={onClose}>
+      <div className="modal" style={{ width: 660 }} onClick={e => e.stopPropagation()}>
+        <div className="modal-hd">
+          <div>
+            <h2>{step === 1 ? 'Import expenses from CSV' : 'Assign categories & import'}</h2>
+            <div className="sub">
+              {step === 1
+                ? 'Download the template, fill in your expenses, then upload.'
+                : `${rows.length} expense${rows.length !== 1 ? 's' : ''} loaded for tax year ${taxYear}. Select a category for each row.`}
+            </div>
+          </div>
+          <button className="modal-close" onClick={onClose}>×</button>
+        </div>
+
+        {step === 1 && (
+          <div style={{ padding: '0 28px 24px' }}>
+            <div className="csv-step-row">
+              <div className="csv-step-num">1</div>
+              <div className="csv-step-body">
+                <div className="csv-step-title">Download the template</div>
+                <div className="csv-step-sub">
+                  The template has four columns: <strong>Date</strong>, <strong>Amount</strong>, <strong>Description</strong>, and <strong>Category</strong>.
+                  A reference list of all valid category names is included to the right of the data columns (column F).
+                  After uploading you can review and change any category using the dropdown — nothing is final until you click Import.
+                  Date format: <strong>YYYY-MM-DD</strong> or MM/DD/YYYY.
+                </div>
+                <button className="btn btn-secondary" style={{ marginTop: 12 }} onClick={() => downloadTemplate(taxYear)}>
+                  <Icon.Download /> Download template
+                </button>
+              </div>
+            </div>
+            <div className="csv-step-row">
+              <div className="csv-step-num">2</div>
+              <div className="csv-step-body">
+                <div className="csv-step-title">Upload your completed file</div>
+                <div
+                  className={`csv-drop-zone${dragOver ? ' drag-over' : ''}`}
+                  onDragOver={e => { e.preventDefault(); setDragOver(true); }}
+                  onDragLeave={() => setDragOver(false)}
+                  onDrop={onDrop}
+                  onClick={() => fileRef.current.click()}>
+                  <Icon.Upload />
+                  <span>Drop your CSV here, or <strong>click to browse</strong></span>
+                  <input ref={fileRef} type="file" accept=".csv,text/csv" style={{ display: 'none' }}
+                    onChange={e => handleFile(e.target.files[0])} />
+                </div>
+                {parseErrors.length > 0 && (
+                  <div className="csv-errors">
+                    {parseErrors.map((err, i) => <div key={i} className="csv-error-row">{err}</div>)}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {step === 2 && (
+          <div style={{ padding: '0 28px 24px' }}>
+            {parseErrors.length > 0 && (
+              <div className="csv-errors" style={{ marginBottom: 14 }}>
+                {parseErrors.map((err, i) => <div key={i} className="csv-error-row">{err}</div>)}
+              </div>
+            )}
+            {!allCategorised && (
+              <div style={{ fontSize: 12.5, color: 'var(--brass)', marginBottom: 10, display: 'flex', alignItems: 'center', gap: 6 }}>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ width: 14, height: 14, flexShrink: 0 }}><path d="M12 9v4M12 17h.01M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/></svg>
+                {readyCount} of {rows.length} expenses have a category. Rows without a category will be skipped.
+              </div>
+            )}
+            <div className="csv-preview-table-wrap">
+              <table className="csv-preview-table">
+                <thead>
+                  <tr><th>Date</th><th>Category</th><th>Description</th><th style={{ textAlign: 'right' }}>Amount</th></tr>
+                </thead>
+                <tbody>
+                  {rows.map((r, i) => {
+                    const cat = CAT_BY_ID[r.categoryId];
+                    const missing = !r.categoryId;
+                    return (
+                      <tr key={i} style={missing ? { background: 'rgba(251,191,36,.08)' } : undefined}>
+                        <td style={{ whiteSpace: 'nowrap', color: 'var(--ink-3)', fontSize: 12.5 }}>{r.date}</td>
+                        <td>
+                          <select
+                            className="select csv-cat-select"
+                            value={r.categoryId}
+                            onChange={e => setRowCat(i, e.target.value)}
+                            style={{ borderColor: missing ? 'var(--brass)' : undefined }}>
+                            <option value="">— pick category —</option>
+                            {CATEGORIES.map(c => (
+                              <option key={c.id} value={c.id}>{c.emoji} {c.name}</option>
+                            ))}
+                          </select>
+                        </td>
+                        <td style={{ color: 'var(--ink-2)', fontSize: 13 }}>{r.description || <span style={{ color: 'var(--ink-4)' }}>—</span>}</td>
+                        <td style={{ textAlign: 'right', fontVariantNumeric: 'tabular-nums', fontWeight: 500 }}>{fmtMoney(r.amount)}</td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 10, marginTop: 16 }}>
+              <button className="btn btn-ghost" style={{ fontSize: 13 }} onClick={() => { setStep(1); setRows([]); setParseErrors([]); }}>
+                ← Back
+              </button>
+              <div style={{ display: 'flex', gap: 10 }}>
+                {!allCategorised && readyCount > 0 && (
+                  <button className="btn btn-secondary" onClick={() => onImport(rows.filter(r => r.categoryId))}>
+                    Import {readyCount} categorised
+                  </button>
+                )}
+                <button className="btn btn-primary" disabled={readyCount === 0} onClick={() => onImport(rows.filter(r => r.categoryId))}>
+                  Import {allCategorised ? rows.length : readyCount} expense{rows.length !== 1 ? 's' : ''}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+Object.assign(window, { Dashboard2, ExpenseLog2, ExpenseForm2, TaxReport2, SettingsPage2, ReceiptPreviewModal, CsvImportModal });
