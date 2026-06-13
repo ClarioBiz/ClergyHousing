@@ -117,7 +117,7 @@ function Landing({ onStart, onSignIn }) {
         </div>
         <div>© 2026 Clario Consulting Corporation. All rights reserved.</div>
         <div className="footer-clario">
-          <span>A product of</span>
+          <span>A product of:</span>
           <a href="https://clarioconsulting.com" target="_blank" rel="noopener noreferrer">
             <img src="https://clarioconsulting.com/wp-content/uploads/2022/12/Logo-Clario-e1768800479993.png" alt="Clario Consulting" className="footer-clario-logo" />
           </a>
@@ -183,12 +183,14 @@ function AuthScreen({ mode: initialMode, onComplete, onBackToLanding }) {
       <aside className="auth-aside">
         <div>
           <img src="logo-light.png" alt="Clergy Housing" className="sidebar-logo" />
-          <h2>The dignified way to keep your Housing Allowance records.</h2>
+          <h2>The dignified way to keep your Housing Allowance records in order.</h2>
         </div>
-        <div className="quote">
-          "Finally a tool that doesn't feel like wrestling with a spreadsheet.
-          My CPA recognized the report format on first glance."
-          <div className="quote-att">Rev. John Steward — Asheville, NC</div>
+        <div className="auth-aside-product">
+          <span>A product of:</span>
+          <a href="https://clarioconsulting.com" target="_blank" rel="noopener noreferrer" className="auth-aside-clario-link">
+            <img src="clario-icon.png" alt="Clario Consulting" className="auth-aside-clario-logo" />
+            <span className="auth-aside-clario-name">Clario Consulting</span>
+          </a>
         </div>
       </aside>
 

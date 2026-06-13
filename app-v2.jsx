@@ -23,7 +23,7 @@ const PALETTES = {
     '--brass-2': '#2BE04D',  // CTA gradient start (bright green)
   },
   clario: {
-    name: 'Clario',
+    name: 'Navy & Gray',
     '--paper': '#F4F5F7', '--paper-2': '#E9ECF0',
     '--card': '#FFFFFF', '--card-2': '#F7F9FB',
     '--hairline': '#DDE1E6', '--hairline-2': '#EAEDF1',
@@ -44,7 +44,7 @@ const HEADING_FONTS = {
   'Source Serif 4': '"Source Serif 4", Georgia, serif',
   'Cormorant Garamond': '"Cormorant Garamond", Georgia, serif',
   'Newsreader': '"Newsreader", Georgia, serif',
-  'Montserrat (Clario brand)': '"Montserrat", ui-sans-serif, system-ui, sans-serif',
+  'Montserrat': '"Montserrat", ui-sans-serif, system-ui, sans-serif',
 };
 
 // ─────────────────────────────────────────────────────────────────────────
@@ -56,7 +56,7 @@ function Sidebar({ route, onGo, settings }) {
     { id: 'log',       label: 'Expenses',      icon: <Icon.Ledger /> },
     { id: 'banks',     label: 'Bank Accounts', icon: <Icon.Bank /> },
     { id: 'report',    label: 'Tax Report',    icon: <Icon.Report /> },
-    { id: 'history',   label: 'Year History',  icon: <Icon.BarChart /> },
+    { id: 'history',   label: '3-Year History', icon: <Icon.BarChart /> },
     { id: 'documents', label: 'Documents',     icon: <Icon.Doc /> },
   ];
   const accountItems = [
@@ -90,6 +90,13 @@ function Sidebar({ route, onGo, settings }) {
       </nav>
 
       <div className="sidebar-footer">
+        <div className="sidebar-product">
+          <span>A product of:</span>
+          <a href="https://clarioconsulting.com" target="_blank" rel="noopener noreferrer" className="sidebar-clario-link">
+            <img src="clario-icon.png" alt="Clario Consulting" className="sidebar-clario-logo" />
+            <span className="sidebar-clario-name">Clario Consulting</span>
+          </a>
+        </div>
         <strong>{settings.ministerName}</strong><br/>
         {settings.churchName}<br/>
         <span className="yr">Tax Year {settings.taxYear}</span>
@@ -111,7 +118,7 @@ function Sidebar({ route, onGo, settings }) {
 function TopBar({ route, subscription, settings, onTrialClick, onSignOut, onMenu }) {
   const labels = {
     dashboard: 'Dashboard', log: 'Expenses', banks: 'Bank Accounts',
-    report: 'Tax Report', history: 'Year History', documents: 'Documents',
+    report: 'Tax Report', history: '3-Year History', documents: 'Documents',
     billing: 'Billing', settings: 'Settings',
   };
   const [menuOpen, setMenuOpen] = React.useState(false);

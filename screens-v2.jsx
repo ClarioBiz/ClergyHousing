@@ -629,7 +629,7 @@ function TaxReport2({ settings, expenses, onUpdateSettings }) {
       <div className="page-head">
         <div>
           <div className="page-title">Year-end tax report</div>
-          <div className="page-sub">Print-ready summary for tax year {settings.taxYear}. Grouped by category with your IRC §107 exclusion calculated.</div>
+          <div className="page-sub">Print-ready summary for tax year {settings.taxYear}. Grouped by category with your allowed exclusion calculated.</div>
         </div>
         <div style={{ display: 'flex', gap: 10 }}>
           <button className="btn btn-secondary" onClick={() => setEditing(e => !e)}>
@@ -820,7 +820,7 @@ function SettingsPage2({ settings, onSave, onSignOut, t = {}, setTweak = () => {
             </div>
           </div>
 
-          <h3 style={{ marginTop: 6 }}>Tax settings · {s.taxYear}</h3>
+          <h3 style={{ marginTop: 6 }}>Tax Settings · {s.taxYear}</h3>
           <div className="field-row">
             <div className="field">
               <label>Tax year</label>
@@ -907,7 +907,7 @@ function SettingsPage2({ settings, onSave, onSignOut, t = {}, setTweak = () => {
           </div>
 
           {/* Data & Storage */}
-          <h3 style={{ marginTop: 10 }}>Data & storage</h3>
+          <h3 style={{ marginTop: 10 }}>Data & Storage</h3>
           <div className="setting-row">
             <Icon.Doc />
             <div className="body">
@@ -937,14 +937,14 @@ function SettingsPage2({ settings, onSave, onSignOut, t = {}, setTweak = () => {
 
         {/* Appearance */}
         <aside className="settings-aside">
-          <h4>Appearance</h4>
+          <h4>Theme & Typography</h4>
           <p>Customize the color theme and typography of your workspace.</p>
         </aside>
         <div className="card settings-card">
-          <h3>Theme & typography</h3>
+          <h3>Theme & Typography</h3>
           <div className="field-row">
             <div className="field">
-              <label>Color theme</label>
+              <label>Color Theme</label>
               <select className="select" value={t.palette || 'darkgreen'}
                 onChange={e => setTweak('palette', e.target.value)}>
                 {Object.entries(window.PALETTES || {}).map(([id, p]) => (
@@ -953,7 +953,7 @@ function SettingsPage2({ settings, onSave, onSignOut, t = {}, setTweak = () => {
               </select>
             </div>
             <div className="field">
-              <label>Heading font</label>
+              <label>Heading Font</label>
               <select className="select" value={t.headingFont || 'Source Serif 4'}
                 onChange={e => setTweak('headingFont', e.target.value)}>
                 {Object.keys(window.HEADING_FONTS || {}).map(f => (
@@ -964,10 +964,10 @@ function SettingsPage2({ settings, onSave, onSignOut, t = {}, setTweak = () => {
           </div>
         </div>
 
-        {/* Danger zone — full width below */}
+        {/* Danger Zone — full width below */}
         <div></div>
         <div className="danger-zone">
-          <h3>Danger zone</h3>
+          <h3>Danger Zone</h3>
           <p style={{ fontSize: 13, color: 'var(--ink-3)', margin: '0 0 14px', lineHeight: 1.5 }}>
             Deleting your account is permanent. All expenses, receipts, and reports will be removed from our servers within 30 days.
           </p>

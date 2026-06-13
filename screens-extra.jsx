@@ -79,7 +79,8 @@ function BankAccounts({ banks, pendingTxns, onAddExpenses }) {
         <div>
           <div className="card" style={{ padding: '20px 22px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
-              <Icon.ShieldCheck /> <strong style={{ fontFamily: 'var(--serif)', fontSize: 16, fontWeight: 500 }}>How bank sync works</strong>
+              <span style={{ width: 16, height: 16, display: 'inline-flex', flexShrink: 0 }}><Icon.ShieldCheck /></span>
+              <strong style={{ fontFamily: 'var(--serif)', fontSize: 16, fontWeight: 500 }}>How bank sync works</strong>
             </div>
             <ol style={{ paddingLeft: 18, margin: 0, fontSize: 13, color: 'var(--ink-3)', lineHeight: 1.65 }}>
               <li>Plaid securely links your bank, read-only.</li>
@@ -290,7 +291,7 @@ function Billing({ subscription, invoices = [], onSubscribe }) {
     <div className="page" data-screen-label="Billing">
       <div className="page-head">
         <div>
-          <div className="page-title">Subscription & billing</div>
+          <div className="page-title">Subscription & Billing</div>
           <div className="page-sub">Manage your Clergy Housing plan. Payments are processed securely by Stripe.</div>
         </div>
       </div>
@@ -397,7 +398,7 @@ function Billing({ subscription, invoices = [], onSubscribe }) {
               <Icon.Card /> Add payment method
             </button>
             <div style={{ fontSize: 11.5, color: 'var(--ink-3)', marginTop: 12, display: 'flex', alignItems: 'center', gap: 6 }}>
-              <Icon.Lock /> Card details are stored by Stripe, never on our servers.
+              <span style={{ width: 16, height: 16, display: 'inline-flex', flexShrink: 0 }}><Icon.Lock /></span> Card details are stored by Stripe, never on our servers.
             </div>
           </div>
         </div>
@@ -477,6 +478,7 @@ function YearHistory({ settings, expenses: currentExpenses, onGoReport }) {
   const [loading, setLoading] = React.useState(true);
   const [modal, setModal] = React.useState(null);       // { year, initial }
   const [reportYear, setReportYear] = React.useState(null); // prior year to print
+  const [importYear, setImportYear] = React.useState(null); // prior year for CSV import
 
   React.useEffect(() => {
     const load = async () => {
@@ -513,11 +515,11 @@ function YearHistory({ settings, expenses: currentExpenses, onGoReport }) {
     load();
   }, [currentYear]);
 
-  const handleSave = async (year, data) => {
+  const handleSave = async (year, data, isEdit) => {
     if (isDevMode && !Auth.isLoggedIn()) {
       setExpensesByYear(prev => {
         const list = prev[year] || [];
-        if (data.id && list.some(e => e.id === data.id)) {
+        if (isEdit) {
           return { ...prev, [year]: list.map(e => e.id === data.id ? data : e) };
         }
         return { ...prev, [year]: [{ ...data, id: 'h_' + Date.now() }, ...list] };
@@ -526,20 +528,20 @@ function YearHistory({ settings, expenses: currentExpenses, onGoReport }) {
       return;
     }
     try {
-      if (data.id) {
+      if (isEdit) {
         await API.updateExpense(data.id, {
-          date: data.date, category_id: data.categoryId,
+          date: data.date, categoryId: data.categoryId,
           description: data.description, amount: data.amount,
         });
         setExpensesByYear(prev => ({ ...prev, [year]: (prev[year] || []).map(e => e.id === data.id ? data : e) }));
       } else {
         const created = await API.createExpense({
-          date: data.date, category_id: data.categoryId,
+          date: data.date, categoryId: data.categoryId,
           description: data.description, amount: data.amount,
         });
         setExpensesByYear(prev => ({ ...prev, [year]: [{ ...data, id: created.id }, ...(prev[year] || [])] }));
       }
-    } catch (_) { alert('Error saving expense. Please try again.'); }
+    } catch (err) { alert('Error saving expense: ' + (err.message || err)); }
     setModal(null);
   };
 
@@ -552,6 +554,29 @@ function YearHistory({ settings, expenses: currentExpenses, onGoReport }) {
     try { await API.deleteExpense(id); } catch (_) { alert('Error deleting expense.'); return; }
     setExpensesByYear(prev => ({ ...prev, [year]: (prev[year] || []).filter(e => e.id !== id) }));
     setModal(null);
+  };
+
+  const handleImport = async (year, rows) => {
+    const now = Date.now();
+    if (isDevMode && !Auth.isLoggedIn()) {
+      setExpensesByYear(prev => ({
+        ...prev,
+        [year]: [...rows.map((r, i) => ({ ...r, id: `csv_${now}_${i}` })), ...(prev[year] || [])],
+      }));
+      setImportYear(null);
+      return;
+    }
+    try {
+      const created = await Promise.all(rows.map(r => API.createExpense({
+        date: r.date, categoryId: r.categoryId,
+        description: r.description, amount: r.amount,
+      })));
+      setExpensesByYear(prev => ({
+        ...prev,
+        [year]: [...created.map((c, i) => ({ ...rows[i], id: c.id })), ...(prev[year] || [])],
+      }));
+    } catch (err) { alert('Import failed: ' + (err.message || err)); }
+    setImportYear(null);
   };
 
   const totals = years.map(y => (expensesByYear[y] || []).reduce((s, e) => s + e.amount, 0));
@@ -572,7 +597,7 @@ function YearHistory({ settings, expenses: currentExpenses, onGoReport }) {
     <div className="page" data-screen-label="History">
       <div className="page-head">
         <div>
-          <div className="page-title">Year history</div>
+          <div className="page-title">3-Year History</div>
           <div className="page-sub">Compare your housing allowance across the last three tax years.</div>
         </div>
       </div>
@@ -591,6 +616,7 @@ function YearHistory({ settings, expenses: currentExpenses, onGoReport }) {
                 prevTotal={i > 0 ? totals[i - 1] : null}
                 ownTotal={totals[i]}
                 onAddExpense={() => setModal({ year, initial: null })}
+                onImportCsv={() => setImportYear(year)}
                 onEditExpense={(exp) => setModal({ year, initial: exp })}
                 onPrintReport={year === currentYear ? onGoReport : () => setReportYear(year)}
               />
@@ -598,6 +624,14 @@ function YearHistory({ settings, expenses: currentExpenses, onGoReport }) {
           </div>
           <CategoryComparisonTable years={years} expensesByYear={expensesByYear} />
         </>
+      )}
+
+      {importYear !== null && (
+        <CsvImportModal
+          taxYear={importYear}
+          onImport={rows => handleImport(importYear, rows)}
+          onClose={() => setImportYear(null)}
+        />
       )}
 
       {modal && (
@@ -612,7 +646,7 @@ function YearHistory({ settings, expenses: currentExpenses, onGoReport }) {
             <ExpenseForm2
               initial={modal.initial}
               taxYear={modal.year}
-              onSave={data => handleSave(modal.year, data)}
+              onSave={data => handleSave(modal.year, data, !!modal.initial)}
               onCancel={() => setModal(null)}
               onDelete={modal.initial ? () => handleDelete(modal.year, modal.initial.id) : null}
             />
@@ -623,7 +657,7 @@ function YearHistory({ settings, expenses: currentExpenses, onGoReport }) {
   );
 }
 
-function YearCard({ year, expenses, settings, isCurrent, prevTotal, ownTotal, onAddExpense, onEditExpense, onPrintReport }) {
+function YearCard({ year, expenses, settings, isCurrent, prevTotal, ownTotal, onAddExpense, onImportCsv, onEditExpense, onPrintReport }) {
   const designated   = settings?.designated     || null;
   const frv          = settings?.fairRentalValue || null;
   const exclusion    = (designated && frv) ? Math.min(designated, ownTotal, frv) : null;
@@ -647,7 +681,10 @@ function YearCard({ year, expenses, settings, isCurrent, prevTotal, ownTotal, on
         <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
           {isCurrent
             ? <span className="history-current-badge">Current</span>
-            : <button className="btn btn-xs btn-ghost" onClick={onAddExpense}>+ Add</button>
+            : <>
+                <button className="btn btn-xs btn-ghost" onClick={onAddExpense}>+ Add</button>
+                <button className="btn btn-xs btn-ghost" onClick={onImportCsv}>+ Import</button>
+              </>
           }
           <button className="btn btn-xs btn-secondary" onClick={onPrintReport} title={`Print ${year} tax report`}>
             <Icon.Print /> Report

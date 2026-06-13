@@ -148,7 +148,6 @@ h1, h2, h3, h4 {
 .nav-item svg { width: 16px; height: 16px; flex-shrink: 0; opacity: .9; }
 
 .sidebar-footer {
-  border-top: 1px solid rgba(255,255,255,.07);
   padding: 18px 10px 0;
   font-size: 11.5px;
   color: #6E84A0;
@@ -175,6 +174,35 @@ h1, h2, h3, h4 {
   transition: color .15s;
 }
 .sidebar-legal a:hover { color: var(--brass-2); }
+.sidebar-product {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  color: rgba(255,255,255,.7);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  padding: 16px 0;
+  margin-bottom: 16px;
+  border-top: 2px solid rgba(255,255,255,.18);
+  border-bottom: 2px solid rgba(255,255,255,.18);
+}
+.sidebar-clario-link {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+}
+.sidebar-clario-logo {
+  height: 22px;
+  width: auto;
+  opacity: 0.9;
+}
+.sidebar-clario-name {
+  color: rgba(255,255,255,.8);
+  font-size: 10px;
+  font-weight: 500;
+}
 
 /* ─────────── Main area ─────────── */
 .main {
@@ -2119,6 +2147,32 @@ textarea.input {
   color: #EDF2FA;
   margin-top: 40px;
   max-width: 360px;
+}
+.auth-aside-product {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: rgba(255,255,255,.9);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+.auth-aside-clario-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+}
+.auth-aside-clario-logo {
+  height: 32px;
+  width: auto;
+  opacity: 0.9;
+}
+.auth-aside-clario-name {
+  color: rgba(255,255,255,.9);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
 }
 .auth-aside .quote {
   font-family: var(--serif);
